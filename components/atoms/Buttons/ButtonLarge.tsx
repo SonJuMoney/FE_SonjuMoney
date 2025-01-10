@@ -1,7 +1,32 @@
-type Props = {};
+'use client';
 
-const ButtonLarge = (props: Props) => {
-  return <div>ButtonLarge</div>;
+import { ButtonHTMLAttributes } from 'react';
+import { cn } from '@/lib/utils';
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  text: string;
+  disabled?: boolean;
+}
+
+export const ButtonLarge = ({
+  text,
+  disabled = false,
+  className,
+  ...props
+}: ButtonProps) => {
+  return (
+    <button
+      className={cn(
+        'flex justify-center items-center w-full p-4 rounded-[14px] text-lg',
+        disabled
+          ? 'bg-disabled text-white cursor-not-allowed'
+          : 'bg-appColor text-white',
+        className
+      )}
+      disabled={disabled}
+      {...props}
+    >
+      {text}
+    </button>
+  );
 };
-
-export default ButtonLarge;
