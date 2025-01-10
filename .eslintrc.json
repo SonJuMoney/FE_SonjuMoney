@@ -1,10 +1,10 @@
 {
-	"extends": [
-		"next/core-web-vitals",
-		"next/typescript",
-		"prettier",
-		"plugin:react/recommended",
-		"plugin:react/jsx-runtime",
-		"plugin:react-hooks/recommended"
-	]
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "prettier",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended"
+  ]
 }
