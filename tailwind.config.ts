@@ -26,7 +26,7 @@ const config: Config = {
         peach: '#F5C2C2',
         brown: '#C6A284',
         pink: '#FF8086',
-        background: '#F3F4F6',
+        background: 'var(--background)',
         foreground: 'var(--foreground)',
       },
     },
