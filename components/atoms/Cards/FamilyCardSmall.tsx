@@ -1,20 +1,20 @@
 import { FamilyCardProps } from '@/types/family';
 
-const FamilyCardLarge = ({
+const FamilyCardSmall = ({
   familyName,
   familyMember,
   color,
 }: FamilyCardProps) => {
   return (
     <div className={`p-5 rounded-2xl shadow-md ${color}`}>
-      <h2 className='text-2xl font-semibold text-white mb-5'>{familyName}</h2>
-      <div className='grid grid-cols-6 gap-2'>
+      <h2 className='text-xs font-semibold text-white mb-2'>{familyName}</h2>
+      <div className='grid grid-cols-4 gap-1'>
         {familyMember.map((member, index) => (
           <div
             key={index}
-            className='rounded-full bg-white w-10 h-10 flex items-center justify-center'
+            className='rounded-full bg-white w-6 h-6 flex items-center justify-center'
           >
-            <span className='text-xs font-semibold text-appColor'>
+            <span className='text-[10px] font-semibold text-appColor'>
               {member}
             </span>
           </div>
@@ -24,8 +24,8 @@ const FamilyCardLarge = ({
   );
 };
 
-// 가족 선택 페이지
-const selectFamily = () => {
+// 가족 목록
+const familyList = () => {
   const families = [
     {
       familyName: '첫째네 가족',
@@ -48,18 +48,20 @@ const selectFamily = () => {
   const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
 
   return (
-    <div className='p-10 space-y-4'>
-      {families.map((family, index) => (
-        <div key={index}>
-          <FamilyCardLarge
-            familyName={family.familyName}
-            familyMember={family.familyMember}
-            color={`${colors[index % colors.length]}`}
-          />
-        </div>
-      ))}
+    <div className='overflow-x-auto'>
+      <div className='flex space-x-4'>
+        {families.map((family, index) => (
+          <div key={index} className='shrink-0'>
+            <FamilyCardSmall
+              familyName={family.familyName}
+              familyMember={family.familyMember}
+              color={`${colors[index % colors.length]}`}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default FamilyCardLarge;
+export default FamilyCardSmall;
