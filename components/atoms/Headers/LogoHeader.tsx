@@ -8,7 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Family } from '@/types/family';
+import { Family } from '@/types/Family';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 

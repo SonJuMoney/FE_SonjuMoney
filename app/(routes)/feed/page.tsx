@@ -1,7 +1,7 @@
 type Props = {};
 
-const index = (props: Props) => {
-  return <div>index</div>;
+const Feed = (props: Props) => {
+  return <div>Feed</div>;
 };
 
-export default index;
+export default Feed;
