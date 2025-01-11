@@ -1,5 +1,8 @@
-import { RegisterCardProps } from '@/types/register';
 import { LuPlus } from 'react-icons/lu';
+
+type RegisterCardProps = {
+  text: string;
+};
 
 const RegisterCard = ({ text }: RegisterCardProps) => {
   return (

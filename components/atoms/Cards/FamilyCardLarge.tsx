@@ -1,4 +1,8 @@
-import { FamilyCardProps } from '@/types/family';
+export type FamilyCardProps = {
+  familyName: string;
+  familyMember: string[];
+  color: string;
+};
 
 const FamilyCardLarge = ({
   familyName,

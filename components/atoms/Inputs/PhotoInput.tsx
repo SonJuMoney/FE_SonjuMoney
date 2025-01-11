@@ -1,6 +1,10 @@
 import { LuCamera } from 'react-icons/lu';
 
-const PhotoInput = () => {
+type PhotoInputProps = {
+  maxLength: number;
+};
+
+const PhotoInput = ({ maxLength }: PhotoInputProps) => {
   return (
     <div className='flex flex-col items-center justify-center bg-white border border-appColor rounded-lg px-[68px] py-10'>
       <div className='flex flex-col items-center'>
@@ -10,7 +14,7 @@ const PhotoInput = () => {
         </div>
 
         <p className='text-appColor font-medium text-[13px] mt-[10px]'>
-          사진 최대 1장 또는 영상 1개
+          사진 최대 {maxLength}장 또는 영상 1개
         </p>
       </div>
     </div>

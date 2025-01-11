@@ -1,4 +1,4 @@
-import { FamilyCardProps } from '@/types/family';
+import { FamilyCardProps } from './FamilyCardLarge';
 
 const FamilyCardSmall = ({
   familyName,

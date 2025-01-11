@@ -1,5 +1,9 @@
-import { RoleCardProps } from '@/types/role';
 import Image from 'next/image';
+
+type RoleCardProps = {
+  image: string;
+  name: string;
+};
 
 // 이미지 추가
 const RoleCard = ({ image, name }: RoleCardProps) => {
