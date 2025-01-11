@@ -1,6 +1,6 @@
 import { FaCheck } from 'react-icons/fa6';
 
-type CheckboxAtomProps = {
+export type CheckboxAtomProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
 };
