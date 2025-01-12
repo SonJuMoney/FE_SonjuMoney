@@ -21,7 +21,7 @@ export default function AddPhotoButton({
   children,
   className,
 }: AddButtonProps) {
-  const sizeStyle = size ? `${size}px` : '74px';
+  const sizeStyle = size ? `${size}px` : '150px';
 
   return (
     <button
