@@ -9,29 +9,9 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 
 type Props = {};
-type Role = '할아버지' | '할머니' | '아빠' | '엄마' | '손자' | '손녀';
-const index = (props: Props) => {
-  const [showToast, setShowToast] = useState(false);
-  const [price, setPrice] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [role, setRole] = useState<Role | ''>('');
 
-  useEffect(() => {
-    console.log(role);
-  }, [role]);
-
-  return (
-    <div>
-      {/* <PasswordInput onPasswordChange={handlePasswordChange}></PasswordInput> */}
-      {/* <Button onClick={() => setShowToast(true)}>open</Button>
-      {showToast && <Toast message='가족이 변경되었습니다!' />} */}
-      {/* <PriceInput value={price} onChange={setPrice} /> */}
-      <div className='flex space-x-2'>
-        <PhoneInput value={phone} onChange={setPhone} />
-        <RoleSelect value={role} onChange={setRole}></RoleSelect>
-      </div>
-    </div>
-  );
+const Feed = (props: Props) => {
+  return <div>Feed</div>;
 };
 
-export default index;
+export default Feed;
