@@ -17,5 +17,5 @@ export const BOTTOM_NAV_PATH_INFO: PathInfo = {
   '/home': true,
   '/feed': true,
   '/calendar': true,
-  '/call': true,
+  // '/call': true,
 };
