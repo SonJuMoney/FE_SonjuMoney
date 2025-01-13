@@ -22,7 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`font-pretendard ${pretendard.variable} antialiased`}>
+      <body
+        className={`font-pretendard ${pretendard.variable} antialiased text-black`}
+      >
         {children}
         <BottomNav />
       </body>
