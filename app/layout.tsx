@@ -1,3 +1,4 @@
+import BottomNav from '@/components/atoms/BottomNav/BottomNav';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`font-pretendard ${pretendard.variable} antialiased`}>
         {children}
+        <BottomNav />
       </body>
     </html>
   );

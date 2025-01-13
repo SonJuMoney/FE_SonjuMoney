@@ -1,6 +1,6 @@
 'use client';
 
-import ArrowLeft from '@/assets/Icons/arrowLeft_20.svg';
+import ArrowLeft from '@/public/Icons/arrowLeft_20.svg';
 import { useRouter } from 'next/navigation';
 
 type HeaderProps = {

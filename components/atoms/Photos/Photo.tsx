@@ -1,6 +1,6 @@
 'use client';
 
-import Delete from '@/assets/Icons/delete_24.svg';
+import Delete from '@/public/Icons/delete_24.svg';
 import Image from 'next/image';
 
 type PhotoProps = {
