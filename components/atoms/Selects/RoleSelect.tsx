@@ -5,9 +5,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Role } from '@/types/user';
 import { useCallback } from 'react';
-
-type Role = '할아버지' | '할머니' | '아빠' | '엄마' | '손자' | '손녀' | '';
 
 type Props = {
   value: Role;

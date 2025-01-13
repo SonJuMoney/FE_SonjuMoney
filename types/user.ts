@@ -8,3 +8,12 @@ export type User = {
   gender: 'Male' | 'FEMALE';
   profile: string;
 };
+
+export type Role =
+  | '할아버지'
+  | '할머니'
+  | '아빠'
+  | '엄마'
+  | '손자'
+  | '손녀'
+  | '';
