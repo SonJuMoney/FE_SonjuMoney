@@ -5,25 +5,24 @@ import { cn } from '@/lib/utils';
 
 type ButtonProps = {
   text: string;
-  disabled?: boolean;
+  selected: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const ButtonLarge = ({
+export const ButtonMedium = ({
   text,
-  disabled = false,
+  selected = false,
   className,
   ...props
 }: ButtonProps) => {
   return (
     <button
       className={cn(
-        'flex justify-center items-center w-full p-4 rounded-[14px] text-lg',
-        disabled
-          ? 'bg-disabled text-white cursor-not-allowed'
-          : 'bg-appColor text-white',
+        'flex justify-center items-center w-full p-[11px] rounded-lg font-semibold',
+        selected
+          ? 'text-appColor border border-appColor'
+          : 'text-placeHolder border border-disabled',
         className
       )}
-      disabled={disabled}
       {...props}
     >
       {text}
