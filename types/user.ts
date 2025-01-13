@@ -17,3 +17,8 @@ export type Role =
   | '손자'
   | '손녀'
   | '';
+
+export type Child = {
+  user_id: string;
+  user_name: string;
+};

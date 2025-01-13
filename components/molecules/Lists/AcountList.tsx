@@ -20,8 +20,16 @@ const AccountList = ({ accounts, selectedAccount, onSelectAccount }: Props) => {
             onChange={() => onSelectAccount(account)}
           />
           <div className='flex flex-col font-semibold justify-center text-md'>
-            <div className='text-darkGray '>{account.account_name}</div>
-            <div className='text-black '>
+            <div
+              className={`text-[18px] ${
+                selectedAccount?.account_num === account.account_num
+                  ? 'text-appColor'
+                  : 'text-darkGray'
+              }`}
+            >
+              {account.account_name}
+            </div>
+            <div className='text-black text-[18px]'>
               {account.balance.toLocaleString()}원
             </div>
           </div>
