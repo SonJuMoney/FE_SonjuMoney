@@ -1,6 +1,6 @@
 'use client';
 
-import AddIcon from '@/assets/Icons/add_18.svg';
+import AddIcon from '@/public/Icons/add_18.svg';
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
