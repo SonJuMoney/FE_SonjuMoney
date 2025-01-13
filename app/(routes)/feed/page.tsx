@@ -1,3 +1,5 @@
+'use client';
+
 type Props = {};
 
 const Feed = (props: Props) => {
