@@ -4,9 +4,9 @@ import CommentOff from '@/assets/Icons/commentOff_32.svg';
 import CommentOn from '@/assets/Icons/commentOn_32.svg';
 import { useCallback, useRef, useState } from 'react';
 
-interface CommentInputProps {
+type CommentInputProps = {
   onSubmit?: (comment: string) => void;
-}
+};
 
 export default function CommentInput({ onSubmit }: CommentInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
