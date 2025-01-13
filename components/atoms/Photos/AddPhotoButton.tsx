@@ -28,7 +28,7 @@ export default function AddPhotoButton({
       onClick={onClick}
       style={{ width: sizeStyle, height: sizeStyle }}
       className={cn(
-        'flex-shrink-0 flex flex-col justify-center items-center',
+        'flex-shrink-0 flex flex-col justify-center items-center ',
         'border border-disabled rounded-lg bg-white',
         'text-[15px] font-normal text-placeHolder',
         className
