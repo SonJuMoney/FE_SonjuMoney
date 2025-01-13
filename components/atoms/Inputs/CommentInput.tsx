@@ -1,7 +1,7 @@
 'use client';
 
-import CommentOff from '@/assets/Icons/commentOff_32.svg';
-import CommentOn from '@/assets/Icons/commentOn_32.svg';
+import CommentOff from '@/public/Icons/commentOff_32.svg';
+import CommentOn from '@/public/Icons/commentOn_32.svg';
 import { useCallback, useRef, useState } from 'react';
 
 type CommentInputProps = {

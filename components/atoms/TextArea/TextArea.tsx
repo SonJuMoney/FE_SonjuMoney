@@ -1,6 +1,6 @@
 'use client';
 
-import DeleteIcon from '@/assets/Icons/delete_24.svg';
+import DeleteIcon from '@/public/Icons/delete_24.svg';
 import {
   forwardRef,
   useCallback,

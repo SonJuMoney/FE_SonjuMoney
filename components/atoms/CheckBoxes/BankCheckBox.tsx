@@ -1,4 +1,4 @@
-import Hana from '@/assets/BankImage/Hana.jpg';
+import Hana from '@/public/BankImage/Hana.jpg';
 import { FaCheck } from 'react-icons/fa';
 import Image from 'next/image';
 import { CheckboxAtomProps } from './CheckBox';

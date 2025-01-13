@@ -1,3 +1,4 @@
+import BottomNav from '@/components/atoms/BottomNav/BottomNav';
 import { LoginForm } from '@/components/molecules/LoginForm/LoginForm';
 
 export default function Login() {
