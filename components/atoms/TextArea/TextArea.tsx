@@ -1,6 +1,6 @@
 'use client';
 
-import DeleteIcon from '@/assets/Icons/delete_24.svg';
+import DeleteIcon from '@/public/Icons/delete_24.svg';
 import {
   forwardRef,
   useCallback,
@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { cn } from '@/lib/utils';
 
-interface TextAreaProps {
+type TextAreaProps = {
   defaultValue?: string;
   placeholder?: string;
   error?: boolean;
@@ -18,15 +18,15 @@ interface TextAreaProps {
   maxLength?: number;
   className?: string;
   onValueChange?: (value: string) => void;
-}
+};
 
-export interface TextAreaRef {
+export type TextAreaRef = {
   getValue: () => string;
   setValue: (value: string) => void;
   clear: () => void;
   focus: () => void;
   blur: () => void;
-}
+};
 
 const TextArea = forwardRef<TextAreaRef, TextAreaProps>(
   (

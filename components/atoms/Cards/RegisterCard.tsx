@@ -1,6 +1,6 @@
 import { LuPlus } from 'react-icons/lu';
 
-type RegisterCardProps = {
+export type RegisterCardProps = {
   text: string;
 };
 
