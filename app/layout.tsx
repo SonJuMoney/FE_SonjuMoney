@@ -2,6 +2,7 @@ import BottomNav from '@/components/atoms/BottomNav/BottomNav';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import { Providers } from './providers';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -25,8 +26,10 @@ export default function RootLayout({
       <body
         className={`font-pretendard ${pretendard.variable} antialiased text-black`}
       >
-        {children}
-        <BottomNav />
+        <Providers>
+          {children}
+          <BottomNav />
+        </Providers>
       </body>
     </html>
   );
