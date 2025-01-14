@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 type PhotoProps = {
   imgUrl: string | File;
-  onDelete: () => void;
+  onDelete: (file: File) => void;
 };
 
 export default function Photo({ imgUrl, onDelete }: PhotoProps) {
@@ -14,13 +14,15 @@ export default function Photo({ imgUrl, onDelete }: PhotoProps) {
 
   return (
     <div className='relative w-[150px] h-[150px] flex-shrink-0'>
-      <Image
-        src={imageUrl}
-        width={150}
-        height={150}
-        alt='photo'
-        className='object-cover rounded-xl'
-      />
+      <div className='relative w-full h-full'>
+        <Image
+          src={imageUrl}
+          fill
+          sizes='150px'
+          alt='photo'
+          className='border rounded-xl overflow-hidden object-cover'
+        />
+      </div>
       <Delete
         className='absolute top-0 right-0 z-10 translate-x-1/2 -translate-y-1/2 cursor-pointer'
         onClick={onDelete}
