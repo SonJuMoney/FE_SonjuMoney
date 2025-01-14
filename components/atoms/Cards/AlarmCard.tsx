@@ -1,35 +1,9 @@
-import TRAVEL from '@/public/AnimatedIcons/Airplane.png';
-import MEMORIAL from '@/public/AnimatedIcons/Bear.png';
-import BIRTHDAY from '@/public/AnimatedIcons/Birthday.png';
-import OTHERS from '@/public/AnimatedIcons/Calendar.png';
-import FEED from '@/public/AnimatedIcons/Camera.png';
-import INVITE from '@/public/AnimatedIcons/Family.png';
-import DINING from '@/public/AnimatedIcons/Food.png';
-import ALLOWANCE from '@/public/AnimatedIcons/HeartRibbon.png';
-import THANKS from '@/public/AnimatedIcons/LoveLetter.png';
-import SAVINGS from '@/public/AnimatedIcons/Memo.png';
 import ArrowRight from '@/public/Icons/arrowRight_20.svg';
 import { TAlarm } from '@/types/Alarm';
 import Image from 'next/image';
+import { getAlarmImage } from '@/lib/utils';
 
 const AlarmCard = (data: TAlarm) => {
-  const getAlarmImage = (type: TAlarm['alarm_type']) => {
-    const imageMap = {
-      ALLOWANCE: ALLOWANCE,
-      THANKS: THANKS,
-      SAVINGS: SAVINGS,
-      FEED: FEED,
-      INVITE: INVITE,
-      TRAVEL: TRAVEL,
-      BIRTHDAY: BIRTHDAY,
-      DINING: DINING,
-      MEMORIAL: MEMORIAL,
-      OTHERS: OTHERS,
-    };
-
-    return imageMap[type];
-  };
-
   const getAlarmMessage = (type: TAlarm['alarm_type']) => {
     const messageMap = {
       ALLOWANCE: '용돈이 도착했어요!',

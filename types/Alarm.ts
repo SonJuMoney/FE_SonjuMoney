@@ -12,6 +12,7 @@ export type TAlarm = {
     | 'DINING'
     | 'MEMORIAL'
     | 'OTHERS';
-  message: '할아버지께서 용돈을 보내주셨어요.';
+  message: string;
   link_id: number;
+  created_at: string;
 };
