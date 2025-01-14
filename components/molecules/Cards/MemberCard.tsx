@@ -1,5 +1,5 @@
 import UserCheckBox from '@/components/atoms/CheckBoxes/UserCheckBox';
-import { Child } from '@/types/user';
+import { Child } from '@/types/User';
 
 type Props = {
   childs: Child[];
