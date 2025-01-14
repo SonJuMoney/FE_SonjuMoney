@@ -11,7 +11,7 @@ const CircleImg = ({ imgUrl, size, border }: ImageProps) => {
   return (
     <Image
       src={imgUrl}
-      alt={'하나은행'}
+      alt={''}
       className={cn(
         `rounded-full aspect-square object-contain ${border && ' border border-disabled '}`
       )}
