@@ -26,9 +26,11 @@ export default function LogoHeader({
   const router = useRouter();
 
   return (
-    <div className='flex justify-between items-center bg-white px-[20px] py-[12px] h-[44px] relative'>
+    <div className='flex flex-row justify-between items-center bg-white px-[20px] py-[12px] h-[48px] relative'>
       {/* 왼쪽: 로고 */}
-      <div className='text-left'>logo</div>
+      <div className='flex h-full text-left font-bold text-appColor text-md'>
+        손주머니
+      </div>
 
       {/* 중앙: 타이틀 with Popover */}
       {selected && (

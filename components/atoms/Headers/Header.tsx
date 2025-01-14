@@ -26,9 +26,9 @@ export default function Header({
   };
 
   return (
-    <div className='flex justify-between items-center bg-white px-[20px] py-[12px] h-[44px] relative'>
+    <div className='flex flex-row justify-between items-center bg-white px-[20px] py-[12px] h-[48px] relative'>
       {/* 왼쪽: 뒤로 가기 버튼 */}
-      <div className='w-[44px]'>
+      <div className='flex h-full w-[44px] items-center'>
         {showBackButton && (
           <button onClick={handleOnBack}>
             <ArrowLeft />
