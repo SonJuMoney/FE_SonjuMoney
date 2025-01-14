@@ -1,5 +1,5 @@
-import { Button } from '../atoms/Buttons/Button';
-import { Card } from '../atoms/Cards/Card';
+import { Button } from '@/components/atoms/Buttons/Button';
+import { Card } from '@/components/atoms/Cards/Card';
 
 type AccountCardProps = {
   accountName: string;

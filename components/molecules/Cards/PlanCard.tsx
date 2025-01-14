@@ -1,8 +1,8 @@
 'use client';
 
+import CircleImg from '@/components/atoms/CircleImages/CircleImg';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useEffect, useRef } from 'react';
-import CircleImg from '../atoms/CircleImages/CircleImg';
 
 enum EventType {
   TRAVEL = 'bg-lavendar',
