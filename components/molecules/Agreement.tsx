@@ -1,4 +1,4 @@
-import ArrowRight from '@/assets/Icons/arrowRight_16.svg';
+import ArrowRight from '@/public/Icons/arrowRight_16.svg';
 import CheckBox from '../atoms/CheckBoxes/CheckBox';
 
 type AgreementProps = {
