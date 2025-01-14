@@ -27,7 +27,7 @@ export default function CommentInput({ onSubmit }: CommentInputProps) {
   console.log('hi');
 
   return (
-    <div className='fixed bottom-0 left-0 right-0 bg-white px-5 py-4  border-t border-gray-100'>
+    <div className='w-full bg-white px-5 py-4  border-t border-gray-100'>
       <div className='flex items-center gap-[25px]'>
         <input
           ref={inputRef}

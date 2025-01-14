@@ -3,9 +3,10 @@ export type TFeed = {
   writer_id: number;
   writer_name: string;
   writer_image: string;
-  feed_type: 'NORMAL' | 'ALLOWANCE' | 'RESPONSE';
+  feed_type: 'NORMAL' | 'ALLOWANCE' | 'THANKS';
   message: string;
   like: number;
+  isMine: boolean;
   contents: Image[];
   comments: Comment[];
   created_at: string;
