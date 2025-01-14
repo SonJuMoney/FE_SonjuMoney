@@ -20,7 +20,7 @@ const PhoneInput = ({ value, onChange }: Props) => {
       pattern='[0-9]*'
       inputMode='numeric'
       placeholder='-없이 입력해주세요 '
-      className={`w-36 border rounded-md outline-none text-sm p-2 placeholder:text-placeHolder ${
+      className={`flex-grow border rounded-md outline-none text-[14px] p-2 placeholder:text-placeHolder ${
         value
           ? 'border-appColor text-appColor'
           : 'border-disabled text-placeHolder'

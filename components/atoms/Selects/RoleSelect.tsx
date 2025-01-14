@@ -5,9 +5,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Role } from '@/types/User';
 import { useCallback } from 'react';
-
-type Role = '할아버지' | '할머니' | '아빠' | '엄마' | '손자' | '손녀' | '';
 
 type Props = {
   value: Role;
@@ -34,13 +33,13 @@ const RoleSelect = ({ value, onChange }: Props) => {
   return (
     <Select value={value} onValueChange={handleChange}>
       <SelectTrigger
-        className={`w-[110px] font-pretendard text-sm ring-0 focus:ring-0 focus-visible:ring-0 data-[placeholder]:text-placeHolder ${
+        className={`w-[120px] font-pretendard text-[14px] ring-0 focus:ring-0 focus-visible:ring-0 data-[placeholder]:text-placeHolder ${
           value ? 'text-appColor border-appColor' : 'border border-disabled '
         }`}
       >
         <SelectValue placeholder='역할선택' />
       </SelectTrigger>
-      <SelectContent className='min-w-0 w-[110px] max-h-[100px] overflow-y-auto'>
+      <SelectContent className='min-w-0 w-[120px] max-h-[100px] overflow-y-auto'>
         {roleOptions.map((role) => (
           <SelectItem
             key={role}

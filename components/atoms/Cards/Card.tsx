@@ -6,7 +6,7 @@ type CardProps = {
 } & HTMLAttributes<HTMLDivElement>;
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ className, padding = 'p-[15px_20px]', ...props }, ref) => (
+  ({ className, padding = 'p-[15px 20px]', ...props }, ref) => (
     <div
       ref={ref}
       className={cn(

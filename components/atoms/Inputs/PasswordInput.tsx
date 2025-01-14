@@ -36,14 +36,14 @@ const PasswordInput = ({ password, setPassword }: Props) => {
   };
 
   return (
-    <div className='w-full max-w-xs mx-auto'>
-      <div className='grid grid-cols-4 gap-2'>
+    <div className='w-full'>
+      <div className='grid grid-cols-4 gap-2 '>
         {numbers.map((num, index) => (
           <Button
             key={index}
             onClick={() => handleNumberClick(num)}
             variant='ghost'
-            className='w-full marker:aspect-square text-lg text-center'
+            className='w-full marker:aspect-square text-[26px] font-semibold text-center my-2'
           >
             {num}
           </Button>
@@ -52,9 +52,9 @@ const PasswordInput = ({ password, setPassword }: Props) => {
         <Button
           onClick={handleBackspace}
           variant='ghost'
-          className='w-full marker:aspect-square text-lg text-center'
+          className='w-full marker:aspect-square font-semibold flex items-center justify-center my-auto'
         >
-          <ArrowLeft className='h-4 w-4' />
+          <ArrowLeft className='h-5 w-5 font-semibold' />
         </Button>
       </div>
     </div>

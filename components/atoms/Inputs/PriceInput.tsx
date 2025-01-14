@@ -36,7 +36,7 @@ const PriceInput = ({ value, onChange }: Props) => {
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       placeholder='얼마를 보낼까요?'
-      className=' text-appColor text-xl font-semibold outline-none border-none placeholder:font-medium placeholder:text-placeHolder'
+      className=' text-appColor text-[24px] font-semibold outline-none border-none placeholder:font-medium placeholder:text-placeHolder'
     />
   );
 };

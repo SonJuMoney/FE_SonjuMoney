@@ -12,7 +12,7 @@ export default function UserCheckBox({ checked, onChange }: CheckboxAtomProps) {
       />
       <div
         className={`h-[40px] w-[40px] flex items-center justify-center border-1 rounded-full bg-white text-appColor text-xl
-    ${checked ? ' border border-appColor' : ' border border-gray-100 '}`}
+    ${checked ? ' border border-appColor' : ' border border-disabled '}`}
       >
         {checked ? <FaCheck /> : <FaUser />}
       </div>
