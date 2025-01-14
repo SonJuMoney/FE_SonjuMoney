@@ -64,5 +64,13 @@
     "*.{json,css,md}": [
       "prettier --write"
     ]
-  }
+  },
+  "description": "손주머니 - 비대면 가족통합 금융 서비스 FE 레포지토리입니다",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
