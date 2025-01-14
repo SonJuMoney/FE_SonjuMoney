@@ -1,4 +1,4 @@
-import { Button } from '@/components/atoms/Buttons/Button';
+import { ButtonAccountCard } from '@/components/atoms/Buttons/ButtonAccountCard';
 import { Card } from '@/components/atoms/Cards/Card';
 
 type AccountCardProps = {
@@ -25,7 +25,7 @@ const AccountCard = ({
         <div className='text-black text-[25px] font-semibold'>원</div>
       </div>
 
-      <Button text='용돈 보내기' onClick={onClick} />
+      <ButtonAccountCard text='용돈 보내기' onClick={onClick} />
     </Card>
   );
 };

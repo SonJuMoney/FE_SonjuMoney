@@ -7,7 +7,11 @@ type ButtonProps = {
   text: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button = ({ text, className, ...props }: ButtonProps) => {
+export const ButtonAccountCard = ({
+  text,
+  className,
+  ...props
+}: ButtonProps) => {
   return (
     <button
       className={cn(
