@@ -1,13 +1,12 @@
 import RoleCard from '@/components/atoms/Cards/RoleCard';
-import { useState } from 'react';
 
 type RoleListProps = {
   roles: string[];
+  selectedRole: string;
+  setSelectedRole: (role: string) => void;
 };
 
-const RoleList = ({ roles }: RoleListProps) => {
-  const [selectedRole, setSelectedRole] = useState('');
-
+const RoleList = ({ roles, selectedRole, setSelectedRole }: RoleListProps) => {
   return (
     <div className='grid grid-cols-2 gap-5'>
       {roles.map((role, index) => (
@@ -17,7 +16,8 @@ const RoleList = ({ roles }: RoleListProps) => {
           name={role}
           selected={selectedRole === role}
           onClick={() => {
-            setSelectedRole((prevRole) => (prevRole === role ? '' : role));
+            setSelectedRole(selectedRole === role ? '' : role);
+            console.log('selectedRole: ' + (selectedRole === role ? '' : role));
           }}
         />
       ))}

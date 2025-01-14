@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 const SelectFamily = () => {
   const [roles, setRoles] = useState<string[]>([]);
   const [subTitle, setSubTitle] = useState('');
-  //   const [selectedRole, setSelectedRole] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -50,11 +50,19 @@ const SelectFamily = () => {
 역할을 선택해주세요`}
           subTitle={subTitle}
         />
-        <RoleList roles={roles} />
+        <RoleList
+          roles={roles}
+          selectedRole={selectedRole}
+          setSelectedRole={setSelectedRole}
+        />
       </div>
 
       <div className='fixed bottom-0 left-0 w-full p-5'>
-        <ButtonLarge text='다음' disabled onClick={handleNextStep} />
+        <ButtonLarge
+          text='다음'
+          disabled={!selectedRole}
+          onClick={handleNextStep}
+        />
       </div>
     </div>
   );
