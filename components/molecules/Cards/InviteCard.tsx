@@ -1,7 +1,7 @@
 import PhoneInput from '@/components/atoms/Inputs/PhoneInput';
 import RoleSelect from '@/components/atoms/Selects/RoleSelect';
 import DeleteIcon from '@/public/Icons/delete_gray_24.svg';
-import { Role } from '@/types/User';
+import { Role } from '@/types/user';
 
 type Props = {
   phoneValue: string;

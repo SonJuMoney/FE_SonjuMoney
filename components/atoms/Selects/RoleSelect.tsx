@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Role } from '@/types/User';
+import { Role } from '@/types/user';
 import { useCallback } from 'react';
 
 type Props = {
