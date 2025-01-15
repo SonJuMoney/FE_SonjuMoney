@@ -7,3 +7,5 @@ export type TAccount = {
 };
 
 export type TPswdReq = { pin: string; mockacc_id?: number };
+
+export type TSetAccountReq = { mockacc_id: number; user_id?: number };

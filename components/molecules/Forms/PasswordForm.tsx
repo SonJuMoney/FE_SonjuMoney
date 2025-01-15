@@ -13,10 +13,19 @@ type Props = {
   accountId?: number;
   text: string;
   num: number; //비밀번호 자리수
-  route: string; // 넘어갈 페이지지
+  route: string; // 넘어갈 페이지
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onComplete: (data?: any) => Promise<any>;
 };
 
-const PasswordForm = ({ type, accountId, text, num, route }: Props) => {
+const PasswordForm = ({
+  type,
+  accountId,
+  text,
+  num,
+  route,
+  onComplete,
+}: Props) => {
   const router = useRouter();
   const { checkPswd } = useMockAccountApi();
   const { checkPassCode } = useAuthApi();
@@ -38,10 +47,16 @@ const PasswordForm = ({ type, accountId, text, num, route }: Props) => {
     if (password.length === num) {
       validatePassword(password)
         .then(() => {
-          alert('인증에 성공하였습니다다');
-          router.push(`${route}`);
-          setError(false);
-          setAttempts(0);
+          alert('인증에 성공하였습니다');
+          onComplete({ accountId })
+            .then(() => {
+              alert('인증에 성공하였습니다');
+              router.push(`${route}`);
+            })
+            .catch((error) => {
+              alert('계좌 등록에 실패했습니다');
+              console.error(error);
+            });
         })
         .catch(() => {
           const newAttempts = attempts + 1;
