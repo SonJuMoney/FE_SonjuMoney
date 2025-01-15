@@ -3,11 +3,12 @@
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
+import useRegisterFamilyStore from '@/store/useRegisterFamilyStore';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 const RegisterFamily = () => {
-  const [familyName, setFamilyName] = useState('');
+  const { familyName, setFamilyName } = useRegisterFamilyStore();
+
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

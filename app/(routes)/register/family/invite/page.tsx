@@ -5,42 +5,13 @@ import RegisterCardSmall from '@/components/atoms/Cards/RegisterCardSmall';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import InviteCard from '@/components/molecules/Cards/InviteCard';
-import { Role } from '@/types/User';
+import useRegisterFamilyStore from '@/store/useRegisterFamilyStore';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 const InviteFamily = () => {
-  const [inviteCards, setInviteCards] = useState<
-    { phoneValue: string; roleValue: Role }[]
-  >([]);
+  const { inviteCards, addInviteCard, updateInviteCard, deleteInviteCard } =
+    useRegisterFamilyStore();
   const router = useRouter();
-
-  const handlePhoneChange = (index: number, value: string) => {
-    setInviteCards((prevCards) =>
-      prevCards.map((card, i) =>
-        i === index ? { ...card, phoneValue: value } : card
-      )
-    );
-  };
-
-  const handleRoleChange = (index: number, value: Role) => {
-    setInviteCards((prevCards) =>
-      prevCards.map((card, i) =>
-        i === index ? { ...card, roleValue: value } : card
-      )
-    );
-  };
-
-  const handleDelete = (index: number) => {
-    setInviteCards((prevCards) => prevCards.filter((_, i) => i !== index));
-  };
-
-  const handleAddPhone = () => {
-    setInviteCards((prevCards) => [
-      ...prevCards,
-      { phoneValue: '', roleValue: '' },
-    ]);
-  };
 
   const handleChildAccount = () => {
     router.push('/register/child');
@@ -49,6 +20,17 @@ const InviteFamily = () => {
   const isButtonDisabled =
     inviteCards.length === 0 ||
     inviteCards.some((card) => !card.phoneValue || !card.roleValue);
+
+  const handleNextClick = () => {
+    const familyName = useRegisterFamilyStore.getState().familyName;
+    const selectedRole = useRegisterFamilyStore.getState().selectedRole;
+    const inviteCards = useRegisterFamilyStore.getState().inviteCards;
+
+    // API 전달 추가
+    console.log('Family Name:', familyName);
+    console.log('Selected Role:', selectedRole);
+    console.log('Invite Cards:', inviteCards);
+  };
 
   return (
     <div>
@@ -71,15 +53,19 @@ const InviteFamily = () => {
                 key={index}
                 phoneValue={card.phoneValue}
                 roleValue={card.roleValue}
-                phoneOnchange={(value) => handlePhoneChange(index, value)}
-                roleOnchange={(value) => handleRoleChange(index, value)}
-                onDelete={() => handleDelete(index)}
+                phoneOnchange={(value) =>
+                  updateInviteCard(index, { ...card, phoneValue: value })
+                }
+                roleOnchange={(value) =>
+                  updateInviteCard(index, { ...card, roleValue: value })
+                }
+                onDelete={() => deleteInviteCard(index)}
               />
             ))}
 
             <RegisterCardSmall
               text='연락처 추가하기'
-              onClick={handleAddPhone}
+              onClick={() => addInviteCard({ phoneValue: '', roleValue: '' })}
             />
           </div>
 
@@ -102,7 +88,7 @@ const InviteFamily = () => {
         <ButtonLarge
           text='다음'
           disabled={isButtonDisabled}
-          onClick={() => console.log(inviteCards)} // handleOnClick 추가
+          onClick={handleNextClick}
         />
       </div>
     </div>

@@ -4,13 +4,14 @@ import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import RoleList from '@/components/molecules/Lists/RoleList';
+import useRegisterFamilyStore from '@/store/useRegisterFamilyStore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const SelectFamily = () => {
   const [roles, setRoles] = useState<string[]>([]);
   const [subTitle, setSubTitle] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const { selectedRole, setSelectedRole } = useRegisterFamilyStore();
   const router = useRouter();
 
   useEffect(() => {
