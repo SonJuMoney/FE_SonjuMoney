@@ -1,4 +1,4 @@
-export type Family = {
+export type TFamily = {
   family_id: number;
   family_name: string;
 };

@@ -8,13 +8,13 @@ import {
 import AlarmOff from '@/public/Icons/alarmOff_20.svg';
 import AlarmOn from '@/public/Icons/alarmOn_20.svg';
 import ArrowDown from '@/public/Icons/arrowDown_20.svg';
-import { Family } from '@/types/Family';
+import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 type HeaderProps = {
   selected?: string;
-  familyList?: Family[];
+  familyList?: TFamily[];
   alarm: boolean;
 };
 
