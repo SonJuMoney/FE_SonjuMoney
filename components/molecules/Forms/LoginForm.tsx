@@ -25,7 +25,6 @@ export function LoginForm() {
     console.log('로그인 시도:', { username, password });
     setError(null);
   }, []);
-  console.log('hi');
 
   return (
     <form onSubmit={handleSubmit} className='flex flex-col w-full gap-8'>

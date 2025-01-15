@@ -1,6 +1,9 @@
 import BottomNav from '@/components/atoms/BottomNav/BottomNav';
+import AuthSession from '@/context/user/AuthSession';
+import { getServerSession } from 'next-auth';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { authOptions } from '@/lib/auth';
 import './globals.css';
 
 const pretendard = localFont({
@@ -15,18 +18,21 @@ export const metadata: Metadata = {
   description: '가족 소통의 시작, 손주머니',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
   return (
     <html lang='en'>
       <body
         className={`font-pretendard ${pretendard.variable} antialiased text-black`}
       >
-        {children}
-        <BottomNav />
+        <AuthSession session={session}>
+          {children}
+          <BottomNav />
+        </AuthSession>
       </body>
     </html>
   );

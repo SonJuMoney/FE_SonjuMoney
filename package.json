@@ -28,6 +28,7 @@
     "eslint": "8.57.0",
     "lucide-react": "^0.471.0",
     "next": "14.2.23",
+    "next-auth": "^4.24.11",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.4.0",
@@ -63,5 +64,13 @@
     "*.{json,css,md}": [
       "prettier --write"
     ]
-  }
+  },
+  "description": "손주머니 - 비대면 가족통합 금융 서비스 FE 레포지토리입니다",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
