@@ -15,10 +15,7 @@ const config: Config = {
       },
       colors: {
         appColor: '#FF9100',
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
+        secondary: '#F8B62D',
         black: '#212529',
         placeHolder: '#B9B9B9',
         disabled: '#DEDEDE',

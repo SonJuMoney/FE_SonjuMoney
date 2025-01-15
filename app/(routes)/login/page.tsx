@@ -10,7 +10,7 @@ const Login = () => {
       <div className='p-8 flex flex-col gap-8'>
         <div>
           <PageTitle title='손주머니에' />
-          <PageTitle title='오신것을 환영합니다' />
+          <PageTitle title='오신 것을 환영합니다' />
         </div>
         <LoginForm />
         <Link href='/signup' className='w-full text-center text-placeHolder'>
