@@ -2,7 +2,7 @@
 
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-const page = () => {
+const AnimatedCheck = () => {
   return (
     <div className='w-[150px] h-[150px]'>
       <DotLottieReact
@@ -13,4 +13,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default AnimatedCheck;
