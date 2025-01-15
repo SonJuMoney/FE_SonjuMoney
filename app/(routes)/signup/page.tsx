@@ -3,7 +3,7 @@
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import SignUpInput from '@/components/atoms/Inputs/SignupIput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type FormData = {
   id: string;
@@ -12,7 +12,6 @@ type FormData = {
   name: string;
   phone: string;
   residentNum: string;
-  gender: string;
 };
 
 type Input = {
@@ -33,7 +32,6 @@ const SignUp = () => {
     name: '',
     phone: '',
     residentNum: '',
-    gender: '',
   });
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -46,7 +44,7 @@ const SignUp = () => {
       placeholder: '아이디 입력',
       validate: (value: string) => /^[a-zA-Z0-9]{4,12}$/.test(value),
       errorMessage: '영문자, 숫자(4-12)',
-      width: 16,
+      width: 14,
     },
     {
       type: 'password',
@@ -56,7 +54,7 @@ const SignUp = () => {
       validate: (value: string) =>
         /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/.test(value),
       errorMessage: '영문자, 숫자, 특수문자(8-20)',
-      width: 20,
+      width: 14,
     },
     {
       type: 'passwordConfirm',
@@ -65,7 +63,7 @@ const SignUp = () => {
       placeholder: '비밀번호 입력',
       validate: (value: string) => value === formData.password,
       errorMessage: '비밀번호가 일치하지 않습니다',
-      width: 20,
+      width: 14,
     },
     {
       type: 'name',
@@ -80,30 +78,25 @@ const SignUp = () => {
       type: 'phone',
       inputType: 'text',
       question: '전화번호를 입력해주세요',
-      placeholder: '01012345678',
-      validate: (value: string) => /^\d{10,11}$/.test(value),
+      placeholder: '010-1234-5678',
+      validate: (value: string) => /^010\d{8}$/.test(value),
       errorMessage: '올바른 형식이 아닙니다',
-      width: 15,
+      width: 16,
     },
     {
       type: 'residentNum',
       inputType: 'text',
       question: '주민등록번호를 입력해주세요',
       placeholder: '900101 - 2******',
-      validate: (value: string) => /^\d{13}$/.test(value),
+      validate: (value: string) => value.replace(/\D/g, '').length === 13,
       errorMessage: '올바른 형식이 아닙니다',
       width: 17,
     },
-    {
-      type: 'gender',
-      inputType: 'text',
-      question: '성별을 선택해주세요',
-      placeholder: '남성',
-      validate: (value: string) => ['male', 'female'].includes(value),
-      errorMessage: '성별은 남성 또는 여성으로 입력해주세요',
-      width: 7,
-    },
   ];
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const handleChange = (key: keyof FormData) => (value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -122,14 +115,14 @@ const SignUp = () => {
   return (
     <div className='h-screen flex flex-col justify-between'>
       <Header title='회원가입' />
-      <div className='p-4 flex-grow overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
+      <div className='p-5 flex-grow overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
         {questions.map(
           (question, index) =>
             index <= currentIndex && (
               <SignUpInput
                 key={question.type}
+                id={question.type}
                 inputType={question.inputType}
-                value={formData[question.type]}
                 onChange={handleChange(question.type)}
                 question={question.question}
                 placeholder={question.placeholder}
@@ -141,7 +134,7 @@ const SignUp = () => {
             )
         )}
       </div>
-      <div className='px-4 pb-4'>
+      <div className='px-5 pb-5'>
         <ButtonLarge text='회원가입' disabled={!isFormComplete} />
       </div>
     </div>
