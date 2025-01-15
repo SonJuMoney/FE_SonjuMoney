@@ -6,11 +6,11 @@ export type PageTitleProps = {
 const PageTitle = ({ title, subTitle }: PageTitleProps) => {
   return (
     <div className='flex flex-col gap-[11px]'>
-      <span className='text-black text-2xl font-semibold max-w-[280px]  break-words'>
+      <span className='text-black text-2xl font-semibold max-w-[280px] whitespace-pre'>
         {title}
       </span>
       {subTitle && (
-        <span className='text-darkGray text-[15px] font-semibold max-w-[320px]  break-words'>
+        <span className='text-darkGray text-[15px] font-semibold max-w-[320px]  whitespace-pre'>
           {subTitle}
         </span>
       )}

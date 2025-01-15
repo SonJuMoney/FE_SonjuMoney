@@ -2,45 +2,58 @@
 
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
+import { useMockAccountApi } from '@/hooks/useMockAccount/useMockAccount';
+import { TPswdReq } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type Props = {
+  accountId: number;
   text: string;
   num: number; //비밀번호 자리수
-  correctPassword: string;
   route: string; // 넘어갈 페이지지
 };
 
-const PasswordForm = ({ text, num, correctPassword, route }: Props) => {
+const PasswordForm = ({ accountId, text, num, route }: Props) => {
   const router = useRouter();
+  const { checkPswd } = useMockAccountApi();
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
   const [attempts, setAttempts] = useState<number>(0);
 
+  const validatePassword = async (password: string): Promise<boolean> => {
+    const form: TPswdReq = {
+      account_password: password,
+      mockacc_id: accountId,
+    };
+    return checkPswd(form);
+  };
+
   useEffect(() => {
     if (password.length === num) {
-      if (password === correctPassword) {
-        alert('인증에 성공하였습니다다');
-        router.push(`${route}`);
-        setError(false);
-        setAttempts(0);
-      } else {
-        const newAttempts = attempts + 1;
-        setAttempts(newAttempts);
-        if (newAttempts >= 5) {
-          alert('입력횟수 초과입니다. 가까운 영업점을 방문해주세요.');
+      validatePassword(password)
+        .then(() => {
+          alert('인증에 성공하였습니다다');
+          router.push(`${route}`);
           setError(false);
-        } else {
-          setError(true);
-        }
-      }
-      setPassword(''); // Reset password input after each attempt
+          setAttempts(0);
+        })
+        .catch(() => {
+          const newAttempts = attempts + 1;
+          setAttempts(newAttempts);
+          if (newAttempts >= 5) {
+            alert('입력횟수 초과입니다. 가까운 영업점을 방문해주세요.');
+            setError(false);
+          } else {
+            setError(true);
+          }
+        });
+      setPassword('');
     }
-  }, [password, correctPassword, attempts, num]);
+  }, [password, attempts, num]);
 
   return (
-    <div className='h-[calc(100vh-44px)] flex flex-col'>
+    <div className='h-full flex flex-col'>
       <div className='h-1/3 flex items-center justify-center'>
         <CenterTitle title={text} />
       </div>
@@ -63,7 +76,7 @@ const PasswordForm = ({ text, num, correctPassword, route }: Props) => {
         )}
       </div>
 
-      <div className='h-1/3 flex flex-col items-center justify-start'>
+      <div className='fixed bottom-0 left-0 w-full'>
         <PasswordInput password={password} setPassword={setPassword} />
       </div>
     </div>

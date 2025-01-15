@@ -1,19 +1,19 @@
+// import { TAccount } from '@/types/Account';
 // import { create } from 'zustand';
-// import { Account } from '../types/account';
 
 // interface AccountState {
-//   accounts: Account[];
-//   selectedAccount: Account | null;
+//   accounts: TAccount[];
+//   selectedAccount: TAccount | null;
 //   password: string;
 //   isLoading: boolean;
-//   setAccounts: (accounts: Account[]) => void;
-//   setSelectedAccount: (account: Account | null) => void;
+//   setAccounts: (accounts: TAccount[]) => void;
+//   setSelectedAccount: (account: TAccount | null) => void;
 //   setPassword: (password: string) => void;
 //   setLoading: (isLoading: boolean) => void;
 //   reset: () => void;
 // }
 
-// export const useAccountStore = create<AccountState>((set) => ({
+// export const useRegisterAccountStore = create<AccountState>((set) => ({
 //   accounts: [],
 //   selectedAccount: null,
 //   password: '',
