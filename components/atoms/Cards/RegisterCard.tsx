@@ -2,6 +2,7 @@ import { LuPlus } from 'react-icons/lu';
 
 export type RegisterCardProps = {
   text: string;
+  onClick?: () => void;
 };
 
 const RegisterCard = ({ text }: RegisterCardProps) => {
