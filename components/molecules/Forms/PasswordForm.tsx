@@ -2,31 +2,36 @@
 
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
-import { useMockAccountApi } from '@/hooks/useMockAccount/useMockAccount';
+import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
+import { useMockAccountApi } from '@/hooks/useMockAccountApi/useMockAccountApi';
 import { TPswdReq } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type Props = {
-  accountId: number;
+  type: 'Account' | 'Passcode';
+  accountId?: number;
   text: string;
   num: number; //비밀번호 자리수
   route: string; // 넘어갈 페이지지
 };
 
-const PasswordForm = ({ accountId, text, num, route }: Props) => {
+const PasswordForm = ({ type, accountId, text, num, route }: Props) => {
   const router = useRouter();
   const { checkPswd } = useMockAccountApi();
+  const { checkPassCode } = useAuthApi();
+
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
   const [attempts, setAttempts] = useState<number>(0);
 
   const validatePassword = async (password: string): Promise<boolean> => {
     const form: TPswdReq = {
-      account_password: password,
-      mockacc_id: accountId,
+      pin: password,
+      ...(type === 'Account' && { mockacc_id: accountId }),
     };
-    return checkPswd(form);
+
+    return type === 'Account' ? checkPswd(form) : checkPassCode(form);
   };
 
   useEffect(() => {

@@ -11,6 +11,7 @@ export default async function PasswordPage({
       <Header title='계좌 등록하기' />
       <div className='defaultLayout'>
         <PasswordForm
+          type='Account'
           accountId={Number(searchParams.accountId)}
           text='계좌 비밀번호를 입력해주세요'
           num={4}

@@ -6,4 +6,4 @@ export type TAccount = {
   account_num: string;
 };
 
-export type TPswdReq = { account_password: string; mockacc_id: number };
+export type TPswdReq = { pin: string; mockacc_id?: number };

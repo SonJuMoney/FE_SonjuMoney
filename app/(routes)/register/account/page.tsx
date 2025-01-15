@@ -4,7 +4,7 @@ import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import AccountList from '@/components/molecules/Lists/AcountList';
-import { useMockAccountApi } from '@/hooks/useMockAccount/useMockAccount';
+import { useMockAccountApi } from '@/hooks/useMockAccountApi/useMockAccountApi';
 import { TAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
