@@ -1,14 +1,37 @@
+'use client';
+
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
+import CompleteMessage from '@/components/molecules/CompleteMessages/CompleteMessage';
+import useSendAllowanceStore from '@/store/useSendAllowanceStore';
+import { useRouter } from 'next/navigation';
 
 const SendAllowanceComplete = () => {
-  return (
-    <div>
-      <Header title='용돈 보내기' />
+  const { selectedMember, amount, resetState } = useSendAllowanceStore();
+  const router = useRouter();
 
-      <div className='p-5'>홍길동님에게 30000원을 보냈습니다.</div>
+  const handleConfirm = () => {
+    resetState();
+
+    router.push('/home');
+  };
+
+  return (
+    <div className='pageLayout'>
+      <Header title='용돈 보내기' />
+      <div className='defaultLayout'>
+        <CompleteMessage
+          title={
+            <>
+              <span className='text-appColor'>{selectedMember}님</span>에게
+              <br />
+              <span className='text-appColor'>{amount}원</span>을 보냈습니다.
+            </>
+          }
+        />
+      </div>
       <div className='fixed bottom-0 left-0 w-full p-5'>
-        <ButtonLarge text='확인' />
+        <ButtonLarge text='확인' onClick={handleConfirm} />
       </div>
     </div>
   );

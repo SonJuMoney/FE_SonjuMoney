@@ -56,6 +56,7 @@ const familyList = () => {
               familyName={family.familyName}
               familyMember={family.familyMember}
               color={`${colors[index % colors.length]}`}
+              onClick={() => {}} // 가족 소식 페이지로 연결?
             />
           </div>
         ))}

@@ -1,5 +1,5 @@
 export type PageTitleProps = {
-  title: string;
+  title: React.ReactNode;
   subTitle?: string;
 };
 

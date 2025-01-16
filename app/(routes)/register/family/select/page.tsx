@@ -17,16 +17,16 @@ const SelectFamily = () => {
   useEffect(() => {
     const fetchGender = async () => {
       try {
-        const response = await fetch('/user.json');
+        const response = await fetch('/dummydata/user.json');
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
 
-        if (data.gender === 'male') {
+        if (data.gender === 'MALE') {
           setRoles(['할아버지', '아빠', '아들']);
           setSubTitle('할아버지, 아빠, 아들 중에 선택해주세요');
-        } else if (data.gender === 'female') {
+        } else if (data.gender === 'FEMALE') {
           setRoles(['할머니', '엄마', '딸']);
           setSubTitle('할머니, 엄마, 딸 중에 선택해주세요');
         }

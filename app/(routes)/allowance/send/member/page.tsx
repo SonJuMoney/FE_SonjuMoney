@@ -6,20 +6,16 @@ import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import RoleList from '@/components/molecules/Lists/RoleList';
 import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 const SelectRecipient = () => {
-  const { selectedFamily } = useSendAllowanceStore();
-  const [selectedMember, setSelectedMember] = useState('');
+  const { selectedFamily, selectedMember, setSelectedMember } =
+    useSendAllowanceStore();
   const router = useRouter();
 
   if (!selectedFamily) return null;
-
-  const { familyMember } = selectedFamily;
+  const { family_member } = selectedFamily;
 
   const handleNextStep = () => {
-    console.log('Selected Member:', selectedMember);
-
     router.push(`/allowance/send/amount`);
   };
 
@@ -28,12 +24,12 @@ const SelectRecipient = () => {
       <Header title='용돈 보내기' />
       <div className='p-5 space-y-[30px]'>
         <PageTitle
-          title='누구에게 용돈을
-      보낼까요?'
+          title={`누구에게 용돈을
+보낼까요?`}
         />
 
         <RoleList
-          roles={familyMember}
+          roles={family_member}
           selectedRole={selectedMember}
           setSelectedRole={setSelectedMember}
         />

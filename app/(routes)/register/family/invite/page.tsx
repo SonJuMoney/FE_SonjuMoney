@@ -37,8 +37,10 @@ const InviteFamily = () => {
       <Header title='가족 등록하기' />
       <div className='p-5'>
         <PageTitle
-          title='가족 구성원에게 초대를 보내주세요'
-          subTitle='휴대폰이 없는 자녀의 계정은 부모님께서 생성해주세요'
+          title={`가족 구성원에게 
+초대를 보내주세요`}
+          subTitle={`휴대폰이 없는 자녀의 계정은 
+부모님께서 생성해주세요`}
         />
 
         <div className='mt-7 space-y-10'>

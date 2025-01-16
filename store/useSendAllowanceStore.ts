@@ -1,26 +1,46 @@
+import { TFamily } from '@/types/Family';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-type Family = {
-  familyId: number;
-  familyName: string;
-  familyMember: string[];
-};
-
 interface SendAllowanceStore {
-  selectedFamily: Family | null;
-  setSelectedFamily: (family: Family) => void;
+  selectedFamily: TFamily | null;
+  selectedMember: string;
+  amount: string;
+  message: string;
+  files: File[];
+  setSelectedFamily: (family: TFamily) => void;
+  setSelectedMember: (member: string) => void;
+  setAmount: (amount: string) => void;
+  setMessage: (message: string) => void;
+  setFiles: (files: File[]) => void;
+  resetState: () => void;
 }
 
 const useSendAllowanceStore = create<SendAllowanceStore>()(
   persist(
     (set) => ({
       selectedFamily: null,
+      selectedMember: '',
+      amount: '',
+      message: '',
+      files: [],
       setSelectedFamily: (family) => set({ selectedFamily: family }),
+      setSelectedMember: (member) => set({ selectedMember: member }),
+      setAmount: (amount) => set({ amount }),
+      setMessage: (message) => set({ message }),
+      setFiles: (files) => set({ files }),
+      resetState: () =>
+        set({
+          selectedFamily: null,
+          selectedMember: '',
+          amount: '',
+          message: '',
+          files: [],
+        }),
     }),
     {
       name: 'send-allowance-storage',
-      storage: createJSONStorage(() => sessionStorage), // Use localStorage for persistence
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );
