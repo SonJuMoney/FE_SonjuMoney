@@ -12,8 +12,7 @@ export default function PasswordPage({
 }) {
   const { setAccount } = useAccountApi();
   const onComplete = (data: TSetAccountReq) => {
-    const accountData = { mockacc_id: data.mockacc_id, user_id: data.user_id };
-    return setAccount(accountData);
+    return setAccount(data);
   };
   return (
     <div className='pageLayout'>
@@ -25,7 +24,9 @@ export default function PasswordPage({
           text='계좌 비밀번호를 입력해주세요'
           num={4}
           route='/register/account/complete'
-          onComplete={onComplete}
+          onComplete={() =>
+            onComplete({ mockacc_id: Number(searchParams.accountId) })
+          }
         />
       </div>
     </div>
