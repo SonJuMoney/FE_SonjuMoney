@@ -1,18 +1,21 @@
 'use client';
 
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { SignUpData } from '@/store/useSignupStore';
+import { ChangeEvent, useState } from 'react';
 
 type Props = {
-  id: string;
+  id: keyof SignUpData;
   inputType: string;
   onChange: (value: string) => void;
   question: string;
   placeholder: string;
-  validate: (value: string) => boolean;
+  validate: (value: string) => boolean | Promise<ValidationResult>;
   errorMessage: string;
-  onValidation: (isValid: boolean) => void;
+  onValidation: (id: keyof SignUpData, isValid: boolean) => void;
   width: number;
 };
+
+type ValidationResult = { isValid: boolean; error: string };
 
 const SignUpInput = ({
   id,
@@ -62,7 +65,7 @@ const SignUpInput = ({
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       let currentValue = e.currentTarget.value;
 
@@ -72,15 +75,25 @@ const SignUpInput = ({
         currentValue = residentValue;
       }
 
-      console.log(currentValue);
-      const isValid = validate(currentValue);
-
-      if (isValid) {
+      try {
+        const result = await validate(currentValue);
         onChange(currentValue);
-        onValidation(true);
-      } else {
-        setError(errorMessage);
-        onValidation(false);
+
+        if (typeof result === 'boolean') {
+          if (result) {
+            setError('');
+            onValidation(id, true);
+          } else {
+            setError(errorMessage);
+            onValidation(id, false);
+          }
+        } else {
+          setError(result.error);
+          onValidation(id, result.isValid);
+        }
+      } catch (error) {
+        setError('오류가 발생했습니다');
+        onValidation(id, false);
       }
     }
   };

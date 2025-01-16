@@ -7,7 +7,7 @@ import Link from 'next/link';
 const Home = () => {
   return (
     <div>
-      <LogoHeader alarm={false} />
+      <LogoHeader alarm={false} logout={true} />
 
       <div className='p-5 space-y-5'>
         <div className='flex flex-col gap-2.5 font-semibold'>

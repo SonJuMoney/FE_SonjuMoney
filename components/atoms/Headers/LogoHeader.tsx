@@ -9,6 +9,7 @@ import AlarmOff from '@/public/Icons/alarmOff_20.svg';
 import AlarmOn from '@/public/Icons/alarmOn_20.svg';
 import ArrowDown from '@/public/Icons/arrowDown_20.svg';
 import { TFamily } from '@/types/Family';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
@@ -16,14 +17,23 @@ type HeaderProps = {
   selected?: string;
   familyList?: TFamily[];
   alarm: boolean;
+  logout: boolean;
 };
 
 export default function LogoHeader({
   selected = '',
   familyList = [],
   alarm,
+  logout = false,
 }: HeaderProps) {
   const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut({
+      redirect: true,
+      callbackUrl: '/login',
+    });
+  };
 
   return (
     <div className='flex flex-row justify-between items-center bg-white px-[20px] py-[12px] h-[48px] relative'>
@@ -65,7 +75,8 @@ export default function LogoHeader({
       )}
 
       {/* 오른쪽: 알람 버튼 */}
-      <div className='text-right'>
+      <div className='text-right flex space-x-4'>
+        {logout && <button onClick={handleSignOut}>로그아웃</button>}
         <a href='/alarm'>{alarm ? <AlarmOn /> : <AlarmOff />}</a>
       </div>
     </div>
