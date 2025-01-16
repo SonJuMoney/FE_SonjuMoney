@@ -45,7 +45,7 @@ const SelectFamily = () => {
   return (
     <div>
       <Header title='가족 등록하기' />
-      <div className='p-5 space-y-[30px]'>
+      <div className='p-5 space-y-[35px]'>
         <PageTitle
           title={`가족 내에서 본인의
 역할을 선택해주세요`}
