@@ -3,19 +3,12 @@
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import SignUpInput from '@/components/atoms/Inputs/SignupIput';
-import { useEffect, useState } from 'react';
-
-type FormData = {
-  id: string;
-  password: string;
-  passwordConfirm: string;
-  name: string;
-  phone: string;
-  residentNum: string;
-};
+import useSignUpStore, { SignUpData } from '@/store/useSignupStore';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 type Input = {
-  type: keyof FormData;
+  type: keyof SignUpData;
   inputType: string;
   question: string;
   placeholder: string;
@@ -27,7 +20,10 @@ type Input = {
 type ValidationResult = { isValid: boolean; error: string };
 
 const SignUp = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const router = useRouter();
+  const setSignUpData = useSignUpStore((state) => state.setSignUpData);
+
+  const [userData, setUserData] = useState<SignUpData>({
     id: '',
     password: '',
     passwordConfirm: '',
@@ -37,7 +33,7 @@ const SignUp = () => {
   });
 
   const [validations, setValidations] = useState<
-    Record<keyof FormData, boolean>
+    Record<keyof SignUpData, boolean>
   >({
     id: false,
     password: false,
@@ -47,6 +43,7 @@ const SignUp = () => {
     residentNum: false,
   });
 
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const checkIdValidation = async (id: string) => {
@@ -116,7 +113,7 @@ const SignUp = () => {
       inputType: 'password',
       question: '비밀번호를 입력해주세요',
       placeholder: '비밀번호 입력',
-      validate: (value: string) => value === formData.password,
+      validate: (value: string) => value === userData.password,
       errorMessage: '비밀번호가 일치하지 않습니다',
       width: 14,
     },
@@ -150,18 +147,20 @@ const SignUp = () => {
   ];
 
   useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+    console.log(userData);
+  }, [userData]);
 
   useEffect(() => {
-    console.log('랜더링');
-  }, []);
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [currentIndex]);
 
-  const handleChange = (key: keyof FormData) => (value: string) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
+  const handleChange = (key: keyof SignUpData) => (value: string) => {
+    setUserData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleValidation = (id: keyof FormData, isValid: boolean) => {
+  const handleValidation = (id: keyof SignUpData, isValid: boolean) => {
     setValidations((prev) => ({
       ...prev,
       [id]: isValid,
@@ -185,6 +184,16 @@ const SignUp = () => {
     }
   };
 
+  const handleOnClick = () => {
+    if (!isFormComplete) {
+      alert('모든 정보를 알맞게 입력해주세요');
+      return;
+    }
+
+    setSignUpData(userData);
+    router.push('/signup/setPin');
+  };
+
   const isFormComplete =
     currentIndex === questions.length - 1 &&
     Object.values(validations).every((isValid) => isValid);
@@ -192,7 +201,10 @@ const SignUp = () => {
   return (
     <div className='h-screen flex flex-col justify-between'>
       <Header title='회원가입' />
-      <div className='p-5 flex-grow overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
+      <div
+        ref={scrollRef}
+        className='p-5 flex-grow overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
+      >
         {questions.map(
           (question, index) =>
             index <= currentIndex && (
@@ -212,7 +224,11 @@ const SignUp = () => {
         )}
       </div>
       <div className='px-5 pb-5'>
-        <ButtonLarge text='회원가입' disabled={!isFormComplete} />
+        <ButtonLarge
+          text='회원가입'
+          disabled={!isFormComplete}
+          onClick={handleOnClick}
+        />
       </div>
     </div>
   );

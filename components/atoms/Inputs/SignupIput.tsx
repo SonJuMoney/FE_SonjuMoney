@@ -1,25 +1,17 @@
 'use client';
 
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-
-type FormData = {
-  id: string;
-  password: string;
-  passwordConfirm: string;
-  name: string;
-  phone: string;
-  residentNum: string;
-};
+import { SignUpData } from '@/store/useSignupStore';
+import { ChangeEvent, useState } from 'react';
 
 type Props = {
-  id: keyof FormData;
+  id: keyof SignUpData;
   inputType: string;
   onChange: (value: string) => void;
   question: string;
   placeholder: string;
   validate: (value: string) => boolean | Promise<ValidationResult>;
   errorMessage: string;
-  onValidation: (id: keyof FormData, isValid: boolean) => void;
+  onValidation: (id: keyof SignUpData, isValid: boolean) => void;
   width: number;
 };
 
