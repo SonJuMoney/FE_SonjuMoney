@@ -10,9 +10,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const EnterAmount = () => {
-  const { amount, setAmount } = useSendAllowanceStore();
+  const { selectedMember, setAmount } = useSendAllowanceStore();
+  const [localAmount, setLocalAmount] = useState('');
   const [account, setAccount] = useState<TAccount | null>(null);
-  const { selectedMember } = useSendAllowanceStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -31,6 +31,7 @@ const EnterAmount = () => {
   }, []);
 
   const handleNextStep = () => {
+    setAmount(localAmount);
     router.push(`/allowance/send/password`);
   };
 
@@ -58,13 +59,14 @@ const EnterAmount = () => {
             {account.bank} {account.account_num}
           </div>
         </div>
-        <PriceInput value={amount} onChange={setAmount} />
+        <PriceInput value={localAmount} onChange={setLocalAmount} />
       </div>
 
       <div className='fixed bottom-0 left-0 w-full p-5'>
         <ButtonLarge
           text='다음'
-          disabled={!amount || amount === '0'}
+          // disabled={!amount || amount === '0'}
+          disabled={!localAmount || localAmount === '0'}
           onClick={handleNextStep}
         />
       </div>

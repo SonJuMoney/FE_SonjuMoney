@@ -4,44 +4,33 @@ import FamilyCardLarge from '@/components/atoms/Cards/FamilyCardLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import useSendAllowanceStore from '@/store/useSendAllowanceStore';
+import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
-
-type Family = {
-  familyId: number;
-  familyName: string;
-  familyMember: string[];
-};
+import { useEffect, useState } from 'react';
 
 const SelectFamily = () => {
+  const [families, setFamilies] = useState<TFamily[]>([]);
   const { setSelectedFamily } = useSendAllowanceStore();
   const router = useRouter();
 
-  const families = [
-    {
-      familyId: 1,
-      familyName: '첫째네 가족',
-      familyMember: ['준용1', '미진1', '형석1', '서현1'],
-    },
-    {
-      familyId: 2,
-      familyName: '둘째네 가족',
-      familyMember: ['준용2', '미진2', '형석2', '서현2'],
-    },
-    {
-      familyId: 3,
-      familyName: '셋째네 가족',
-      familyMember: ['준용3', '미진3', '형석3', '서현3'],
-    },
-    {
-      familyId: 4,
-      familyName: '넷째네 가족',
-      familyMember: ['준용4', '미진4', '형석4', '서현4'],
-    },
-  ];
-
   const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
 
-  const handleSelectFamily = (family: Family) => {
+  useEffect(() => {
+    const fetchFamilies = async () => {
+      try {
+        const response = await fetch('/dummydata/families.json');
+        if (!response.ok) throw new Error('Failed to fetch families data');
+        const data: TFamily[] = await response.json();
+        setFamilies(data);
+      } catch (error) {
+        console.error('Error fetching families:', error);
+      }
+    };
+
+    fetchFamilies();
+  }, []);
+
+  const handleSelectFamily = (family: TFamily) => {
     setSelectedFamily(family);
     router.push(`/allowance/send/member`);
   };
@@ -54,10 +43,10 @@ const SelectFamily = () => {
 
         <div className='mt-[34px] space-y-4'>
           {families.map((family, index) => (
-            <div key={family.familyId}>
+            <div key={family.family_id}>
               <FamilyCardLarge
-                familyName={family.familyName}
-                familyMember={family.familyMember}
+                familyName={family.family_name}
+                familyMember={family.family_member}
                 color={`${colors[index % colors.length]}`}
                 onClick={() => handleSelectFamily(family)}
               />
