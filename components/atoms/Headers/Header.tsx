@@ -42,11 +42,11 @@ export default function Header({
       </h1>
 
       {/* 오른쪽: 액션 버튼 */}
-      <div className='w-[44px] text-right'>
+      <div className='text-right'>
         {actionButton && (
           <button
             onClick={actionButton.onClick}
-            className='text-[18px] font-medium text-black'
+            className='text-[15px] font-medium text-black'
           >
             {actionButton.label}
           </button>
