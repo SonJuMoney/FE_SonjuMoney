@@ -19,10 +19,12 @@ type Input = {
   inputType: string;
   question: string;
   placeholder: string;
-  validate: (value: string) => boolean;
+  validate: (value: string) => boolean | Promise<ValidationResult>;
   errorMessage: string;
   width: number;
 };
+
+type ValidationResult = { isValid: boolean; error: string };
 
 const SignUp = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -34,7 +36,58 @@ const SignUp = () => {
     residentNum: '',
   });
 
+  const [validations, setValidations] = useState<
+    Record<keyof FormData, boolean>
+  >({
+    id: false,
+    password: false,
+    passwordConfirm: false,
+    name: false,
+    phone: false,
+    residentNum: false,
+  });
+
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  const checkIdValidation = async (id: string) => {
+    if (!/^[a-zA-Z0-9]{4,12}$/.test(id)) {
+      return {
+        isValid: false,
+        error: '영문자, 숫자(4-12)',
+      };
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/id-duplication?id=${id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        return {
+          isValid: false,
+          error: '아이디 조회 중 오류가 발생했습니다',
+        };
+      }
+
+      const data = await response.json();
+
+      return {
+        isValid: !data.duplication,
+        error: data.duplication ? '중복된 아이디입니다' : '',
+      };
+    } catch (error) {
+      return {
+        isValid: false,
+        error: '서버 오류가 발생했습니다',
+      };
+    }
+  };
 
   const questions: Input[] = [
     {
@@ -42,8 +95,8 @@ const SignUp = () => {
       inputType: 'text',
       question: '아이디를 입력해주세요',
       placeholder: '아이디 입력',
-      validate: (value: string) => /^[a-zA-Z0-9]{4,12}$/.test(value),
-      errorMessage: '영문자, 숫자(4-12)',
+      validate: checkIdValidation,
+      errorMessage: '',
       width: 14,
     },
     {
@@ -52,7 +105,9 @@ const SignUp = () => {
       question: '비밀번호를 입력해주세요',
       placeholder: '비밀번호 입력',
       validate: (value: string) =>
-        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/.test(value),
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,20}$/.test(
+          value
+        ),
       errorMessage: '영문자, 숫자, 특수문자(8-20)',
       width: 14,
     },
@@ -98,19 +153,41 @@ const SignUp = () => {
     console.log(formData);
   }, [formData]);
 
+  useEffect(() => {
+    console.log('랜더링');
+  }, []);
+
   const handleChange = (key: keyof FormData) => (value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleValidation = (isValid: boolean) => {
-    if (isValid && currentIndex < questions.length - 1) {
+  const handleValidation = (id: keyof FormData, isValid: boolean) => {
+    setValidations((prev) => ({
+      ...prev,
+      [id]: isValid,
+    }));
+
+    const myIndex = questions.findIndex((q) => q.type === id);
+    const isCurrentQuestion = myIndex === currentIndex;
+
+    const questionsToValidate = isCurrentQuestion
+      ? questions.slice(0, currentIndex)
+      : questions
+          .slice(0, currentIndex + 1)
+          .filter((_, index) => index !== myIndex);
+
+    const allPreviousValid = questionsToValidate.every(
+      (q) => validations[q.type]
+    );
+
+    if (isValid && allPreviousValid && currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     }
   };
 
   const isFormComplete =
     currentIndex === questions.length - 1 &&
-    questions.every((q) => q.validate(formData[q.type]));
+    Object.values(validations).every((isValid) => isValid);
 
   return (
     <div className='h-screen flex flex-col justify-between'>
