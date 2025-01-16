@@ -1,9 +1,8 @@
 import BottomNav from '@/components/atoms/BottomNav/BottomNav';
-import AuthSession from '@/context/user/AuthSession';
-import { getServerSession } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import './globals.css';
 
 const pretendard = localFont({
@@ -23,17 +22,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   return (
     <html lang='en'>
       <body
         className={`font-pretendard ${pretendard.variable} antialiased text-black`}
       >
-        <AuthSession session={session}>
+        <SessionProvider session={session}>
           {children}
           <BottomNav />
-        </AuthSession>
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,14 +1,9 @@
-import { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import NextAuth from 'next-auth';
+import 'next-auth/jwt';
+import Credentials from 'next-auth/providers/credentials';
 
 declare module 'next-auth' {
-  interface Session {
-    accessToken?: string;
-    refreshToken?: string;
-  }
-
   interface User {
-    id: string;
     accessToken?: string;
     refreshToken?: string;
   }
@@ -21,10 +16,15 @@ declare module 'next-auth/jwt' {
   }
 }
 
-export const authOptions: NextAuthOptions = {
+export const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+} = NextAuth({
   session: { strategy: 'jwt' },
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: 'Credentials',
       credentials: {
         userId: { label: 'id', type: 'text' },
@@ -56,17 +56,15 @@ export const authOptions: NextAuthOptions = {
 
           const data = await response.json();
 
-          if (response.ok && data.access_token) {
-            // 반드시 user 객체를 반환해야 합니다
+          if (response.ok) {
             const user = {
-              id: credentials.userId,
               accessToken: data.access_token,
               refreshToken: data.refresh_token,
             };
             return user;
           }
 
-          throw new Error('로그인 api 에러');
+          throw null;
         } catch (error) {
           console.log(error);
           return null;
@@ -83,9 +81,9 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken;
-      session.refreshToken = token.refreshToken;
+      session.user.accessToken = token.accessToken;
+      session.user.refreshToken = token.refreshToken;
       return session;
     },
   },
-};
+});

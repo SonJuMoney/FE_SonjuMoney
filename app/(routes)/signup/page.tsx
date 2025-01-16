@@ -79,6 +79,7 @@ const SignUp = () => {
         error: data.duplication ? '중복된 아이디입니다' : '',
       };
     } catch (error) {
+      console.log(error);
       return {
         isValid: false,
         error: '서버 오류가 발생했습니다',

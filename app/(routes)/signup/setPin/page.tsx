@@ -4,59 +4,70 @@ import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
 import useSignUpStore, { SignUpData } from '@/store/useSignupStore';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const SetPinPage = () => {
   const router = useRouter();
-  const signUpData = useSignUpStore((state) => state.signUpData);
+  const signUpData: SignUpData | null = useSignUpStore(
+    (state) => state.signUpData
+  );
   const [password, setPassword] = useState<string>('');
 
-  useEffect(() => {
-    const handleSignUp = async () => {
-      if (password.length === 6) {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/sign-up`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                auth_id: signUpData?.id,
-                password: signUpData?.password,
-                name: signUpData?.name,
-                phone: signUpData?.phone,
-                resident_num: signUpData?.residentNum,
-                pin: password,
-              }),
-            }
-          );
+  const handleSignUp = useCallback(
+    async (pin: string) => {
+      if (pin.length !== 6) return;
 
-          if (!response.ok) {
-            throw new Error('회원가입 실패');
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/sign-up`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              auth_id: signUpData?.id,
+              password: signUpData?.password,
+              name: signUpData?.name,
+              phone: signUpData?.phone,
+              resident_num: signUpData?.residentNum,
+              pin: pin,
+            }),
           }
+        );
 
-          const data = await response.json();
-
-          if (data.code === 201) {
-            alert('회원가입 성공');
-          }
-        } catch (error) {
-          console.error('회원가입 오류:', error);
-          alert('회원가입 중 오류가 발생했습니다.');
-          setPassword('');
+        if (!response.ok) {
+          throw new Error('회원가입 요청 실패');
         }
-      }
-    };
 
+        const data = await response.json();
+
+        if (data.code === 201) {
+          alert('회원가입 성공');
+          router.push('/login');
+        } else {
+          throw new Error('회원가입 응답 코드 오류');
+        }
+      } catch (error) {
+        console.error('회원가입 오류:', error);
+        alert('회원가입 중 오류가 발생했습니다.');
+        router.push('/signup');
+      }
+    },
+    [signUpData, router]
+  );
+
+  useEffect(() => {
     if (!signUpData) {
-      alert('회원가입 정보 없습니다');
+      alert('회원가입 정보가 없습니다');
       router.push('/signup');
-    } else {
-      handleSignUp();
+      return;
     }
-  }, [password, signUpData, router]);
+
+    if (password.length === 6) {
+      handleSignUp(password);
+    }
+  }, [password, handleSignUp, signUpData, router]);
 
   return (
     <div className='h-full flex flex-col'>
