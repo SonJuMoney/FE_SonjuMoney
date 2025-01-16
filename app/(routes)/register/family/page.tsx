@@ -29,7 +29,7 @@ const RegisterFamily = () => {
       <div className='p-5'>
         <PageTitle
           title={`가족 이름을
-          설정해주세요`}
+설정해주세요`}
         />
 
         <input
