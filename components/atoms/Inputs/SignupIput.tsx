@@ -41,7 +41,11 @@ const SignUpInput = ({
   };
 
   const formatResidentumber = (value: string) => {
-    const newValue = residentValue + value.slice(-1);
+    console.log(residentValue, value);
+    const newValue =
+      residentValue.length - 1 === value.replace('-', '').length
+        ? residentValue.slice(0, -1)
+        : (residentValue + value.slice(-1)).slice(0, 13);
     setResidentValue(newValue);
     const numbers = value.replace(/[^\d*]/g, '').slice(0, 13);
 

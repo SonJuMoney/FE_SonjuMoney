@@ -32,7 +32,6 @@ export function LoginForm() {
           userId,
           password,
           redirect: false,
-          callbackUrl: '/home',
         });
 
         console.log('로그인 결과:', result);
@@ -41,7 +40,7 @@ export function LoginForm() {
           router.push('/home');
           router.refresh();
         } else {
-          setError('로그인에 실패했습니다.');
+          alert('로그인 실패: 아이디와 비밀번호를 확인해주세요');
           return;
         }
       } catch (error) {

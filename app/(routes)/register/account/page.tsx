@@ -32,7 +32,7 @@ const Account = () => {
       setAccountList(response);
     };
     fetchMyAccounts();
-  }, []);
+  }, [getMockAccounts]);
 
   return (
     <div className='pageLayout'>

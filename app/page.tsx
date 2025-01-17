@@ -1,9 +1,8 @@
 import { DelayedNavigation } from '@/components/molecules/DelayedNavigation';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   return (
     <div className='h-screen flex flex-col justify-center items-center space-y-8'>
