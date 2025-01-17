@@ -1,5 +1,5 @@
 import { useApi } from '@/hooks/useApi';
-import { TFamily } from '@/types/Family';
+import { TFamily, TSetFamilyReq } from '@/types/Family';
 
 export const useFamilyApi = () => {
   const { fetchApi } = useApi();
@@ -19,5 +19,16 @@ export const useFamilyApi = () => {
     return response;
   };
 
-  return { getFamilies };
+  // 가족 생성
+  const setFamily = async (familyData: TSetFamilyReq): Promise<boolean> => {
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify(familyData),
+    };
+    const response = await fetchApi(`${baseUrl}`, options);
+
+    return response.code === 200;
+  };
+
+  return { getFamilies, setFamily };
 };

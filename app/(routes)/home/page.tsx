@@ -9,7 +9,7 @@ const Home = () => {
     <div className='pageLayout bg-pageBg'>
       <LogoHeader showFamily={false} />
 
-      <div className='p-5 space-y-5'>
+      <div className='p-5 flex flex-col gap-5'>
         <Link href='/register/account'>
           <div className='flex flex-col gap-2.5 font-semibold'>
             <div className='text-[#272727] text-lg'>내 계좌</div>

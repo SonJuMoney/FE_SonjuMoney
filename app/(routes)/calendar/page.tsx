@@ -84,7 +84,7 @@ const PlanList = () => {
       ],
     },
     {
-      date: '2025-01-19 ',
+      date: '2025-01-17',
       day: '화요일',
       events: [
         {
@@ -190,21 +190,23 @@ const PlanList = () => {
   }, [currentMonth]);
 
   return (
-    <div className='pageLayout px-5'>
+    <div className='pageLayout'>
       <LogoHeader showFamily={true} />
       <MonthPicker
         currentMonth={currentMonth}
         onMonthChange={handleMonthChange}
       />
-      {events.map((day) => (
-        <PlanCard
-          key={day.date}
-          date={day.date}
-          day={day.day}
-          events={day.events}
-          isToday={day.date === today}
-        />
-      ))}
+      <div className='px-5'>
+        {events.map((day) => (
+          <PlanCard
+            key={day.date}
+            date={day.date}
+            day={day.day}
+            events={day.events}
+            isToday={day.date === today}
+          />
+        ))}
+      </div>
     </div>
   );
 };
