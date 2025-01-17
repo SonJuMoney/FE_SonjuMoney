@@ -42,6 +42,7 @@ const AddPhoto = ({
           <PhotoInput maxLength={maxLength} onClick={onClick}>
             <input
               id='inputFile'
+              name='image'
               type='file'
               accept='image/*'
               onChange={(e) => changeImg(e)}
@@ -53,24 +54,27 @@ const AddPhoto = ({
           </PhotoInput>
         </div>
       ) : (
-        <div className='flex gap-3 py-[20px] pr-[20px]'>
-          <AddPhotoButton
-            itemCnt={files.length}
-            maxCnt={maxLength}
-            onClick={onClick}
-            className='ml-[20px]'
-          >
-            <input
-              id='inputFile'
-              type='file'
-              accept='image/*'
-              onChange={(e) => changeImg(e)}
-              style={{ display: 'none' }}
-              multiple
-              max={5}
-              ref={fileInputRef}
-            ></input>
-          </AddPhotoButton>
+        <div className='flex gap-3 p-[20px] '>
+          {files.length < maxLength && (
+            <AddPhotoButton
+              itemCnt={files.length}
+              maxCnt={maxLength}
+              onClick={onClick}
+            >
+              <input
+                id='inputFile'
+                type='file'
+                name='image'
+                accept='image/*'
+                onChange={(e) => changeImg(e)}
+                style={{ display: 'none' }}
+                multiple
+                max={5}
+                ref={fileInputRef}
+              ></input>
+            </AddPhotoButton>
+          )}
+
           {files.map((each) => {
             return (
               <Photo

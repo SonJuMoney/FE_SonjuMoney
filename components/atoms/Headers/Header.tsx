@@ -2,6 +2,7 @@
 
 import ArrowLeft from '@/public/Icons/arrowLeft_20.svg';
 import { useRouter } from 'next/navigation';
+import { ReactNode } from 'react';
 
 type HeaderProps = {
   title: string;
@@ -11,6 +12,7 @@ type HeaderProps = {
     label: string;
     onClick: () => void;
   };
+  children?: ReactNode;
 };
 
 export default function Header({
@@ -18,6 +20,7 @@ export default function Header({
   showBackButton = true,
   onBack,
   actionButton,
+  children,
 }: HeaderProps) {
   const router = useRouter();
   const handleOnBack = () => {
@@ -51,6 +54,7 @@ export default function Header({
             {actionButton.label}
           </button>
         )}
+        {children && <>{children}</>}
       </div>
     </div>
   );
