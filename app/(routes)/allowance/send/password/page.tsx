@@ -3,20 +3,27 @@
 import Header from '@/components/atoms/Headers/Header';
 import PasswordForm from '@/components/molecules/Forms/PasswordForm';
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
+import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { TSendAllowanceReq } from '@/types/Allowance';
 
 const EnterPasscode = () => {
+  const { selectedFamily, selectedMember, amount, message, files } =
+    useSendAllowanceStore();
+
   const { sendAllowance } = useAllowanceApi();
+
+  const selectedMemberData = selectedFamily?.members.find(
+    (member) => member.member_name === selectedMember
+  );
+
+  if (!selectedMemberData) {
+    console.error('Selected member not found!');
+    return;
+  }
+
   const onComplete = (data: TSendAllowanceReq) => {
-    const allowanceData = {
-      image: data.image,
-      data: {
-        to_id: data.data.to_id,
-        amount: data.data.amount,
-        message: data.data.message,
-      },
-    };
-    return sendAllowance(allowanceData);
+    console.log(data);
+    return sendAllowance(data);
   };
 
   return (
@@ -29,7 +36,16 @@ const EnterPasscode = () => {
           text='간편 비밀번호를 입력해주세요'
           num={6}
           route='/allowance/send/complete'
-          onComplete={onComplete}
+          onComplete={() =>
+            onComplete({
+              image: files[0],
+              data: {
+                to_id: selectedMemberData.member_id,
+                amount: parseFloat(amount),
+                message: message,
+              },
+            })
+          }
         />
       </div>
     </div>

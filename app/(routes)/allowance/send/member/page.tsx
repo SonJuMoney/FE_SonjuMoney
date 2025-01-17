@@ -13,7 +13,7 @@ const SelectRecipient = () => {
   const router = useRouter();
 
   if (!selectedFamily) return null;
-  const { family_member } = selectedFamily;
+  const { members } = selectedFamily;
 
   const handleNextStep = () => {
     router.push(`/allowance/send/amount`);
@@ -29,7 +29,7 @@ const SelectRecipient = () => {
         />
 
         <RoleList
-          roles={family_member}
+          roles={members.map((member) => member.member_name)}
           selectedRole={selectedMember}
           setSelectedRole={setSelectedMember}
         />

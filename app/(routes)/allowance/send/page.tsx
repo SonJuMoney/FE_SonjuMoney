@@ -3,6 +3,7 @@
 import FamilyCardLarge from '@/components/atoms/Cards/FamilyCardLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
@@ -12,19 +13,14 @@ const SelectFamily = () => {
   const [families, setFamilies] = useState<TFamily[]>([]);
   const { setSelectedFamily } = useSendAllowanceStore();
   const router = useRouter();
+  const { getFamilies } = useFamilyApi();
 
   const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
 
   useEffect(() => {
     const fetchFamilies = async () => {
-      try {
-        const response = await fetch('/dummydata/families.json');
-        if (!response.ok) throw new Error('Failed to fetch families data');
-        const data: TFamily[] = await response.json();
-        setFamilies(data);
-      } catch (error) {
-        console.error('Error fetching families:', error);
-      }
+      const response = await getFamilies();
+      setFamilies(response);
     };
 
     fetchFamilies();
@@ -46,7 +42,7 @@ const SelectFamily = () => {
             <div key={family.family_id}>
               <FamilyCardLarge
                 familyName={family.family_name}
-                familyMember={family.family_member}
+                familyMember={family.members}
                 color={`${colors[index % colors.length]}`}
                 onClick={() => handleSelectFamily(family)}
               />
