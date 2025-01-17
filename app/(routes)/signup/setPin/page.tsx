@@ -3,6 +3,7 @@
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
 import useSignUpStore, { SignUpData } from '@/store/useSignupStore';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -13,9 +14,30 @@ const SetPinPage = () => {
   );
   const [password, setPassword] = useState<string>('');
 
+  const handleAutoLogin = async (userId: string, password: string) => {
+    try {
+      const result = await signIn('credentials', {
+        userId,
+        password,
+        redirect: false,
+      });
+
+      if (result?.ok) {
+        router.push('/signup/complete');
+        router.refresh();
+      } else {
+        console.log(result);
+        throw new Error('로그인 실패');
+      }
+    } catch (error) {
+      console.error('로그인 실패:', error);
+      router.push('/login');
+    }
+  };
+
   const handleSignUp = useCallback(
     async (pin: string) => {
-      if (pin.length !== 6) return;
+      if (pin.length !== 6 || !signUpData) return;
 
       try {
         const response = await fetch(
@@ -26,11 +48,11 @@ const SetPinPage = () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              auth_id: signUpData?.id,
-              password: signUpData?.password,
-              name: signUpData?.name,
-              phone: signUpData?.phone,
-              resident_num: signUpData?.residentNum,
+              auth_id: signUpData.id,
+              password: signUpData.password,
+              name: signUpData.name,
+              phone: signUpData.phone,
+              resident_num: signUpData.residentNum,
               pin: pin,
             }),
           }
@@ -44,8 +66,9 @@ const SetPinPage = () => {
 
         if (data.code === 201) {
           alert('회원가입 성공');
-          router.push('/login');
+          await handleAutoLogin(signUpData.id!, signUpData.password!);
         } else {
+          console.log(data);
           throw new Error('회원가입 응답 코드 오류');
         }
       } catch (error) {
@@ -72,7 +95,7 @@ const SetPinPage = () => {
   return (
     <div className='h-full flex flex-col'>
       <div className='h-1/3 flex items-center justify-center'>
-        <CenterTitle title='간편 비밀번호를 설정해주세요요' />
+        <CenterTitle title='간편 비밀번호를 설정해주세요' />
       </div>
 
       <div className='flex-1 flex flex-col'>
