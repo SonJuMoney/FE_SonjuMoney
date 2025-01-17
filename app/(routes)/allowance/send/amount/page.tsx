@@ -32,7 +32,7 @@ const EnterAmount = () => {
 
   const handleNextStep = () => {
     setAmount(localAmount);
-    router.push(`/allowance/send/password`);
+    router.push(`/allowance/send/response`);
   };
 
   if (!account) return <div>Loading...</div>;
@@ -65,7 +65,6 @@ const EnterAmount = () => {
       <div className='fixed bottom-0 left-0 w-full p-5'>
         <ButtonLarge
           text='다음'
-          // disabled={!amount || amount === '0'}
           disabled={!localAmount || localAmount === '0'}
           onClick={handleNextStep}
         />
