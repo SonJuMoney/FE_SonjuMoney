@@ -11,11 +11,11 @@ const CompleteMessage = ({ title, subTitle }: CompleteMessageProps) => {
     <div className='flex justify-center items-center h-3/4'>
       <div className='flex flex-col gap-[70px] justify-center items-center'>
         <div className='flex flex-col w-full text-center items-center gap-[18px]'>
-          <span className='text-black text-2xl font-semibold max-w-[250px]  break-words'>
+          <span className='text-black text-2xl font-semibold max-w-[250px]  whitespace-pre'>
             {title}
           </span>
           {subTitle && (
-            <span className='text-darkGray text-[15px] font-semibold max-w-[320px]  break-words'>
+            <span className='text-darkGray text-[15px] font-semibold max-w-[320px]  whitespace-pre'>
               {subTitle}
             </span>
           )}

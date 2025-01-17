@@ -124,6 +124,7 @@ const TextArea = forwardRef<TextAreaRef, TextAreaProps>(
             onBlur={handleBlur}
             placeholder={placeholder}
             maxLength={maxLength}
+            name='message'
             className={cn(
               'w-full h-[188px] text-[17px] leading-[25px] font-normal',
               'resize-none outline-none',
