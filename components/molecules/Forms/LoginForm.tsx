@@ -36,12 +36,15 @@ export function LoginForm() {
 
         console.log('로그인 결과:', result);
 
+        if (result?.error) {
+          console.log(result.error);
+          alert('로그인 실패: 아이디와 비밀번호를 확인해주세요');
+          return;
+        }
+
         if (result?.ok) {
           router.push('/home');
           router.refresh();
-        } else {
-          alert('로그인 실패: 아이디와 비밀번호를 확인해주세요');
-          return;
         }
       } catch (error) {
         console.error('로그인 에러:', error);
