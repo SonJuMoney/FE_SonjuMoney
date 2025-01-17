@@ -6,14 +6,14 @@ export const useApi = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchApi = async (apiRoute: string, options: RequestInit = {}) => {
-    // console.log(session?.user.jwt);
-    // if (!session?.user?.jwt) {
-    //   throw new Error('No JWT token found');
-    // }
+    console.log(session?.accessToken);
+    if (!session?.accessToken) {
+      throw new Error('No JWT token found');
+    }
     const url = `${baseUrl}${apiRoute}`;
     // 헤더 설정
     const headers = new Headers(options.headers);
-    // headers.set('Authorization', `Bearer ${session.user.jwt}`);
+    headers.set('Authorization', `Bearer ${session.accessToken}`);
     headers.set('Content-Type', 'application/json');
     // 요청 실행
     const response = await fetch(url, {

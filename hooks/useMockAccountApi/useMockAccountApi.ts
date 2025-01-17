@@ -18,7 +18,7 @@ export const useMockAccountApi = () => {
       method: 'POST',
       body: JSON.stringify(paswdData),
     };
-    const response = await fetchApi(`${baseUrl}/account-password`, options);
+    const response = await fetchApi(`${baseUrl}/pin`, options);
 
     return response.code === 200;
   };
