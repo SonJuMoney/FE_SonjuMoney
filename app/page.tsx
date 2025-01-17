@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <div className='h-screen flex flex-col justify-center items-center space-y-8'>
-      <DelayedNavigation session={session} />
+      <DelayedNavigation session={session} time={3000} />
 
       <div className='text-lg font-bold'>접속 시 처음 나오는 화면입니다</div>
       <div className='text-lg font-bold'>

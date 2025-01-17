@@ -7,7 +7,7 @@ import Link from 'next/link';
 const Home = () => {
   return (
     <div className='pageLayout bg-pageBg'>
-      <LogoHeader alarm={false} logout={true} />
+      <LogoHeader showFamily={false} />
 
       <div className='p-5 space-y-5'>
         <Link href='/register/account'>
