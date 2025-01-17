@@ -6,19 +6,25 @@ import { useEffect } from 'react';
 
 type DelayedNavigationProps = {
   session: Session | null;
+  time: number;
+  route?: string;
 };
 
-export function DelayedNavigation({ session }: DelayedNavigationProps) {
+export function DelayedNavigation({
+  session,
+  time,
+  route = '/home',
+}: DelayedNavigationProps) {
   const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (session) {
-        router.push('/home');
+        router.push(route);
       } else {
         router.push('/login');
       }
-    }, 3000);
+    }, time);
 
     return () => clearTimeout(timer);
   }, [session, router]);

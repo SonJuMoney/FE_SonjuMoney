@@ -1,4 +1,9 @@
+'use client';
+
+import LogoHeader from '@/components/atoms/Headers/LogoHeader';
 import PlanCard from '@/components/molecules/Cards/PlanCard';
+import MonthPicker from '@/components/ui/monthPicker';
+import { useEffect, useState } from 'react';
 
 const PlanList = () => {
   const offset = new Date().getTimezoneOffset() * 60000;
@@ -27,7 +32,7 @@ const PlanList = () => {
           members: [{ id: 1, name: 'Member1', imgUrl: '/Role1.png' }],
         },
         {
-          id: 1,
+          id: 3,
           type: 'MEMORIAL',
           title: '준용이네 부부 결혼 기념일',
           time: '종일',
@@ -35,14 +40,14 @@ const PlanList = () => {
         },
 
         {
-          id: 2,
+          id: 4,
           type: 'BIRTHDAY',
           title: '준용이 생일',
           time: '종일',
           members: [{ id: 1, name: 'Member1', imgUrl: '/Role1.png' }],
         },
         {
-          id: 1,
+          id: 5,
           type: 'MEMORIAL',
           title: '준용이네 부부 결혼 기념일',
           time: '종일',
@@ -50,7 +55,7 @@ const PlanList = () => {
         },
 
         {
-          id: 2,
+          id: 6,
           type: 'BIRTHDAY',
           title: '준용이 생일',
           time: '종일',
@@ -63,14 +68,14 @@ const PlanList = () => {
       day: '화요일',
       events: [
         {
-          id: 2,
+          id: 7,
           type: 'DINING',
           title: '건강 검진',
           time: '오전 10시',
           members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
         },
         {
-          id: 2,
+          id: 8,
           type: 'DINING',
           title: '건강 검진',
           time: '오전 10시',
@@ -83,35 +88,35 @@ const PlanList = () => {
       day: '화요일',
       events: [
         {
-          id: 3,
+          id: 9,
           type: 'DINING',
           title: '건강 검진',
           time: '오전 10시',
           members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
         },
         {
-          id: 3,
+          id: 10,
           type: 'DINING',
           title: '건강 검진',
           time: '오전 10시',
           members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
         },
         {
-          id: 3,
+          id: 11,
           type: 'DINING',
           title: '건강 검진',
           time: '오전 10시',
           members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
         },
         {
-          id: 3,
+          id: 12,
           type: 'DINING',
           title: '건강 검진',
           time: '오전 10시',
           members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
         },
         {
-          id: 3,
+          id: 13,
           type: 'DINING',
           title: '건강 검진',
           time: '오전 10시',
@@ -124,7 +129,7 @@ const PlanList = () => {
       day: '화요일',
       events: [
         {
-          id: 4,
+          id: 14,
           type: 'DINING',
           title: '4',
           time: '오전 10시',
@@ -137,7 +142,7 @@ const PlanList = () => {
       day: '화요일',
       events: [
         {
-          id: 5,
+          id: 15,
           type: 'DINING',
           title: '5',
           time: '오전 10시',
@@ -151,7 +156,7 @@ const PlanList = () => {
       day: '화요일',
       events: [
         {
-          id: 5,
+          id: 16,
           type: 'DINING',
           title: '5',
           time: '오전 10시',
@@ -164,7 +169,7 @@ const PlanList = () => {
       day: '화요일',
       events: [
         {
-          id: 5,
+          id: 17,
           type: 'DINING',
           title: '5',
           time: '오전 10시',
@@ -174,8 +179,23 @@ const PlanList = () => {
     },
   ];
 
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+
+  const handleMonthChange = (date: Date) => {
+    setCurrentMonth(date);
+  };
+
+  useEffect(() => {
+    console.log(currentMonth);
+  }, [currentMonth]);
+
   return (
-    <div className='pageLayout'>
+    <div className='pageLayout px-5'>
+      <LogoHeader showFamily={true} />
+      <MonthPicker
+        currentMonth={currentMonth}
+        onMonthChange={handleMonthChange}
+      />
       {events.map((day) => (
         <PlanCard
           key={day.date}
