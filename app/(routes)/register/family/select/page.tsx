@@ -4,6 +4,7 @@ import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import RoleList from '@/components/molecules/Lists/RoleList';
+import { useUserApi } from '@/hooks/useUserApi/useUserApi';
 import useRegisterFamilyStore from '@/store/useRegisterFamilyStore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,29 +14,22 @@ const SelectFamily = () => {
   const [subTitle, setSubTitle] = useState('');
   const { selectedRole, setSelectedRole } = useRegisterFamilyStore();
   const router = useRouter();
+  const { getUser } = useUserApi();
 
   useEffect(() => {
-    const fetchGender = async () => {
-      try {
-        const response = await fetch('/dummydata/user.json');
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-        const data = await response.json();
+    const fetchUser = async () => {
+      const response = await getUser();
 
-        if (data.gender === 'MALE') {
-          setRoles(['할아버지', '아빠', '아들']);
-          setSubTitle('할아버지, 아빠, 아들 중에 선택해주세요');
-        } else if (data.gender === 'FEMALE') {
-          setRoles(['할머니', '엄마', '딸']);
-          setSubTitle('할머니, 엄마, 딸 중에 선택해주세요');
-        }
-      } catch (error) {
-        console.error('Error fetching gender:', error);
+      if (response.gender === 'MALE') {
+        setRoles(['할아버지', '아빠', '아들']);
+        setSubTitle('할아버지, 아빠, 아들 중에 선택해주세요');
+      } else if (response.gender === 'FEMALE') {
+        setRoles(['할머니', '엄마', '딸']);
+        setSubTitle('할머니, 엄마, 딸 중에 선택해주세요');
       }
     };
 
-    fetchGender();
+    fetchUser();
   }, []);
 
   const handleNextStep = () => {
