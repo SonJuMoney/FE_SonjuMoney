@@ -14,8 +14,8 @@ type Props = {
   text: string;
   num: number; //비밀번호 자리수
   route: string; // 넘어갈 페이지
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onComplete: (data?: any) => Promise<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, no-unused-vars
+  onComplete: () => Promise<any>;
 };
 
 const PasswordForm = ({
@@ -48,13 +48,12 @@ const PasswordForm = ({
       validatePassword(password)
         .then(() => {
           alert('인증에 성공하였습니다');
-          onComplete({ accountId })
+          onComplete()
             .then(() => {
-              alert('인증에 성공하였습니다');
+              console.log('성공');
               router.push(`${route}`);
             })
             .catch((error) => {
-              alert('계좌 등록에 실패했습니다');
               console.error(error);
             });
         })

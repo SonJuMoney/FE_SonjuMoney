@@ -32,7 +32,8 @@ const Account = () => {
       setAccountList(response);
     };
     fetchMyAccounts();
-  }, [getMockAccounts]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='pageLayout'>
