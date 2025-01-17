@@ -46,7 +46,7 @@ const SendResponse = () => {
       files: localFiles,
     });
 
-    router.push('/allowance/send/complete');
+    router.push('/allowance/send/password');
   };
 
   return (
