@@ -1,6 +1,8 @@
+import { TMember } from '@/types/Family';
+
 export type FamilyCardProps = {
   familyName: string;
-  familyMember: string[];
+  familyMember: TMember[];
   color: string;
   onClick: () => void;
 };
@@ -24,7 +26,7 @@ const FamilyCardLarge = ({
             className='rounded-full bg-white w-10 h-10 flex items-center justify-center'
           >
             <span className='text-xs font-semibold text-appColor'>
-              {member}
+              {member.member_name}
             </span>
           </div>
         ))}

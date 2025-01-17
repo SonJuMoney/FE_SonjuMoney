@@ -22,3 +22,10 @@ export type Child = {
   user_id: string;
   user_name: string;
 };
+
+export type TProfile = {
+  user_name: string;
+  user_profile: string;
+  gender: string;
+  birth: string;
+};

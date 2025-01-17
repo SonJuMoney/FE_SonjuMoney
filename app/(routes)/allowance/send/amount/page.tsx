@@ -4,6 +4,7 @@ import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PriceInput from '@/components/atoms/Inputs/PriceInput';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
+import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { TAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
@@ -15,16 +16,12 @@ const EnterAmount = () => {
   const [account, setAccount] = useState<TAccount | null>(null);
   const router = useRouter();
 
+  const { getMyAccount } = useAccountApi();
+
   useEffect(() => {
     const fetchAccount = async () => {
-      try {
-        const response = await fetch('/dummydata/account.json');
-        if (!response.ok) throw new Error('Failed to fetch account data');
-        const data: TAccount = await response.json();
-        setAccount(data);
-      } catch (error) {
-        console.error('Error fetching account:', error);
-      }
+      const response = await getMyAccount();
+      setAccount(response);
     };
 
     fetchAccount();
@@ -32,7 +29,7 @@ const EnterAmount = () => {
 
   const handleNextStep = () => {
     setAmount(localAmount);
-    router.push(`/allowance/send/password`);
+    router.push(`/allowance/send/response`);
   };
 
   if (!account) return <div>Loading...</div>;
@@ -65,7 +62,6 @@ const EnterAmount = () => {
       <div className='fixed bottom-0 left-0 w-full p-5'>
         <ButtonLarge
           text='다음'
-          // disabled={!amount || amount === '0'}
           disabled={!localAmount || localAmount === '0'}
           onClick={handleNextStep}
         />
