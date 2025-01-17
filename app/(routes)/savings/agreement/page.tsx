@@ -1,0 +1,76 @@
+'use client';
+
+import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
+import Header from '@/components/atoms/Headers/Header';
+import PageTitle from '@/components/atoms/PageTitles/PageTitle';
+import Agreement from '@/components/molecules/Agreement';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+const TermsAgreement = () => {
+  const router = useRouter();
+
+  const termsCount = 5;
+  const [terms, setTerms] = useState(Array(termsCount).fill(false));
+
+  const allChecked = terms.every((term) => term);
+
+  const handleAllChecked = (checked: boolean) => {
+    setTerms(terms.map(() => checked));
+  };
+
+  const handleTermChange = (index: number, checked: boolean) => {
+    const updatedTerms = [...terms];
+    updatedTerms[index] = checked;
+    setTerms(updatedTerms);
+  };
+
+  const agreements = [
+    '법정 대리인 인증 자동화 서비스 이용 동의',
+    '적금 계좌 연동 서비스 이용 동의',
+    '자녀 계정 서비스 이용 동의',
+    '손주머니 서비스 이용 동의',
+    '마케팅 정보 수신 동의',
+  ];
+
+  return (
+    <div className='pageLayout'>
+      <Header title='적금 들어주기' />
+      <div className='defaultLayout justify-between'>
+        <PageTitle
+          title={`김할아버지님이 길동이님의
+법정 대리인인지 확인할게요`}
+          subTitle={`손주머니가 김은서님 대신, 법원 가족관계 증명서류를
+안전하게 확인해요`}
+        />
+        <div>
+          <Agreement
+            text='전체 동의'
+            checked={allChecked}
+            onChange={handleAllChecked}
+          />
+
+          {agreements.map((text, index) => (
+            <Agreement
+              key={index}
+              text={text}
+              required
+              checked={terms[index]}
+              onChange={(checked) => handleTermChange(index, checked)}
+            />
+          ))}
+
+          <div className='w-full mt-8'>
+            <ButtonLarge
+              text='동의하고 다음'
+              disabled={!allChecked}
+              onClick={() => router.push(`/savings/payment`)}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TermsAgreement;
