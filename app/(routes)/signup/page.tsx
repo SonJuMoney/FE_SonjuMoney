@@ -121,7 +121,7 @@ const SignUp = () => {
     {
       type: 'name',
       inputType: 'text',
-      question: '이름을 입력해주세요 (2자 이상)',
+      question: '이름을 입력해주세요',
       placeholder: '홍길동',
       validate: (value: string) => value.length >= 2,
       errorMessage: '2자 이상 입력해주세요',

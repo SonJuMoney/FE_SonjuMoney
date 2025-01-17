@@ -23,7 +23,7 @@ const SetPinPage = () => {
       });
 
       if (result?.ok) {
-        router.push('/signup/compelete');
+        router.push('/signup/complete');
         router.refresh();
       } else {
         console.log(result);
