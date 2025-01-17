@@ -19,8 +19,8 @@ const RoleSelect = ({ value, onChange }: Props) => {
     '할머니',
     '아빠',
     '엄마',
-    '손자',
-    '손녀',
+    '아들',
+    '딸',
   ];
 
   const handleChange = useCallback(

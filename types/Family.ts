@@ -10,3 +10,12 @@ export type TMember = {
   member_name: string;
   member_role: string;
 };
+
+export type TSetFamilyReq = {
+  role: string;
+  family_name: string;
+  add_members: {
+    phone: string;
+    role: string;
+  }[];
+};

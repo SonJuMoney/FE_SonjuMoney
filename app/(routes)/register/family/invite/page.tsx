@@ -5,13 +5,22 @@ import RegisterCardSmall from '@/components/atoms/Cards/RegisterCardSmall';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import InviteCard from '@/components/molecules/Cards/InviteCard';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import useRegisterFamilyStore from '@/store/useRegisterFamilyStore';
 import { useRouter } from 'next/navigation';
 
 const InviteFamily = () => {
-  const { inviteCards, addInviteCard, updateInviteCard, deleteInviteCard } =
-    useRegisterFamilyStore();
+  const {
+    familyName,
+    selectedRole,
+    inviteCards,
+    addInviteCard,
+    updateInviteCard,
+    deleteInviteCard,
+  } = useRegisterFamilyStore();
   const router = useRouter();
+
+  const { setFamily } = useFamilyApi();
 
   const handleChildAccount = () => {
     router.push('/register/child');
@@ -22,14 +31,18 @@ const InviteFamily = () => {
     inviteCards.some((card) => !card.phoneValue || !card.roleValue);
 
   const handleNextClick = () => {
-    const familyName = useRegisterFamilyStore.getState().familyName;
-    const selectedRole = useRegisterFamilyStore.getState().selectedRole;
-    const inviteCards = useRegisterFamilyStore.getState().inviteCards;
+    const familyData = {
+      family_name: familyName,
+      role: selectedRole,
+      add_members: inviteCards.map((card) => ({
+        phone: card.phoneValue,
+        role: card.roleValue,
+      })),
+    };
 
-    // API 전달 추가
-    console.log('Family Name:', familyName);
-    console.log('Selected Role:', selectedRole);
-    console.log('Invite Cards:', inviteCards);
+    console.log(familyData);
+
+    setFamily(familyData);
   };
 
   return (
