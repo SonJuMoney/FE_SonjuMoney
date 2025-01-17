@@ -27,6 +27,12 @@ const Home = () => {
             <RegisterCard text='우리 가족 등록하기' />
           </div>
         </Link>
+        <Link href='/savings'>
+          <div className='flex flex-col gap-2.5 font-semibold'>
+            <div className='text-[#272727] text-lg'>납입 중인 적금</div>
+            <RegisterCard text='아이 적금 만들기' />
+          </div>
+        </Link>
       </div>
     </div>
   );

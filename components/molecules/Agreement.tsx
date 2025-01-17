@@ -28,42 +28,4 @@ const Agreement = ({
   );
 };
 
-// 약관 동의
-// const termsAgreement = () => {
-//   const [term1, setTerm1] = useState(false);
-//   const [term2, setTerm2] = useState(false);
-//   const allChecked = term1 && term2;
-
-//   const handleAllChecked = (checked: boolean) => {
-//     setTerm1(checked);
-//     setTerm2(checked);
-//   };
-
-//   return (
-//     <div>
-//       <Agreement
-//         text='전체 동의'
-//         checked={allChecked}
-//         onChange={handleAllChecked}
-//       />
-
-//       <Agreement
-//         text='법정 대리인 인증 자동화 서비스 이용 동의'
-//         required
-//         checked={term1}
-//         onChange={setTerm1}
-//       />
-
-//       <Agreement
-//         text='마케팅 정보 수신 동의'
-//         required
-//         checked={term2}
-//         onChange={setTerm2}
-//       />
-
-//       <ButtonLarge text='동의하고 다음' disabled={!allChecked} />
-//     </div>
-//   );
-// };
-
 export default Agreement;
