@@ -112,7 +112,7 @@ const SignUp = () => {
     {
       type: 'passwordConfirm',
       inputType: 'password',
-      question: '비밀번호를 입력해주세요',
+      question: '비밀번호를 한번 더 입력해주세요',
       placeholder: '비밀번호 입력',
       validate: (value: string) => value === userData.password,
       errorMessage: '비밀번호가 일치하지 않습니다',
@@ -121,7 +121,7 @@ const SignUp = () => {
     {
       type: 'name',
       inputType: 'text',
-      question: '이름을 입력해주세요',
+      question: '이름을 입력해주세요 (2자 이상)',
       placeholder: '홍길동',
       validate: (value: string) => value.length >= 2,
       errorMessage: '2자 이상 입력해주세요',

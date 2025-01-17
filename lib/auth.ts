@@ -51,23 +51,21 @@ export const {
           );
 
           if (!response.ok) {
-            console.log('응답이상');
+            throw new Error('spring 로그인 오류');
           }
 
           const data = await response.json();
 
-          if (response.ok) {
-            const user = {
+          if (data?.access_token && data?.refresh_token) {
+            return {
               accessToken: data.access_token,
               refreshToken: data.refresh_token,
             };
-            return user;
           }
 
-          throw null;
+          throw new Error('로그인 토큰 오류');
         } catch (error) {
-          console.log(error);
-          return null;
+          throw new Error('로그인 실패');
         }
       },
     }),
