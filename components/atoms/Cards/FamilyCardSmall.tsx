@@ -15,7 +15,7 @@ const FamilyCardSmall = ({
             className='rounded-full bg-white w-6 h-6 flex items-center justify-center'
           >
             <span className='text-[10px] font-semibold text-appColor'>
-              {member}
+              {member.member_name}
             </span>
           </div>
         ))}
@@ -25,44 +25,25 @@ const FamilyCardSmall = ({
 };
 
 // 가족 목록
-const familyList = () => {
-  const families = [
-    {
-      familyName: '첫째네 가족',
-      familyMember: ['준용', '미진', '형석', '서현'],
-    },
-    {
-      familyName: '둘째네 가족',
-      familyMember: ['준용', '미진', '형석', '서현'],
-    },
-    {
-      familyName: '셋째네 가족',
-      familyMember: ['준용', '미진', '형석', '서현'],
-    },
-    {
-      familyName: '넷째네 가족',
-      familyMember: ['준용', '미진', '형석', '서현'],
-    },
-  ];
+// const familyList = () => {
+//   const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
 
-  const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
-
-  return (
-    <div className='overflow-x-auto'>
-      <div className='flex space-x-4'>
-        {families.map((family, index) => (
-          <div key={index} className='shrink-0'>
-            <FamilyCardSmall
-              familyName={family.familyName}
-              familyMember={family.familyMember}
-              color={`${colors[index % colors.length]}`}
-              onClick={() => {}} // 가족 소식 페이지로 연결?
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className='overflow-x-auto'>
+//       <div className='flex space-x-4'>
+//         {families.map((family, index) => (
+//           <div key={family.family_id} className='shrink-0'>
+//             <FamilyCardSmall
+//               familyName={family.family_name}
+//               familyMember={family.members}
+//               color={`${colors[index % colors.length]}`}
+//               onClick={() => {}} // 가족 소식 페이지로 연결?
+//             />
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
 
 export default FamilyCardSmall;

@@ -4,6 +4,7 @@ import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PriceInput from '@/components/atoms/Inputs/PriceInput';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
+import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { TAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
@@ -15,16 +16,12 @@ const EnterAmount = () => {
   const [account, setAccount] = useState<TAccount | null>(null);
   const router = useRouter();
 
+  const { getMyAccount } = useAccountApi();
+
   useEffect(() => {
     const fetchAccount = async () => {
-      try {
-        const response = await fetch('/dummydata/account.json');
-        if (!response.ok) throw new Error('Failed to fetch account data');
-        const data: TAccount = await response.json();
-        setAccount(data);
-      } catch (error) {
-        console.error('Error fetching account:', error);
-      }
+      const response = await getMyAccount();
+      setAccount(response);
     };
 
     fetchAccount();
