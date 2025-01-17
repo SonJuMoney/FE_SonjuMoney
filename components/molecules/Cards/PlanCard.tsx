@@ -44,7 +44,7 @@ const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
   }, [isToday]);
 
   return (
-    <div ref={cardRef}>
+    <div ref={cardRef} style={{ scrollMarginTop: '120px' }}>
       {/* Date and Day */}
       <div className='flex items-center gap-2 mb-2 font-bold'>
         <div
