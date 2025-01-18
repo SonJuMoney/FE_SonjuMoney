@@ -45,7 +45,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
           </div>
         )}
 
-        {feed.isMine && (
+        {feed.is_mine && (
           <Popover>
             <PopoverTrigger asChild>
               <button>
@@ -67,7 +67,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
         <CarouselContent>
           {feed.contents.map((image) => (
             <CarouselItem key={image.url}>
-              {image.type === 'IMAGE' ? (
+              {image.content_type === 'IMAGE' ? (
                 <div className='relative w-full aspect-square'>
                   <Image src={image.url} alt='' fill className='object-cover' />
                 </div>

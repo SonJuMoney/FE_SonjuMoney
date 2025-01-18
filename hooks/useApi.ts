@@ -2,25 +2,41 @@ import { useSession } from 'next-auth/react';
 
 export const useApi = () => {
   const { data: session } = useSession();
-
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const fetchApi = async (apiRoute: string, options: RequestInit = {}) => {
-    console.log(session?.user?.accessToken);
+  const fetchApi = async (
+    apiRoute: string,
+    options: RequestInit = {},
+    queryParams?: Record<string, unknown>
+  ) => {
     if (!session?.user?.accessToken) {
       throw new Error('No JWT token found');
     }
-    const url = `${baseUrl}${apiRoute}`;
-    // 헤더 설정
+
+    // 쿼리 파라미터 처리
+    const searchParams = new URLSearchParams();
+    if (queryParams) {
+      Object.entries(queryParams).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, value.toString());
+        }
+      });
+    }
+
+    // URL 생성
+    const url = `${baseUrl}${apiRoute}${
+      searchParams.toString() ? `?${searchParams.toString()}` : ''
+    }`;
+
     const headers = new Headers(options.headers);
     headers.set('Authorization', `Bearer ${session.user?.accessToken}`);
     headers.set('Content-Type', 'application/json');
-    // 요청 실행
+
     const response = await fetch(url, {
       ...options,
       headers,
     });
-    // 응답 체크
+
     if (!response.ok) {
       throw new Error(`API request failed: ${response.statusText}`);
     }
@@ -29,3 +45,16 @@ export const useApi = () => {
 
   return { fetchApi };
 };
+
+export interface ResponseType<T = unknown> {
+  isSuccess: boolean;
+  code: number;
+  message: string;
+  result?: T;
+}
+
+export interface GetPaginationResult<T> {
+  hasNext: boolean;
+  page: number;
+  content: Array<T>;
+}

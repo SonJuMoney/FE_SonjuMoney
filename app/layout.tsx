@@ -1,9 +1,11 @@
 import BottomNav from '@/components/atoms/BottomNav/BottomNav';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { auth } from '@/lib/auth';
 import './globals.css';
+import Providers from './providers';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -29,10 +31,12 @@ export default async function RootLayout({
       <body
         className={`font-pretendard ${pretendard.variable} antialiased text-black`}
       >
-        <SessionProvider session={session}>
-          {children}
-          <BottomNav />
-        </SessionProvider>
+        <Providers>
+          <SessionProvider session={session}>
+            {children}
+            <BottomNav />
+          </SessionProvider>
+        </Providers>
       </body>
     </html>
   );
