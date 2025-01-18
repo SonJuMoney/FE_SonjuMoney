@@ -57,7 +57,4 @@ export interface GetPaginationResult<T> {
   hasNext: boolean;
   page: number;
   content: Array<T>;
-  count?: number;
-  countNum?: number;
-  restCommentNum?: number;
 }
