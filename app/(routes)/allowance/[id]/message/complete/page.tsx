@@ -5,7 +5,7 @@ import CompleteMessage from '@/components/molecules/CompleteMessages/CompleteMes
 import { AllowanceResponse } from '@/types/Allowance';
 import Link from 'next/link';
 
-async function getAllowanceData(id: string): Promise<AllowanceResponse> {
+async function getAllowanceData(id: number): Promise<AllowanceResponse> {
   const res = await fetchData(`/allowances/${id}`);
 
   return res.json();
@@ -14,7 +14,7 @@ async function getAllowanceData(id: string): Promise<AllowanceResponse> {
 export default async function CompletePage({
   params,
 }: {
-  params: { id: string };
+  params: { id: number };
 }) {
   // const allowanceData = await getAllowanceData(params.id);
   const allowanceData: AllowanceResponse = {
@@ -25,7 +25,7 @@ export default async function CompletePage({
 
   return (
     <div className='pageLayout'>
-      <Header title='용돈 받기' />
+      <Header title='용돈 받기' showBackButton={false} />
       <div className='defaultLayout'>
         <CompleteMessage
           title={
