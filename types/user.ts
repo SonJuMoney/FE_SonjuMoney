@@ -17,8 +17,8 @@ export type Child = {
 };
 
 export type TProfile = {
-  user_name: string;
-  user_profile: string;
+  username: string;
+  userProfile: string;
   gender: string;
   birth: string;
 };

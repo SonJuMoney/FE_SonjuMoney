@@ -9,6 +9,7 @@ type Props = {
 
 const PriceInput = ({ value, onChange }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const formatCurrency = (num: string) => {
     if (!num) return '';
@@ -22,22 +23,40 @@ const PriceInput = ({ value, onChange }: Props) => {
 
     if (numericValue === '') {
       onChange?.('');
+      setErrorMessage('');
       return;
+    }
+
+    const numericAmount = Number(numericValue);
+
+    if (numericAmount > 500000) {
+      setErrorMessage('납입 한도를 초과했습니다.');
+    } else {
+      setErrorMessage('');
     }
 
     onChange?.(numericValue);
   };
 
   return (
-    <input
-      type='text'
-      value={formatCurrency(value)}
-      onChange={handleChange}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      placeholder='얼마를 보낼까요?'
-      className=' text-appColor text-[24px] font-semibold outline-none border-none placeholder:font-medium placeholder:text-placeHolder'
-    />
+    <div>
+      <input
+        type='text'
+        value={formatCurrency(value)}
+        onChange={handleChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        placeholder='얼마를 보낼까요?'
+        className={`${
+          errorMessage ? 'text-error' : 'text-appColor'
+        } text-[24px] font-semibold outline-none border-none placeholder:font-medium placeholder:text-placeHolder`}
+      />
+      {errorMessage && (
+        <div className='mt-1 text-sm text-[#212529] font-medium'>
+          {errorMessage}
+        </div>
+      )}
+    </div>
   );
 };
 

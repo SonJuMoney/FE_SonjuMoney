@@ -37,7 +37,7 @@ const RoleSelect = ({ value, onChange }: Props) => {
           value ? 'text-appColor border-appColor' : 'border border-disabled '
         }`}
       >
-        <SelectValue placeholder='역할선택' />
+        <SelectValue placeholder='역할 선택' />
       </SelectTrigger>
       <SelectContent className='min-w-0 w-[120px] max-h-[100px] overflow-y-auto'>
         {roleOptions.map((role) => (

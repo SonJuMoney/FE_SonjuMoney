@@ -4,7 +4,7 @@ import FamilyCardLarge from '@/components/atoms/Cards/FamilyCardLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
-import useSavingsAccountStore from '@/store/useSavingsStore';
+import useSavingsAccountStore from '@/store/useSavingsAccountStore';
 import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -31,10 +31,10 @@ const FamilySelect = () => {
     router.push(`/savings/member`);
   };
   return (
-    <div>
+    <div className='pageLayout'>
       <Header title='적금 들어주기' />
 
-      <div className='p-5'>
+      <div className='defaultLayout'>
         <PageTitle title='가족을 선택해주세요' />
 
         <div className='mt-[34px] space-y-4'>

@@ -4,7 +4,7 @@ import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import RoleList from '@/components/molecules/Lists/RoleList';
-import useSavingsAccountStore from '@/store/useSavingsStore';
+import useSavingsAccountStore from '@/store/useSavingsAccountStore';
 import { useRouter } from 'next/navigation';
 
 const SelectChild = () => {
@@ -16,9 +16,9 @@ const SelectChild = () => {
   const { members } = selectedFamily;
 
   return (
-    <div>
+    <div className='pageLayout'>
       <Header title='적금 들어주기' />
-      <div className='p-5 space-y-[30px]'>
+      <div className='defaultLayout gap-[30px]'>
         <PageTitle
           title={`어떤 손주의 적금을
 가입할까요?`}
