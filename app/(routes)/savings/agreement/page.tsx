@@ -4,10 +4,16 @@ import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import Agreement from '@/components/molecules/Agreement';
+import { useUserApi } from '@/hooks/useUserApi/useUserApi';
+import useSavingsAccountStore from '@/store/useSavingsAccountStore';
+import { TProfile } from '@/types/user';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const TermsAgreement = () => {
+  const { selectedChild } = useSavingsAccountStore();
+  const { getUser } = useUserApi();
+  const [user, setUser] = useState<TProfile | null>(null);
   const router = useRouter();
 
   const termsCount = 5;
@@ -33,14 +39,23 @@ const TermsAgreement = () => {
     '마케팅 정보 수신 동의',
   ];
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await getUser();
+      setUser(response);
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <div className='pageLayout'>
       <Header title='적금 들어주기' />
       <div className='defaultLayout justify-between'>
         <PageTitle
-          title={`김할아버지님이 길동이님의
+          title={`${user?.username}님이 ${selectedChild}님의
 법정 대리인인지 확인할게요`}
-          subTitle={`손주머니가 김은서님 대신, 법원 가족관계 증명서류를
+          subTitle={`손주머니가 대신, 법원 가족관계 증명서류를
 안전하게 확인해요`}
         />
         <div>
