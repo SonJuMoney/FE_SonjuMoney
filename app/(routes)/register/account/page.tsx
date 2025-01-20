@@ -9,7 +9,7 @@ import { TAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const Account = ({ searchParams }: { searchParams: { userId?: number } }) => {
+const Account = ({ searchParams }: { searchParams: { userId?: string } }) => {
   const { getMockAccounts } = useMockAccountApi();
   const [accountList, setAccountList] = useState<TAccount[]>([]);
 
@@ -22,14 +22,17 @@ const Account = ({ searchParams }: { searchParams: { userId?: number } }) => {
 
   const handleNext = () => {
     if (selectedAccountId) {
-      router.push(`/register/account/password?accountId=${selectedAccountId}`);
+      const isChild = !!searchParams.userId;
+      router.push(
+        `/register/account/password?accountId=${selectedAccountId}&isChildAccount=${isChild}`
+      );
     }
   };
 
   useEffect(() => {
     if (searchParams.userId) {
       const fetchMyAccounts = async () => {
-        const response = await getMockAccounts(searchParams.userId);
+        const response = await getMockAccounts(Number(searchParams.userId));
         setAccountList(response);
       };
       fetchMyAccounts();
