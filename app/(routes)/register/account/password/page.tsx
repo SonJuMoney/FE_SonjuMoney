@@ -8,9 +8,10 @@ import { TSetAccountReq } from '@/types/Account';
 export default function PasswordPage({
   searchParams,
 }: {
-  searchParams: { accountId: string };
+  searchParams: { accountId: string; isChild: string };
 }) {
   const { setAccount } = useAccountApi();
+  const isChild = Boolean(searchParams.isChild);
   const onComplete = (data: TSetAccountReq) => {
     return setAccount(data);
   };
@@ -23,7 +24,9 @@ export default function PasswordPage({
           accountId={Number(searchParams.accountId)}
           text='계좌 비밀번호를 입력해주세요'
           num={4}
-          route='/register/account/complete'
+          route={
+            isChild ? '/register/family/invite' : '/register/account/complete'
+          }
           onComplete={() =>
             onComplete({ mockacc_id: Number(searchParams.accountId) })
           }

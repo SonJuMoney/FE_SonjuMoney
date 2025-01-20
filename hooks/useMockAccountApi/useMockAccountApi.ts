@@ -6,8 +6,9 @@ export const useMockAccountApi = () => {
   const baseUrl = '/mock/accounts';
 
   // Mock 계좌 조회
-  const getMockAccounts = async (): Promise<TAccount[]> => {
-    const response = await fetchApi(baseUrl);
+  const getMockAccounts = async (userId?: number): Promise<TAccount[]> => {
+    const url = userId ? `${baseUrl}?user_id=${userId}` : baseUrl;
+    const response = await fetchApi(url);
 
     return response;
   };

@@ -9,7 +9,7 @@ import { TAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const Account = () => {
+const Account = ({ searchParams }: { searchParams: { userId?: string } }) => {
   const { getMockAccounts } = useMockAccountApi();
   const [accountList, setAccountList] = useState<TAccount[]>([]);
 
@@ -22,16 +22,28 @@ const Account = () => {
 
   const handleNext = () => {
     if (selectedAccountId) {
-      router.push(`/register/account/password?accountId=${selectedAccountId}`);
+      const isChild = !!searchParams.userId;
+      router.push(
+        `/register/account/password?accountId=${selectedAccountId}&isChildAccount=${isChild}`
+      );
     }
   };
 
   useEffect(() => {
-    const fetchMyAccounts = async () => {
-      const response = await getMockAccounts();
-      setAccountList(response);
-    };
-    fetchMyAccounts();
+    if (searchParams.userId) {
+      const fetchMyAccounts = async () => {
+        const response = await getMockAccounts(Number(searchParams.userId));
+        setAccountList(response);
+      };
+      fetchMyAccounts();
+    } else {
+      const fetchMyAccounts = async () => {
+        const response = await getMockAccounts();
+        setAccountList(response);
+      };
+      fetchMyAccounts();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
