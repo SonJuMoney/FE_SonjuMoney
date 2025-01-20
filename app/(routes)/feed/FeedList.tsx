@@ -79,7 +79,7 @@ export default function FeedList({ initialData, familyId }: FeedListProps) {
     <div ref={scrollContainerRef} className='pageLayout overflow-y-scroll'>
       <div className='flex flex-col gap-[0.5px] pb-32 relative'>
         {data?.pages.map((page) =>
-          page.result?.content.map((feed) => (
+          page.result?.contents.map((feed) => (
             <FeedCard key={feed.feed_id} feed={feed} />
           ))
         )}
