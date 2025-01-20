@@ -4,13 +4,16 @@ import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
 import LoveLetter from '@/public/AnimatedIcons/LoveLetter.png';
+import useSavingsAccountStore from '@/store/useSavingsAccountStore';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 const SavingsComplete = () => {
+  const { resetState } = useSavingsAccountStore();
   const router = useRouter();
 
   const confirm = () => {
+    resetState();
     router.push('/home');
   };
 

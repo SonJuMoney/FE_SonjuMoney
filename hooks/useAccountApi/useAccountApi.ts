@@ -1,5 +1,9 @@
 import { useApi } from '@/hooks/useApi';
-import { TAccount, TSetAccountReq } from '@/types/Account';
+import {
+  TAccount,
+  TSetAccountReq,
+  TSetSavingsAccountReq,
+} from '@/types/Account';
 
 export const useAccountApi = () => {
   const { fetchApi } = useApi();
@@ -23,5 +27,19 @@ export const useAccountApi = () => {
     return response;
   };
 
-  return { setAccount, getMyAccount };
+  // 적금 계좌 생성
+  const setSavingsAccount = async (
+    savingsData: TSetSavingsAccountReq
+  ): Promise<boolean> => {
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify(savingsData),
+    };
+    const response = await fetchApi(`${baseUrl}/savings`, options);
+
+    console.log(response);
+    return response.code === 200;
+  };
+
+  return { setAccount, getMyAccount, setSavingsAccount };
 };

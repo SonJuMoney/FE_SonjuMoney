@@ -9,3 +9,12 @@ export type TAccount = {
 export type TPswdReq = { pin: string; mockacc_id?: number };
 
 export type TSetAccountReq = { mockacc_id: number; user_id?: number };
+
+export type TSetSavingsAccountReq = {
+  user_id: number;
+  message: string;
+  account_password: string;
+  auto_transferable: boolean;
+  pay_day?: number;
+  pay_amount?: number;
+};

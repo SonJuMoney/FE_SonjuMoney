@@ -9,7 +9,7 @@ import useSavingsAccountStore from '@/store/useSavingsAccountStore';
 import { useRouter } from 'next/navigation';
 
 const SetAutomaticPayment = () => {
-  const { selectedDate, selectedAmount, customAmount, setSelectedAmount } =
+  const { selectedDate, selectedAmount, customAmount, setIsAutoTransfer } =
     useSavingsAccountStore();
 
   const router = useRouter();
@@ -23,10 +23,13 @@ const SetAutomaticPayment = () => {
 
   const isNextButtonEnabled = isAmountValid && !!selectedDate;
 
+  const skip = () => {
+    setIsAutoTransfer(false);
+    router.push('/savings/result');
+  };
+
   const handleNextClick = () => {
-    if (selectedAmount === 'custom') {
-      setSelectedAmount(Number(customAmount));
-    }
+    setIsAutoTransfer(true);
     router.push('/savings/result');
   };
 
@@ -36,7 +39,7 @@ const SetAutomaticPayment = () => {
         title='적금 들어주기'
         actionButton={{
           label: '건너뛰기',
-          onClick: () => router.push('/savings/result'),
+          onClick: skip,
         }}
       />
       <div className='defaultLayout gap-[25px]'>
