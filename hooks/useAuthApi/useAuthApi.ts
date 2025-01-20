@@ -7,9 +7,7 @@ export const useAuthApi = () => {
   const baseUrl = '/auth';
 
   //아이 회원가입
-  const signupChild = async (
-    childData: ChildData
-  ): Promise<number | boolean> => {
+  const signupChild = async (childData: ChildData): Promise<number> => {
     const options: RequestInit = {
       method: 'POST',
       body: JSON.stringify({
@@ -21,7 +19,7 @@ export const useAuthApi = () => {
 
     const response = await fetchApi(`${baseUrl}/sign-up-child`, options);
 
-    return response.code === 201 ? response.id : false;
+    return response.id;
   };
 
   // 간편 비밀번호 확인

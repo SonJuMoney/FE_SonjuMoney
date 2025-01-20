@@ -162,7 +162,8 @@ const SignUp = () => {
     }
 
     const response = await signupChild(childData);
-    if (typeof response === 'number') {
+    console.log(response);
+    if (response) {
       router.push(`/register/account?userId=${response}`);
     } else {
       console.log('회원가입 오류');
