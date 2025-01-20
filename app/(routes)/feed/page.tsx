@@ -27,7 +27,7 @@ export default async function FeedPage() {
     result: {
       hasNext: true,
       page: 0,
-      content: [
+      contents: [
         {
           feed_id: 1,
           writer_id: 2,

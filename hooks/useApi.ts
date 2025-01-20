@@ -56,5 +56,5 @@ export interface ResponseType<T = unknown> {
 export interface GetPaginationResult<T> {
   hasNext: boolean;
   page: number;
-  content: Array<T>;
+  contents: Array<T>;
 }
