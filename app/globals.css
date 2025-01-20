@@ -7,7 +7,8 @@
     @apply flex justify-center w-full h-screen text-black font-pretendard;
   }
   body {
-    @apply bg-background text-foreground max-w-[640px] w-full h-full font-pretendard;
+    /* @apply bg-background text-foreground max-w-[640px] w-full h-full font-pretendard; */
+    @apply bg-background text-foreground  w-full h-full font-pretendard;
   }
   :root {
     --background: 0 0% 100%;
@@ -61,6 +62,16 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+  }
+  .str-video {
+    background-color: #272a30;
+    color: #ffffff;
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
   }
 }
 
