@@ -2,9 +2,12 @@
 
 import RegisterCard from '@/components/atoms/Cards/RegisterCard';
 import LogoHeader from '@/components/atoms/Headers/LogoHeader';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 const Home = () => {
+  const session = useSession();
+  console.log(session);
   return (
     <div className='pageLayout bg-pageBg'>
       <LogoHeader showFamily={false} />

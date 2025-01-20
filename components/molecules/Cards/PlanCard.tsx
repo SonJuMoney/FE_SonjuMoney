@@ -44,26 +44,25 @@ const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
   }, [isToday]);
 
   return (
-    <div ref={cardRef}>
+    <div ref={cardRef} style={{ scrollMarginTop: '120px' }}>
       {/* Date and Day */}
       <div className='flex items-center gap-2 mb-2 font-bold'>
         <div
-          className={`w-2 h-2 rounded-full ${
-            isToday ? 'bg-appColor' : 'bg-darkGray'
+          className={`w-[10px] h-[10px] rounded-full ${
+            isToday ? 'bg-appColor' : 'bg-[#D9D9D9]'
           }`}
         ></div>
         <div className={isToday ? 'text-appColor' : 'text-darkGray'}>
           <span className='text-2xl font-semibold'>
             {parseInt(date.split('-')[2], 10)}
           </span>{' '}
-          <span className='text-sm'>{day}</span>
+          <span className='text-md'>{day}</span>
         </div>
       </div>
 
       <div
-        className={`
-        p-5 bg-white rounded-2xl shadow-md border ${
-          isToday ? 'border-appColor' : 'border-[#d9d9d9]'
+        className={`border p-5 bg-white rounded-[16px] shadow-md  ${
+          isToday ? 'border-appColor' : 'border-[#c3c2c2]'
         } mb-4
       `}
       >
@@ -73,21 +72,21 @@ const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
             key={event.id}
             className={`flex justify-between items-center ${
               index < events.length - 1
-                ? 'pb-4 mb-4 border-b border-gray-200'
+                ? 'pb-4 mb-4 border-b border-[#dadada]'
                 : ''
             }`}
           >
             {/* Event Info */}
             <div className='flex items-center gap-2'>
               <div
-                className={`w-[5px] h-10 rounded-[50px] ${
+                className={`w-[6px] h-10 rounded-[50px] ${
                   EventType[event.type as keyof typeof EventType] ||
                   EventType.OTHER
                 }`}
               ></div>
-              <div className='flex flex-col gap-2'>
-                <div className='text-sm font-semibold'>{event.title}</div>
-                <div className='text-xs'>{event.time}</div>
+              <div className='flex flex-col'>
+                <div className='text-[16px] font-semibold'>{event.title}</div>
+                <div className='text-[14px]'>{event.time}</div>
               </div>
             </div>
 
