@@ -1,3 +1,4 @@
+import useSavingsAccountStore from '@/store/useSavingsAccountStore';
 import { useState } from 'react';
 import { ButtonMedium } from '../atoms/Buttons/ButtonMedium';
 import PriceInput from '../atoms/Inputs/PriceInput';
@@ -17,18 +18,16 @@ const amountOptions: AmountOption[] = [
 ];
 
 const Amount = () => {
-  const [selectedAmount, setSelectedAmount] = useState<number | 'custom'>();
-  const [customAmount, setCustomAmount] = useState('');
+  const { selectedAmount, customAmount, setSelectedAmount, setCustomAmount } =
+    useSavingsAccountStore();
 
   const handleAmountClick = (value: number | 'custom') => {
     setSelectedAmount(value);
-    if (value !== 'custom') setCustomAmount(''); // Clear custom input if a predefined amount is selected
+    if (value !== 'custom') setCustomAmount('');
   };
 
   return (
     <div>
-      <div className='mb-[18px] text-lg font-semibold'>금액 설정하기</div>
-
       <div className='grid grid-cols-2 gap-[10px]'>
         {amountOptions.map((option) => (
           <ButtonMedium
