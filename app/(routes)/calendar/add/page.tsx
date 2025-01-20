@@ -24,15 +24,31 @@ const TitleComponent = (title: string) => {
   );
 };
 
+const SelectTypeComponent = (type: string, color: string) => {
+  return (
+    <div className='flex items-center gap-4'>
+      <div className={`w-5 h-5 rounded-full bg-${color}`}></div>
+      <div>{type}</div>
+    </div>
+  );
+};
+
 const AddPlan = () => {
   const titleRef = useRef(null);
-  const [isAllday, setIsAllday] = useState(false);
+  const [selectedType, setSelectedType] = useState<string>('');
+  const [isAllday, setIsAllday] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
 
   useEffect(() => {
-    console.log(startDate, endDate);
-  }, [startDate, endDate]);
+    console.log(selectedType);
+  }, [selectedType]);
+
+  const handleTypeChange = (value: string) => {
+    setSelectedType(value);
+  };
+
+  const handleOnClick = () => {};
 
   return (
     <div className='pageLayout'>
@@ -41,14 +57,26 @@ const AddPlan = () => {
         <div className='flex flex-col space-y-12'>
           <div className='flex justify-between items-center'>
             {TitleComponent('분류')}
-            <Select>
-              <SelectTrigger className='w-[180px]'>
-                <SelectValue placeholder='Theme' />
+            <Select onValueChange={handleTypeChange} value={selectedType}>
+              <SelectTrigger className='w-[120px]'>
+                <SelectValue placeholder='분류 선택' />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='light'>Light</SelectItem>
-                <SelectItem value='dark'>Dark</SelectItem>
-                <SelectItem value='system'>System</SelectItem>
+                <SelectItem value='BIRTHDAY'>
+                  {SelectTypeComponent('생일', 'lemon')}
+                </SelectItem>
+                <SelectItem value='MEMORIAL'>
+                  {SelectTypeComponent('기념일', 'peach')}
+                </SelectItem>
+                <SelectItem value='DINING'>
+                  {SelectTypeComponent('약속', 'skyBlue')}
+                </SelectItem>
+                <SelectItem value='TRAVEL'>
+                  {SelectTypeComponent('여행', 'lavendar')}
+                </SelectItem>
+                <SelectItem value='OTHER'>
+                  {SelectTypeComponent('기타', 'brown')}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -85,7 +113,7 @@ const AddPlan = () => {
             {TitleComponent('구성원')}
           </div>
         </div>
-        <ButtonLarge text={'저장'} />
+        <ButtonLarge text={'저장'} onClick={handleOnClick} />
       </div>
     </div>
   );

@@ -6,6 +6,11 @@ declare module 'next-auth' {
   interface User {
     accessToken?: string;
     refreshToken?: string;
+    userId?: string;
+    userName?: string;
+    userProfile?: string;
+    userGender?: string;
+    userBirth?: string;
   }
 }
 
@@ -13,6 +18,11 @@ declare module 'next-auth/jwt' {
   interface JWT {
     accessToken?: string;
     refreshToken?: string;
+    userId?: string;
+    userName?: string;
+    userProfile?: string;
+    userGender?: string;
+    userBirth?: string;
   }
 }
 
@@ -60,6 +70,11 @@ export const {
             return {
               accessToken: data.access_token,
               refreshToken: data.refresh_token,
+              userId: data.user_id,
+              userName: data.user_name,
+              userProfile: data.user_profile,
+              userGender: data.gender,
+              userBirth: data.bitrh,
             };
           }
 
@@ -75,12 +90,22 @@ export const {
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
+        token.userId = user.userId;
+        token.userName = user.userName;
+        token.userProfile = user.userProfile;
+        token.userGender = user.userGender;
+        token.userBirth = user.userBirth;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
+      session.user.userId = token.userId;
+      session.user.userName = token.userName;
+      session.user.userProfile = token.userProfile;
+      session.user.userGender = token.userGender;
+      session.user.userBirth = token.userBirth;
       return session;
     },
   },
