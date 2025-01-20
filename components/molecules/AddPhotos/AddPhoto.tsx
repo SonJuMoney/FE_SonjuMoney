@@ -1,7 +1,8 @@
 import PhotoInput from '@/components/atoms/Inputs/PhotoInput';
 import AddPhotoButton from '@/components/atoms/Photos/AddPhotoButton';
 import Photo from '@/components/atoms/Photos/Photo';
-import { useRef } from 'react';
+import VideoPreview from '@/components/atoms/Photos/VideoPreview';
+import { memo, useRef } from 'react';
 
 type AddPhotoProps = {
   maxLength: number;
@@ -44,7 +45,7 @@ const AddPhoto = ({
               id='inputFile'
               name='image'
               type='file'
-              accept='image/*'
+              accept='image/*,video/*'
               onChange={(e) => changeImg(e)}
               style={{ display: 'none' }}
               multiple
@@ -65,24 +66,34 @@ const AddPhoto = ({
                 id='inputFile'
                 type='file'
                 name='image'
-                accept='image/*'
+                accept='image/*,video/*'
                 onChange={(e) => changeImg(e)}
                 style={{ display: 'none' }}
                 multiple
-                max={5}
+                max={maxLength}
                 ref={fileInputRef}
               ></input>
             </AddPhotoButton>
           )}
 
-          {files.map((each) => {
-            return (
-              <Photo
-                key={each.name}
-                imgUrl={URL.createObjectURL(each)}
-                onDelete={() => onDelete(each)}
-              ></Photo>
-            );
+          {files.map((file) => {
+            if (file.type.startsWith('video/')) {
+              return (
+                <VideoPreview
+                  key={file.name}
+                  file={file}
+                  onDelete={() => onDelete(file)}
+                />
+              );
+            } else {
+              return (
+                <Photo
+                  key={file.name}
+                  imgUrl={URL.createObjectURL(file)}
+                  onDelete={() => onDelete(file)}
+                ></Photo>
+              );
+            }
           })}
         </div>
       )}
@@ -90,7 +101,7 @@ const AddPhoto = ({
   );
 };
 
-export default AddPhoto;
+export default memo(AddPhoto);
 
 // 부모 컴포넌트 사용 예시
 

@@ -1,12 +1,19 @@
 import AnimatedCheck from '@/components/atoms/AnimatiedIcons/Check';
+import Celebrate from '@/public/AnimatedIcons/Celebrate.png';
+import Image from 'next/image';
 import { ReactNode } from 'react';
 
 type CompleteMessageProps = {
   title: ReactNode;
   subTitle?: ReactNode;
+  isCelebrate?: boolean;
 };
 
-const CompleteMessage = ({ title, subTitle }: CompleteMessageProps) => {
+const CompleteMessage = ({
+  title,
+  subTitle,
+  isCelebrate,
+}: CompleteMessageProps) => {
   return (
     <div className='flex justify-center items-center h-3/4'>
       <div className='flex flex-col gap-[70px] justify-center items-center'>
@@ -20,7 +27,11 @@ const CompleteMessage = ({ title, subTitle }: CompleteMessageProps) => {
             </span>
           )}
         </div>
-        <AnimatedCheck />
+        {isCelebrate ? (
+          <Image src={Celebrate} alt='Bear' width={150} height={160} />
+        ) : (
+          <AnimatedCheck />
+        )}
       </div>
     </div>
   );

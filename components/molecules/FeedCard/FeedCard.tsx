@@ -29,7 +29,7 @@ import Image from 'next/image';
 
 const FeedCard = ({ feed }: { feed: TFeed }) => {
   return (
-    <Card className='flex flex-col w-full gap-[10px] py-[16px]'>
+    <div className='flex flex-col w-full gap-[10px] py-[16px] bg-white'>
       <div className='flex justify-between w-full px-[16px]'>
         {feed.feed_type === 'THANKS' ? (
           <div className='flex user gap-[10px] items-center'>
@@ -149,7 +149,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
       <span className='px-[16px] whitespace-break-spaces font-semibold'>
         {feed.message}
       </span>
-    </Card>
+    </div>
   );
 };
 
