@@ -3,15 +3,12 @@
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
-import { useUserApi } from '@/hooks/useUserApi/useUserApi';
-import { TProfile } from '@/types/user';
+import useSavingsAccountStore from '@/store/useSavingsAccountStore';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 const Summary = () => {
   const router = useRouter();
-  const { getUser } = useUserApi();
-  const [user, setUser] = useState<TProfile | null>(null);
+  const { selectedChild } = useSavingsAccountStore();
 
   const kstOffset = 9 * 60 * 60 * 1000;
   const today = new Date(Date.now() + kstOffset);
@@ -20,21 +17,12 @@ const Summary = () => {
     .toISOString()
     .split('T')[0];
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const response = await getUser();
-      setUser(response);
-    };
-
-    fetchUser();
-  }, []);
-
   const infomation = [
     { label: '만기일', value: `${maturityDate} (24개월)` },
     { label: '금리', value: '최고 연 3.75%' },
     {
       label: '해지 입금 계좌',
-      value: `${user?.username}님 통장`,
+      value: `${selectedChild?.member_name}님 통장`,
     },
   ];
 

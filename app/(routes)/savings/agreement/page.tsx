@@ -53,7 +53,7 @@ const TermsAgreement = () => {
       <Header title='적금 들어주기' />
       <div className='defaultLayout justify-between'>
         <PageTitle
-          title={`${user?.username}님이 ${selectedChild}님의
+          title={`${user?.username}님이 ${selectedChild?.member_name}님의
 법정 대리인인지 확인할게요`}
           subTitle={`손주머니가 대신, 법원 가족관계 증명서류를
 안전하게 확인해요`}

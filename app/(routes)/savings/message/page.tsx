@@ -29,7 +29,7 @@ const DefaultMessage = () => {
     const message = textAreaRef.current?.getValue() || '';
     setMessage(message);
 
-    router.push('/savings/complete');
+    router.push('/savings/password');
   };
 
   return (

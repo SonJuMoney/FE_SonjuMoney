@@ -10,7 +10,7 @@ const PageTitle = ({ title, subTitle }: PageTitleProps) => {
         {title}
       </span>
       {subTitle && (
-        <span className='text-darkGray text-[15px] font-semibold max-w-[320px]  whitespace-pre'>
+        <span className='text-darkGray text-[15px] font-semibold max-w-[320px] whitespace-pre'>
           {subTitle}
         </span>
       )}
