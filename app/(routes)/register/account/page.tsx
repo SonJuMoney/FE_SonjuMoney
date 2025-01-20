@@ -9,7 +9,7 @@ import { TAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const Account = () => {
+const Account = ({ searchParams }: { searchParams: { userId?: number } }) => {
   const { getMockAccounts } = useMockAccountApi();
   const [accountList, setAccountList] = useState<TAccount[]>([]);
 
@@ -27,11 +27,20 @@ const Account = () => {
   };
 
   useEffect(() => {
-    const fetchMyAccounts = async () => {
-      const response = await getMockAccounts();
-      setAccountList(response);
-    };
-    fetchMyAccounts();
+    if (searchParams.userId) {
+      const fetchMyAccounts = async () => {
+        const response = await getMockAccounts(searchParams.userId);
+        setAccountList(response);
+      };
+      fetchMyAccounts();
+    } else {
+      const fetchMyAccounts = async () => {
+        const response = await getMockAccounts();
+        setAccountList(response);
+      };
+      fetchMyAccounts();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

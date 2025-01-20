@@ -3,21 +3,27 @@
 import { SignUpData } from '@/store/useSignupStore';
 import { ChangeEvent, useState } from 'react';
 
-type Props = {
-  id: keyof SignUpData;
+export type ChildData = {
+  id: string;
+  name: string;
+  residentNum: string;
+};
+
+type Props<T extends SignUpData | ChildData> = {
+  id: keyof T;
   inputType: string;
   onChange: (value: string) => void;
   question: string;
   placeholder: string;
   validate: (value: string) => boolean | Promise<ValidationResult>;
   errorMessage: string;
-  onValidation: (id: keyof SignUpData, isValid: boolean) => void;
+  onValidation: (id: keyof T, isValid: boolean) => void;
   width: number;
 };
 
 type ValidationResult = { isValid: boolean; error: string };
 
-const SignUpInput = ({
+const SignUpInput = <T extends SignUpData | ChildData>({
   id,
   inputType,
   onChange,
@@ -27,7 +33,7 @@ const SignUpInput = ({
   errorMessage,
   onValidation,
   width,
-}: Props) => {
+}: Props<T>) => {
   const [error, setError] = useState<string>('');
   const [displayValue, setDisplayValue] = useState<string>('');
   const [residentValue, setResidentValue] = useState<string>('');
