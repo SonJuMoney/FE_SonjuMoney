@@ -95,7 +95,10 @@ const SetPinPage = () => {
   return (
     <div className='h-full flex flex-col'>
       <div className='h-1/3 flex items-center justify-center'>
-        <CenterTitle title='간편 비밀번호를 설정해주세요' />
+        <CenterTitle
+          title={`간편 비밀번호를 
+설정해주세요`}
+        />
       </div>
 
       <div className='flex-1 flex flex-col'>

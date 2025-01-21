@@ -22,9 +22,9 @@ const Account = ({ searchParams }: { searchParams: { userId?: string } }) => {
 
   const handleNext = () => {
     if (selectedAccountId) {
-      const isChild = !!searchParams.userId;
+      const childId = searchParams.userId ?? 0;
       router.push(
-        `/register/account/password?accountId=${selectedAccountId}&isChildAccount=${isChild}`
+        `/register/account/password?accountId=${selectedAccountId}&childId=${childId}`
       );
     }
   };

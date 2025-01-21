@@ -8,11 +8,15 @@ import { TSetAccountReq } from '@/types/Account';
 export default function PasswordPage({
   searchParams,
 }: {
-  searchParams: { accountId: string; isChild: string };
+  searchParams: { accountId: string; childId: string };
 }) {
   const { setAccount } = useAccountApi();
-  const isChild = Boolean(searchParams.isChild);
-  const onComplete = (data: TSetAccountReq) => {
+  const childId = Number(searchParams.childId);
+  const handleOnComplete = () => {
+    const data: TSetAccountReq =
+      childId === 0
+        ? { mockacc_id: Number(searchParams.accountId) }
+        : { mockacc_id: Number(searchParams.accountId), user_id: childId };
     return setAccount(data);
   };
   return (
@@ -22,14 +26,15 @@ export default function PasswordPage({
         <PasswordForm
           type='Account'
           accountId={Number(searchParams.accountId)}
-          text='계좌 비밀번호를 입력해주세요'
+          text={`계좌 비밀번호를 
+입력해주세요`}
           num={4}
           route={
-            isChild ? '/register/family/invite' : '/register/account/complete'
+            childId === 0
+              ? '/register/account/complete'
+              : '/register/family/invite'
           }
-          onComplete={() =>
-            onComplete({ mockacc_id: Number(searchParams.accountId) })
-          }
+          onComplete={handleOnComplete}
         />
       </div>
     </div>
