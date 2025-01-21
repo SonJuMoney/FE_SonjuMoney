@@ -25,14 +25,14 @@ export default function FeedList({ initialData, familyId }: FeedListProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['feeds'],
-      initialPageParam: 1,
-      queryFn: async ({ pageParam = 1 }) => {
-        const response = await getFeedList(pageParam, familyId);
+      initialPageParam: 0,
+      queryFn: async ({ pageParam = 0 }) => {
+        const response = await getFeedList(familyId, pageParam);
         return response;
       },
       initialData: {
         pages: [initialData],
-        pageParams: [1],
+        pageParams: [0],
       },
       getNextPageParam: (lastPage) => {
         if (!lastPage.result?.hasNext) return undefined;

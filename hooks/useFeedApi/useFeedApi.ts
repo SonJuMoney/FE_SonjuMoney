@@ -6,8 +6,8 @@ export const useFeedApi = () => {
   const baseUrl = '/feeds';
 
   const getFeedList = async (
-    pageParam: number,
-    familyId: number
+    familyId: number,
+    pageParam: number
   ): Promise<ResponseType<GetPaginationResult<TFeed>>> => {
     const response = await fetchApi(
       `${baseUrl}`,

@@ -40,7 +40,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
           </div>
         ) : (
           <div className='flex user gap-[10px] items-center'>
-            <CircleImg imgUrl={feed.writer_image} size={30} />
+            <CircleImg imgUrl={feed.writer_image || '/Role1.png'} size={30} />
             <span className='font-bold text-[14px]'>{feed.writer_name}</span>
           </div>
         )}
@@ -67,9 +67,16 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
         <CarouselContent>
           {feed.contents.map((image) => (
             <CarouselItem key={image.url}>
-              {image.content_type === 'IMAGE' ? (
+              {image.url && image.content_type === 'IMAGE' ? (
                 <div className='relative w-full aspect-square'>
-                  <Image src={image.url} alt='' fill className='object-cover' />
+                  <Image
+                    src={
+                      'https://d35670s5pea8wg.cloudfront.net/feed/1/7d09ba71-0855-402a-b111-89743d12272f_SonjuMoney_erd.png'
+                    }
+                    alt={image.url}
+                    fill
+                    className='object-cover'
+                  />
                 </div>
               ) : (
                 <div className='relative w-full aspect-square '>

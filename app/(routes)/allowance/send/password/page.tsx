@@ -33,7 +33,8 @@ const EnterPasscode = () => {
       <div className='defaultLayout'>
         <PasswordForm
           type='Passcode'
-          text='간편 비밀번호를 입력해주세요'
+          text={`간편 비밀번호를 
+입력해주세요`}
           num={6}
           route='/allowance/send/complete'
           onComplete={() =>
