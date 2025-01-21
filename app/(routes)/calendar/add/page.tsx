@@ -13,8 +13,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { useApi } from '@/hooks/useApi';
-import { useEffect, useRef, useState } from 'react';
+import { useEventApi } from '@/hooks/useEventApi/useEventApi';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
+import { setHours, setMinutes } from 'date-fns';
+import { useState } from 'react';
 
 const TitleComponent = (title: string) => {
   return (
@@ -35,14 +37,15 @@ const SelectTypeComponent = (type: string, color: string) => {
 };
 
 const AddPlan = () => {
-  const { fetchApi } = useApi();
+  const { setEvent } = useEventApi();
+  const { selectedFamily } = useSelectedFamilyStore();
 
   const [selectedType, setSelectedType] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [isAllday, setIsAllday] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
-  const [eventMembers, setEventMembers] = useState<number[]>([1, 2, 3, 4]);
+  const [eventMembers, setEventMembers] = useState<number[]>([1, 2, 4]);
 
   const [inputError, setInputError] = useState<string>('');
 
@@ -98,22 +101,23 @@ const AddPlan = () => {
       return;
     }
 
-    try {
-      const response = await fetchApi('/events', {
-        method: 'POST',
-        body: JSON.stringify({
-          event_category: selectedType,
-          event_name: title,
-          start_date_time: startDate?.toISOString(),
-          end_date_time: endDate?.toISOString(),
-          event_participants: eventMembers,
-          all_day_status: isAllday ? 'ALL_DAY' : 'SPECIFIC_TIME',
-        }),
+    if (selectedFamily) {
+      const eventData = JSON.stringify({
+        event_category: selectedType,
+        event_name: title,
+        start_date_time: setMinutes(
+          setHours(startDate!, startDate!.getHours() + 9),
+          startDate!.getMinutes()
+        ).toISOString(),
+        end_date_time: setMinutes(
+          setHours(endDate!, endDate!.getHours() + 9),
+          endDate!.getMinutes()
+        ).toISOString(),
+        event_participants: eventMembers,
+        all_day_status: isAllday ? 'ALL_DAY' : 'SPECIFIC_TIME',
       });
-
-      const data = await response.json();
-    } catch (error) {
-      console.error('Error:', error);
+      const response = await setEvent(selectedFamily?.family_id, eventData);
+      console.log(response);
     }
   };
 

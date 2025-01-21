@@ -4,6 +4,9 @@ import LogoHeader from '@/components/atoms/Headers/LogoHeader';
 import PlanCard from '@/components/molecules/Cards/PlanCard';
 import { buttonVariants } from '@/components/ui/button';
 import MonthPicker from '@/components/ui/monthPicker';
+import { useEventApi } from '@/hooks/useEventApi/useEventApi';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
+import { TEvent } from '@/types/Events';
 import { add, format, sub } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -12,187 +15,61 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/shadcn';
 
+type Events = {
+  current_date: string;
+  current_day: string;
+  events: TEvent[];
+};
+
 const PlanList = () => {
-  const offset = new Date().getTimezoneOffset() * 60000;
-  const today = new Date(Date.now() - offset).toISOString().split('T')[0];
+  const { getEvents } = useEventApi();
+  const { selectedFamily } = useSelectedFamilyStore();
+
+  const today = new Date();
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [showMonthPicker, setShowMonthPicker] = useState<boolean>(false);
+  const [events, setEvents] = useState<Events[]>([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const year = currentMonth.getFullYear();
+      const month = currentMonth.getMonth() + 1;
+      if (selectedFamily) {
+        const response = await getEvents(selectedFamily.family_id, year, month);
+        console.log(response);
+        const groupedEvents = groupEventsByDate(response);
+        setEvents(groupedEvents);
+      }
+    };
+
+    fetchEvents();
+  }, [currentMonth, selectedFamily]);
+
+  const groupEventsByDate = (events: TEvent[]) => {
+    const grouped = events.reduce((acc: { [key: string]: Events }, event) => {
+      const currentDate = event.current_date;
+
+      if (!acc[currentDate]) {
+        const date = new Date(currentDate);
+        const day = date.toLocaleDateString('ko-KR', { weekday: 'long' });
+
+        acc[currentDate] = {
+          current_date: currentDate,
+          current_day: day,
+          events: [],
+        };
+      }
+
+      acc[currentDate].events.push(event);
+      return acc;
+    }, {});
+
+    return Object.values(grouped);
+  };
 
   const handleMonthChange = (date: Date) => {
     setCurrentMonth(date);
   };
-
-  const events = [
-    {
-      date: '2025-01-13',
-      day: '월요일',
-      events: [
-        {
-          id: 1,
-          type: 'MEMORIAL',
-          title: '준용이네 부부 결혼 기념일',
-          time: '종일',
-          members: [{ id: 1, name: 'Member1', imgUrl: '/Role1.png' }],
-        },
-
-        {
-          id: 2,
-          type: 'BIRTHDAY',
-          title: '준용이 생일',
-          time: '종일',
-          members: [{ id: 1, name: 'Member1', imgUrl: '/Role1.png' }],
-        },
-        {
-          id: 3,
-          type: 'MEMORIAL',
-          title: '준용이네 부부 결혼 기념일',
-          time: '종일',
-          members: [{ id: 1, name: 'Member1', imgUrl: '/Role1.png' }],
-        },
-
-        {
-          id: 4,
-          type: 'BIRTHDAY',
-          title: '준용이 생일',
-          time: '종일',
-          members: [{ id: 1, name: 'Member1', imgUrl: '/Role1.png' }],
-        },
-        {
-          id: 5,
-          type: 'MEMORIAL',
-          title: '준용이네 부부 결혼 기념일',
-          time: '종일',
-          members: [{ id: 1, name: 'Member1', imgUrl: '/Role1.png' }],
-        },
-
-        {
-          id: 6,
-          type: 'BIRTHDAY',
-          title: '준용이 생일',
-          time: '종일',
-          members: [{ id: 1, name: 'Member1', imgUrl: '/Role1.png' }],
-        },
-      ],
-    },
-    {
-      date: '2025-01-16',
-      day: '화요일',
-      events: [
-        {
-          id: 7,
-          type: 'DINING',
-          title: '건강 검진',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-        {
-          id: 8,
-          type: 'DINING',
-          title: '건강 검진',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-      ],
-    },
-    {
-      date: '2025-01-17',
-      day: '화요일',
-      events: [
-        {
-          id: 9,
-          type: 'DINING',
-          title: '건강 검진',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-        {
-          id: 10,
-          type: 'DINING',
-          title: '건강 검진',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-        {
-          id: 11,
-          type: 'DINING',
-          title: '건강 검진',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-        {
-          id: 12,
-          type: 'DINING',
-          title: '건강 검진',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-        {
-          id: 13,
-          type: 'DINING',
-          title: '건강 검진',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-      ],
-    },
-    {
-      date: '2025-01-20',
-      day: '화요일',
-      events: [
-        {
-          id: 14,
-          type: 'DINING',
-          title: '4',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-      ],
-    },
-    {
-      date: '2025-01-23',
-      day: '화요일',
-      events: [
-        {
-          id: 15,
-          type: 'DINING',
-          title: '5',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-      ],
-    },
-
-    {
-      date: '2025-01-24',
-      day: '화요일',
-      events: [
-        {
-          id: 16,
-          type: 'DINING',
-          title: '5',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-      ],
-    },
-    {
-      date: '2025-01-19',
-      day: '화요일',
-      events: [
-        {
-          id: 17,
-          type: 'DINING',
-          title: '5',
-          time: '오전 10시',
-          members: [{ id: 3, name: 'Member3', imgUrl: '/Role1.png' }],
-        },
-      ],
-    },
-  ];
-
-  useEffect(() => {
-    console.log(format(currentMonth, 'yyyy-MM', { locale: ko }));
-  }, [currentMonth]);
 
   const previousMonth = () => {
     const newMonth = sub(currentMonth, { months: 1 });
@@ -262,13 +139,13 @@ const PlanList = () => {
         )}
       </div>
       <div className='px-5 mt-[120px] pb-[120px]'>
-        {events.map((day) => (
+        {events?.map((date) => (
           <PlanCard
-            key={day.date}
-            date={day.date}
-            day={day.day}
-            events={day.events}
-            isToday={day.date === today}
+            key={date.current_date}
+            date={date.current_date}
+            day={date.current_day}
+            events={date.events}
+            isToday={new Date(date.current_date) === today}
           />
         ))}
         <div className='fixed bottom-[85px] right-[24px]'>
