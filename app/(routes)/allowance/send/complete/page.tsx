@@ -7,7 +7,8 @@ import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { useRouter } from 'next/navigation';
 
 const SendAllowanceComplete = () => {
-  const { selectedMember, amount, resetState } = useSendAllowanceStore();
+  const { selectedMember, amount, message, resetState } =
+    useSendAllowanceStore();
   const router = useRouter();
 
   const handleConfirm = () => {
@@ -25,7 +26,8 @@ const SendAllowanceComplete = () => {
             <>
               <span className='text-appColor'>{selectedMember}님</span>에게
               <br />
-              <span className='text-appColor'>{amount}원</span>을 보냈습니다.
+              <span className='text-appColor'>{amount}원</span>
+              {message ? <>과 메시지를 보냈습니다.</> : <>을 보냈습니다.</>}
             </>
           }
         />
