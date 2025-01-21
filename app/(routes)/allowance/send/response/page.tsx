@@ -19,7 +19,7 @@ const SendResponse = () => {
   const router = useRouter();
 
   const skip = () => {
-    router.push('/allowance/send/complete');
+    router.push('/allowance/send/password');
   };
 
   const handleAddPhotos = (newFiles: File[]) => {
