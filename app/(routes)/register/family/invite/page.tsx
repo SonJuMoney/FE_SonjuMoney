@@ -5,9 +5,13 @@ import RegisterCardSmall from '@/components/atoms/Cards/RegisterCardSmall';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import InviteCard from '@/components/molecules/Cards/InviteCard';
+import MemberCard from '@/components/molecules/Cards/MemberCard';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+import { useUserApi } from '@/hooks/useUserApi/useUserApi';
 import useRegisterFamilyStore from '@/store/useRegisterFamilyStore';
+import { Child } from '@/types/user';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const InviteFamily = () => {
   const {
@@ -17,10 +21,28 @@ const InviteFamily = () => {
     addInviteCard,
     updateInviteCard,
     deleteInviteCard,
+    selectedChilds,
+    setSelectedChilds,
   } = useRegisterFamilyStore();
   const router = useRouter();
 
   const { setFamily } = useFamilyApi();
+  const { getChildren } = useUserApi();
+
+  const [childAccounts, setChildAccounts] = useState<Child[]>([]);
+
+  useEffect(() => {
+    const fetchChildren = async () => {
+      try {
+        const response = await getChildren();
+        setChildAccounts(response);
+      } catch (error) {
+        console.error('Error fetching child accounts:', error);
+      }
+    };
+
+    fetchChildren();
+  }, [getChildren]);
 
   const handleChildAccount = () => {
     router.push('/register/child');
@@ -38,11 +60,13 @@ const InviteFamily = () => {
         phone: card.phoneValue,
         role: card.roleValue,
       })),
+      add_children: selectedChilds,
     };
 
     console.log(familyData);
 
     setFamily(familyData);
+    router.push('/register/family/complete');
   };
 
   return (
@@ -88,6 +112,11 @@ const InviteFamily = () => {
             <div className='font-medium text-[15px] border-b pb-3'>
               자녀 계정 초대하기
             </div>
+            <MemberCard
+              childs={childAccounts}
+              selectedChilds={selectedChilds}
+              onSelected={setSelectedChilds}
+            />
             <div className='text-center text-darkGray/60 font-medium text-xs'>
               생성된 계정은 부모님이 관리할 수 있어요
             </div>
