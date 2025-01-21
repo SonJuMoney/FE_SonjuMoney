@@ -1,5 +1,5 @@
 import { useApi } from '@/hooks/useApi';
-import { TProfile } from '@/types/user';
+import { Child, TProfile } from '@/types/user';
 
 export const useUserApi = () => {
   const { fetchApi } = useApi();
@@ -12,5 +12,12 @@ export const useUserApi = () => {
     return response;
   };
 
-  return { getUser };
+  // 내 아이 조회
+  const getChildren = async (): Promise<Child[]> => {
+    const response = await fetchApi(`${baseUrl}/children`);
+
+    return response;
+  };
+
+  return { getUser, getChildren };
 };

@@ -1,3 +1,5 @@
+import { Child } from './user';
+
 export type TFamily = {
   family_id: number;
   family_name: string;
@@ -18,4 +20,5 @@ export type TSetFamilyReq = {
     phone: string;
     role: string;
   }[];
+  add_children: Child[];
 };
