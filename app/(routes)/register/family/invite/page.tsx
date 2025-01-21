@@ -128,7 +128,7 @@ const InviteFamily = () => {
         </div>
       </div>
 
-      <div className='fixed bottom-0 left-0 w-full p-5'>
+      <div className='bottom-0 left-0 w-full p-5'>
         <ButtonLarge
           text='다음'
           disabled={isButtonDisabled}
