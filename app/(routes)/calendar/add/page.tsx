@@ -18,6 +18,14 @@ import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { setHours, setMinutes } from 'date-fns';
 import { useState } from 'react';
 
+const categories: { value: string; type: string; color: string }[] = [
+  { value: 'BIRTHDAY', type: '생일', color: 'lemon' },
+  { value: 'MEMORIAL', type: '기념일', color: 'peach' },
+  { value: 'DINING', type: '약속', color: 'skyBlue' },
+  { value: 'TRAVEL', type: '여행', color: 'lavendar' },
+  { value: 'OTHER', type: '기타', color: 'brown' },
+];
+
 const TitleComponent = (title: string) => {
   return (
     <div className='flex space-x-4 items-center'>
@@ -48,10 +56,6 @@ const AddPlan = () => {
   const [eventMembers, setEventMembers] = useState<number[]>([1, 2, 4]);
 
   const [inputError, setInputError] = useState<string>('');
-
-  // useEffect(() => {
-  //   console.log(title);
-  // }, [title]);
 
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
@@ -134,21 +138,11 @@ const AddPlan = () => {
                   <SelectValue placeholder='분류 선택' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='BIRTHDAY'>
-                    {SelectTypeComponent('생일', 'lemon')}
-                  </SelectItem>
-                  <SelectItem value='MEMORIAL'>
-                    {SelectTypeComponent('기념일', 'peach')}
-                  </SelectItem>
-                  <SelectItem value='DINING'>
-                    {SelectTypeComponent('약속', 'skyBlue')}
-                  </SelectItem>
-                  <SelectItem value='TRAVEL'>
-                    {SelectTypeComponent('여행', 'lavendar')}
-                  </SelectItem>
-                  <SelectItem value='OTHER'>
-                    {SelectTypeComponent('기타', 'brown')}
-                  </SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category.value} value={category.value}>
+                      {SelectTypeComponent(category.type, category.color)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

@@ -3,6 +3,7 @@
 import CircleImg from '@/components/atoms/CircleImages/CircleImg';
 import { TEvent } from '@/types/Events';
 import { format, isSameDay, parseISO } from 'date-fns';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 enum EventType {
@@ -22,6 +23,7 @@ type PlanCardProps = {
 
 const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const formatDateTime = (startDateTime: string, endDateTime: string) => {
     const start = parseISO(startDateTime);
@@ -40,6 +42,10 @@ const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
       cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [isToday]);
+
+  const goEventDetail = (eventId: number) => {
+    router.push(`/calendar/${eventId}`);
+  };
 
   return (
     <div ref={cardRef} style={{ scrollMarginTop: '120px' }}>
@@ -73,6 +79,7 @@ const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
                 ? 'pb-4 mb-4 border-b border-[#dadada]'
                 : ''
             }`}
+            onClick={() => goEventDetail(event.event_id)}
           >
             {/* Event Info */}
             <div className='flex items-center gap-2'>

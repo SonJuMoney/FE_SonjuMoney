@@ -25,7 +25,7 @@ const PlanList = () => {
   const { getEvents } = useEventApi();
   const { selectedFamily } = useSelectedFamilyStore();
 
-  const today = new Date();
+  const today: string = format(new Date(), 'yyyy-MM-dd');
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [showMonthPicker, setShowMonthPicker] = useState<boolean>(false);
   const [events, setEvents] = useState<Events[]>([]);
@@ -82,7 +82,7 @@ const PlanList = () => {
   };
 
   return (
-    <div className='h-full'>
+    <div className='h-full overflow-y-auto scrollbar-hide'>
       <div className='w-full fixed top-0 bg-white z-10'>
         <LogoHeader showFamily={true} />
 
@@ -145,7 +145,7 @@ const PlanList = () => {
             date={date.current_date}
             day={date.current_day}
             events={date.events}
-            isToday={new Date(date.current_date) === today}
+            isToday={date.current_date === today}
           />
         ))}
         <div className='fixed bottom-[85px] right-[24px]'>

@@ -1,5 +1,5 @@
 import { useApi } from '@/hooks/useApi';
-import { TEvent, TEventReq } from '@/types/Events';
+import { TEvent } from '@/types/Events';
 
 export const useEventApi = () => {
   const { fetchApi } = useApi();
@@ -13,6 +13,12 @@ export const useEventApi = () => {
     const response = await fetchApi(
       `${baseUrl}?family_id=${familyId}&year=${year}&month=${month}`
     );
+
+    return response;
+  };
+
+  const getEventDetail = async (eventId: string): Promise<TEvent> => {
+    const response = await fetchApi(`${baseUrl}/${eventId}`);
 
     return response;
   };
@@ -36,5 +42,16 @@ export const useEventApi = () => {
     return false;
   };
 
-  return { getEvents, setEvent };
+  const deleteEvent = async (eventId: string): Promise<boolean> => {
+    const response = await fetchApi(`${baseUrl}/${eventId}`, {
+      method: 'DELETE',
+    });
+
+    console.log(response);
+    console.log(response.code);
+
+    return response === null || response.code === 200;
+  };
+
+  return { getEvents, getEventDetail, setEvent, deleteEvent };
 };
