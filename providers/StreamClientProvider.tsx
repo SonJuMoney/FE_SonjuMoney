@@ -18,21 +18,21 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!session?.user) return;
     if (!apiKey) throw new Error('Stream API Key missing');
-    console.log('session changed');
     const user: User = {
-      id: session.user.id || '1',
-      name: session.user.name || '준용',
-      image: session.user.image || '',
+      id: session.user?.userId?.toString() || '1',
+      name: session.user.userName || '준용',
     };
-    console.log('user', user);
-    const client = new StreamVideoClient({
+    console.log('user in Stream Provider', user);
+
+    const client = StreamVideoClient.getOrCreateInstance({
       apiKey,
       user,
       tokenProvider,
     });
+    console.log('client', client);
 
     setVideoClient(client);
-  }, [session]);
+  }, [session?.user?.accessToken]);
 
   if (!videoClient) {
     return <>{children}</>;

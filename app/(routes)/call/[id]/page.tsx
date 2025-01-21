@@ -4,7 +4,11 @@ import Alert from '@/components/Calls/Alert';
 import MeetingRoom from '@/components/Calls/MeetingRoom';
 import MeetingSetup from '@/components/Calls/MeetingSetup';
 import { useGetCallById } from '@/hooks/useCalls/useGetCallById';
-import { StreamCall, StreamTheme } from '@stream-io/video-react-sdk';
+import {
+  RingingCall,
+  StreamCall,
+  StreamTheme,
+} from '@stream-io/video-react-sdk';
 import { Loader } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
@@ -29,7 +33,7 @@ const MeetingPage = () => {
   const notAllowed =
     call.type === 'invited' &&
     (!session?.user ||
-      !call.state.members.find((m) => m.user.id === session?.user?.id));
+      !call.state.members.find((m) => m.user.id === session?.user?.userId));
 
   if (notAllowed)
     return <Alert title='You are not allowed to join this meeting' />;

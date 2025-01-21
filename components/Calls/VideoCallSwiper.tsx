@@ -1,6 +1,8 @@
 'use client';
 
 // Import Swiper styles
+import CreateMeeting from '@/app/(routes)/call/CreateMeeting';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
@@ -18,14 +20,16 @@ interface User {
 }
 
 const mockUsers: User[] = [
-  { id: '1', name: '김민수', avatar: '/avatars/user1.jpg', status: 'online' },
-  { id: '2', name: '이지은', avatar: '/avatars/user2.jpg', status: 'offline' },
+  { id: '2', name: '김민수', avatar: '/avatars/user1.jpg', status: 'online' },
+  { id: '3', name: '이지은', avatar: '/avatars/user2.jpg', status: 'offline' },
   { id: '4', name: '박준호', avatar: '/avatars/user3.jpg', status: 'online' },
   { id: '5', name: '박준호', avatar: '/avatars/user3.jpg', status: 'online' },
   { id: '6', name: '박준호', avatar: '/avatars/user3.jpg', status: 'online' },
 ];
 
 export default function VideoCallSwiper() {
+  const { selectedFamily, setSelectedFamily } = useSelectedFamilyStore();
+
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const swiperRef = useRef(null);
 
@@ -69,12 +73,7 @@ export default function VideoCallSwiper() {
                   />
                 </div>
                 <h3 className='text-xl font-bold mt-4'>{user.name}</h3>
-                <ButtonSmall
-                  onClick={() => handleCallUser(user)}
-                  text='화상통화 걸기'
-                  active={true}
-                  className='bg-white'
-                ></ButtonSmall>
+                <CreateMeeting calleeId={user.id} />
               </div>
             </SwiperSlide>
           ))}
