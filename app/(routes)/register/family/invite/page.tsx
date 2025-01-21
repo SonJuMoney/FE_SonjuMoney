@@ -42,7 +42,7 @@ const InviteFamily = () => {
     };
 
     fetchChildren();
-  }, [getChildren]);
+  }, []);
 
   const handleChildAccount = () => {
     router.push('/register/child');
