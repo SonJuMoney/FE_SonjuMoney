@@ -13,8 +13,18 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { useApi } from '@/hooks/useApi';
-import { useEffect, useRef, useState } from 'react';
+import { useEventApi } from '@/hooks/useEventApi/useEventApi';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
+import { setHours, setMinutes } from 'date-fns';
+import { useState } from 'react';
+
+const categories: { value: string; type: string; color: string }[] = [
+  { value: 'BIRTHDAY', type: '생일', color: 'lemon' },
+  { value: 'MEMORIAL', type: '기념일', color: 'peach' },
+  { value: 'DINING', type: '약속', color: 'skyBlue' },
+  { value: 'TRAVEL', type: '여행', color: 'lavendar' },
+  { value: 'OTHER', type: '기타', color: 'brown' },
+];
 
 const TitleComponent = (title: string) => {
   return (
@@ -35,20 +45,17 @@ const SelectTypeComponent = (type: string, color: string) => {
 };
 
 const AddPlan = () => {
-  const { fetchApi } = useApi();
+  const { setEvent } = useEventApi();
+  const { selectedFamily } = useSelectedFamilyStore();
 
   const [selectedType, setSelectedType] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [isAllday, setIsAllday] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
-  const [eventMembers, setEventMembers] = useState<number[]>([1, 2, 3, 4]);
+  const [eventMembers, setEventMembers] = useState<number[]>([1, 2, 4]);
 
   const [inputError, setInputError] = useState<string>('');
-
-  // useEffect(() => {
-  //   console.log(title);
-  // }, [title]);
 
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
@@ -98,22 +105,23 @@ const AddPlan = () => {
       return;
     }
 
-    try {
-      const response = await fetchApi('/events', {
-        method: 'POST',
-        body: JSON.stringify({
-          event_category: selectedType,
-          event_name: title,
-          start_date_time: startDate?.toISOString(),
-          end_date_time: endDate?.toISOString(),
-          event_participants: eventMembers,
-          all_day_status: isAllday ? 'ALL_DAY' : 'SPECIFIC_TIME',
-        }),
+    if (selectedFamily) {
+      const eventData = JSON.stringify({
+        event_category: selectedType,
+        event_name: title,
+        start_date_time: setMinutes(
+          setHours(startDate!, startDate!.getHours() + 9),
+          startDate!.getMinutes()
+        ).toISOString(),
+        end_date_time: setMinutes(
+          setHours(endDate!, endDate!.getHours() + 9),
+          endDate!.getMinutes()
+        ).toISOString(),
+        event_participants: eventMembers,
+        all_day_status: isAllday ? 'ALL_DAY' : 'SPECIFIC_TIME',
       });
-
-      const data = await response.json();
-    } catch (error) {
-      console.error('Error:', error);
+      const response = await setEvent(selectedFamily?.family_id, eventData);
+      console.log(response);
     }
   };
 
@@ -130,21 +138,11 @@ const AddPlan = () => {
                   <SelectValue placeholder='분류 선택' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='BIRTHDAY'>
-                    {SelectTypeComponent('생일', 'lemon')}
-                  </SelectItem>
-                  <SelectItem value='MEMORIAL'>
-                    {SelectTypeComponent('기념일', 'peach')}
-                  </SelectItem>
-                  <SelectItem value='DINING'>
-                    {SelectTypeComponent('약속', 'skyBlue')}
-                  </SelectItem>
-                  <SelectItem value='TRAVEL'>
-                    {SelectTypeComponent('여행', 'lavendar')}
-                  </SelectItem>
-                  <SelectItem value='OTHER'>
-                    {SelectTypeComponent('기타', 'brown')}
-                  </SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category.value} value={category.value}>
+                      {SelectTypeComponent(category.type, category.color)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
