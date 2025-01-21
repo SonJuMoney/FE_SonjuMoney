@@ -1,41 +1,116 @@
 'use client';
 
+import FamilyCardSmall from '@/components/atoms/Cards/FamilyCardSmall';
 import RegisterCard from '@/components/atoms/Cards/RegisterCard';
 import LogoHeader from '@/components/atoms/Headers/LogoHeader';
+import AccountCard from '@/components/molecules/Cards/AccountCard';
+import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+import { TAccount } from '@/types/Account';
+import { TFamily } from '@/types/Family';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const Home = () => {
   const session = useSession();
   console.log(session);
+
+  const router = useRouter();
+  const [account, setAccount] = useState<TAccount | null>(null);
+  const [families, setFamilies] = useState<TFamily[] | null>(null);
+  const { getMyAccount } = useAccountApi();
+  const { getFamilies } = useFamilyApi();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [accountResponse, familiesResponse] = await Promise.all([
+          getMyAccount(),
+          getFamilies(),
+        ]);
+        setAccount(accountResponse);
+        setFamilies(familiesResponse);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // 가족 목록
+  const familyList = () => {
+    const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
+
+    return (
+      <div className='overflow-x-auto'>
+        <div className='flex space-x-4'>
+          {families?.map((family, index) => (
+            <div key={family.family_id} className='shrink-0'>
+              <FamilyCardSmall
+                familyName={family.family_name}
+                familyMember={family.members}
+                color={`${colors[index % colors.length]}`}
+                onClick={() => router.push('/feed')} // 가족 번호별 소식 페이지로 연결
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className='pageLayout bg-pageBg'>
       <LogoHeader showFamily={false} />
 
       <div className='p-5 flex flex-col gap-5'>
-        <Link href='/register/account'>
-          <div className='flex flex-col gap-2.5 font-semibold'>
-            <div className='text-[#272727] text-lg'>내 계좌</div>
-            <div className='text-[#616161] text-xs'>등록된 계좌가 없어요</div>
-            <RegisterCard text='내 계좌 연결하기' />
-          </div>
-        </Link>
-        <Link href='/register/family'>
-          <div className='flex flex-col gap-2.5 font-semibold'>
-            <div className='text-[#272727] text-lg'>내 가족</div>
-            <div className='text-[#616161] text-xs'>
-              우리 가족을 등록해보세요
-            </div>
+        {/* 내 계좌 */}
+        <div className='flex flex-col gap-2.5 font-semibold'>
+          <div className='text-[#272727] text-lg'>내 계좌</div>
+          {account ? (
+            <AccountCard
+              accountName={account.account_name}
+              accountBalance={account.balance}
+              onClick={() => router.push('/allowance/send')}
+            />
+          ) : (
+            <>
+              <div className='text-[#616161] text-xs'>등록된 계좌가 없어요</div>
+              <Link href='/register/account'>
+                <RegisterCard text='내 계좌 연결하기' />
+              </Link>
+            </>
+          )}
+        </div>
 
-            <RegisterCard text='우리 가족 등록하기' />
-          </div>
-        </Link>
-        <Link href='/savings'>
-          <div className='flex flex-col gap-2.5 font-semibold'>
-            <div className='text-[#272727] text-lg'>납입 중인 적금</div>
+        {/* 내 가족 */}
+        <div className='flex flex-col gap-2.5 font-semibold'>
+          <div className='text-[#272727] text-lg'>내 가족</div>
+
+          {families ? (
+            familyList()
+          ) : (
+            <>
+              <div className='text-[#616161] text-xs'>
+                우리 가족을 등록해보세요
+              </div>
+              <Link href='/register/family'>
+                <RegisterCard text='우리 가족 등록하기' />
+              </Link>
+            </>
+          )}
+        </div>
+
+        {/* 적금 */}
+        <div className='flex flex-col gap-2.5 font-semibold'>
+          <div className='text-[#272727] text-lg'>납입 중인 적금</div>
+          <Link href='/savings'>
             <RegisterCard text='아이 적금 만들기' />
-          </div>
-        </Link>
+          </Link>
+        </div>
       </div>
     </div>
   );

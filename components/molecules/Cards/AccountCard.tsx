@@ -13,7 +13,7 @@ const AccountCard = ({
   onClick,
 }: AccountCardProps) => {
   return (
-    <Card>
+    <Card padding='p-[20px]'>
       <div className='text-neutral-800 text-sm font-semibold mb-2'>
         {accountName}
       </div>
