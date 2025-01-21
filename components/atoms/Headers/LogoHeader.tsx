@@ -5,13 +5,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import AlarmOff from '@/public/Icons/alarmOff_20.svg';
 import AlarmOn from '@/public/Icons/alarmOn_20.svg';
 import ArrowDown from '@/public/Icons/arrowDown_20.svg';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TFamily } from '@/types/Family';
 import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 type HeaderProps = {
@@ -19,7 +20,27 @@ type HeaderProps = {
 };
 
 export default function LogoHeader({ showFamily }: HeaderProps) {
-  const router = useRouter();
+  const { getFamilies } = useFamilyApi();
+  const [families, setFamilies] = useState<TFamily[]>([]);
+  const { selectedFamily, setSelectedFamily } = useSelectedFamilyStore();
+  const [isAlarm, setIsAlarm] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
+
+  const selectedFamilyName =
+    selectedFamily?.family_name ||
+    (families.length > 0 ? families[0].family_name : '');
+
+  useEffect(() => {
+    const fetchFamilies = async () => {
+      const response = await getFamilies();
+      setFamilies(response);
+      if (!selectedFamily && response.length > 0) {
+        setSelectedFamily(response[0]);
+      }
+    };
+
+    fetchFamilies();
+  }, []);
 
   const handleSignOut = async () => {
     await signOut({
@@ -28,72 +49,10 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
     });
   };
 
-  const families: TFamily[] = [
-    {
-      family_id: 1,
-      family_name: '준용이네 가족',
-      members: [
-        {
-          member_id: 1,
-          user_id: 32,
-          member_name: '보물1호',
-          member_role: '아들',
-        },
-        {
-          member_id: 2,
-          user_id: 21,
-          member_name: '엄마',
-          member_role: '엄마',
-        },
-        {
-          member_id: 3,
-          user_id: 3,
-          member_name: '딸바보',
-          member_role: '아빠',
-        },
-        {
-          member_id: 4,
-          user_id: 7,
-          member_name: '첫째 딸',
-          member_role: '딸',
-        },
-      ],
-    },
-    {
-      family_id: 2,
-      family_name: '유정이네 가족',
-      members: [
-        {
-          member_id: 1,
-          user_id: 32,
-          member_name: '보물1호',
-          member_role: '아들',
-        },
-        {
-          member_id: 2,
-          user_id: 21,
-          member_name: '엄마',
-          member_role: '엄마',
-        },
-        {
-          member_id: 3,
-          user_id: 3,
-          member_name: '딸바보',
-          member_role: '아빠',
-        },
-        {
-          member_id: 4,
-          user_id: 7,
-          member_name: '첫째 딸',
-          member_role: '딸',
-        },
-      ],
-    },
-  ];
-
-  const selectedFamily = families[0];
-
-  const [isAlarm, setIsAlarm] = useState<boolean>(false);
+  const handleSelect = (family: TFamily) => {
+    setSelectedFamily(family);
+    setOpen(false);
+  };
 
   return (
     <div className='flex flex-row justify-between items-center bg-white px-[20px] py-[12px] h-[48px] relative'>
@@ -104,10 +63,10 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
 
       {/* 중앙: 타이틀 with Popover */}
       {showFamily && families.length > 0 && (
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <button className='flex items-center h-auto p-0 font-semibold text-[18px] hover:bg-transparent'>
-              <span>{selectedFamily.family_name}</span>
+              <span>{selectedFamilyName}</span>
               {families?.length > 1 && <ArrowDown className='ml-1' />}
             </button>
           </PopoverTrigger>
@@ -119,13 +78,11 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
                     key={family.family_id}
                     className={cn(
                       'flex w-full items-center justify-center px-4 py-2 font-medium text-[16px]',
-                      selectedFamily.family_name === family.family_name
+                      selectedFamily?.family_id === family.family_id
                         ? ' text-appColor'
                         : ''
                     )}
-                    onClick={() => {
-                      router.push(`/feed/${family.family_id}`);
-                    }}
+                    onClick={() => handleSelect(family)}
                   >
                     {family.family_name}
                   </button>
