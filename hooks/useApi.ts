@@ -7,7 +7,8 @@ export const useApi = () => {
   const fetchApi = async (
     apiRoute: string,
     options: RequestInit = {},
-    queryParams?: Record<string, unknown>
+    queryParams?: Record<string, unknown>,
+    isMultiPart?: boolean
   ) => {
     if (!session?.user?.accessToken) {
       throw new Error('No JWT token found');
@@ -30,7 +31,8 @@ export const useApi = () => {
 
     const headers = new Headers(options.headers);
     headers.set('Authorization', `Bearer ${session.user?.accessToken}`);
-    headers.set('Content-Type', 'application/json');
+    if (isMultiPart) headers.set('Content-Type', 'multipart/form-data');
+    else headers.set('Content-Type', 'application/json');
 
     const response = await fetch(url, {
       ...options,
@@ -56,5 +58,5 @@ export interface ResponseType<T = unknown> {
 export interface GetPaginationResult<T> {
   hasNext: boolean;
   page: number;
-  content: Array<T>;
+  contents: Array<T>;
 }

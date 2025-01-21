@@ -1,5 +1,5 @@
 import BottomNav from '@/components/atoms/BottomNav/BottomNav';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import StreamVideoProvider from '@/providers/StreamClientProvider';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
@@ -33,8 +33,10 @@ export default async function RootLayout({
       >
         <Providers>
           <SessionProvider session={session}>
-            {children}
-            <BottomNav />
+            <StreamVideoProvider>
+              {children}
+              <BottomNav />
+            </StreamVideoProvider>
           </SessionProvider>
         </Providers>
       </body>

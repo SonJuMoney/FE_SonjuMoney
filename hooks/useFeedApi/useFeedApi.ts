@@ -15,7 +15,8 @@ export const useFeedApi = () => {
       {
         page: pageParam,
         family_id: familyId,
-      }
+      },
+      true
     );
 
     return response.data;

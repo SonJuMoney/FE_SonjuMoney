@@ -13,7 +13,7 @@ export const useAllowanceApi = () => {
       method: 'POST',
       body: JSON.stringify(allowanceData),
     };
-    const response = await fetchApi(`${baseUrl}`, options);
+    const response = await fetchApi(`${baseUrl}`, options, undefined, true);
 
     return response.code === 200;
   };
