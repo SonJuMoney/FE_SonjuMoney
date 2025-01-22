@@ -11,7 +11,7 @@ interface SavingsAccountStore {
   isAutoTransfer: boolean;
   message: string;
   setSelectedFamily: (family: TFamily) => void;
-  setSelectedChild: (child: TMember) => void;
+  setSelectedChild: (child: TMember | null) => void;
   setSelectedDate: (date: string) => void;
   setSelectedAmount: (amount: number | 'custom') => void;
   setCustomAmount: (custom: string) => void;

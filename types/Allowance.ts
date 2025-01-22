@@ -14,7 +14,7 @@ export type AllowanceReq = {
 };
 
 export type TSendAllowanceReq = {
-  image: File;
+  file: File;
   data: {
     to_id: number;
     amount: number;

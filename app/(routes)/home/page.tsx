@@ -8,7 +8,7 @@ import AccountCard from '@/components/molecules/Cards/AccountCard';
 import AccountListCard from '@/components/molecules/Cards/AccountListCard';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
-import { TAccount } from '@/types/Account';
+import { TAccount, TSavings } from '@/types/Account';
 import { TFamily } from '@/types/Family';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -22,36 +22,23 @@ const Home = () => {
   const router = useRouter();
   const [account, setAccount] = useState<TAccount | null>(null);
   const [families, setFamilies] = useState<TFamily[] | null>(null);
-  const [savings, setSavings] = useState<TAccount[]>([
-    {
-      account_num: '1',
-      account_name: '달달하나통장',
-      balance: 500000,
-      mockacc_id: 1,
-      bank: '하나은행',
-    },
-    {
-      account_num: '2',
-      account_name: 'Vacation Fund',
-      balance: 300000,
-      mockacc_id: 2,
-      bank: '하나은행',
-    },
-  ]); // 적금 api 연결
+  const [savings, setSavings] = useState<TSavings[]>([]);
 
-  const { getMyAccount } = useAccountApi();
+  const { getMyAccount, getSavingsAccounts } = useAccountApi();
   const { getFamilies } = useFamilyApi();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [accountResponse, familiesResponse] = await Promise.all([
-          getMyAccount(),
-          getFamilies(),
-        ]);
+        const [accountResponse, familiesResponse, savingsResponse] =
+          await Promise.all([
+            getMyAccount(),
+            getFamilies(),
+            getSavingsAccounts(),
+          ]);
         setAccount(accountResponse);
         setFamilies(familiesResponse);
-        console.log(accountResponse);
+        setSavings(savingsResponse);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
@@ -132,11 +119,11 @@ const Home = () => {
         <div className='flex flex-col gap-2.5 font-semibold'>
           <div className='text-[#272727] text-lg'>납입 중인 적금</div>
 
-          {savings ? (
+          {savings && savings.length > 0 ? (
             <AccountListCard
               accounts={savings}
-              onSelectAccount={(selectedAccount) =>
-                router.push(`/savings/${selectedAccount}`)
+              onSelectAccount={(accountId) =>
+                router.push(`/savings/${accountId}`)
               } // 이체 내역 보기
               onButtonClick={() => router.push('/savings/send')} // 적금 보내기
               onClick={() => router.push('/savings')}

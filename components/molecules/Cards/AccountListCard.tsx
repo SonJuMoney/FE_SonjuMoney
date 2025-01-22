@@ -1,10 +1,10 @@
 import { Card } from '@/components/atoms/Cards/Card';
 import RegisterCardSmall from '@/components/atoms/Cards/RegisterCardSmall';
 import BankCheckBox from '@/components/atoms/CheckBoxes/BankCheckBox';
-import { TAccount } from '@/types/Account';
+import { TSavings } from '@/types/Account';
 
 type AccountListCardProps = {
-  accounts: TAccount[];
+  accounts: TSavings[];
   selectedAccount?: number;
   onSelectAccount: (accountId: number) => void;
   onButtonClick?: () => void;
@@ -27,12 +27,12 @@ const AccountListCard = ({
             className='w-full flex justify-between items-center py-[12px]'
           >
             <div
-              onClick={() => onSelectAccount(account.mockacc_id)}
+              onClick={() => onSelectAccount(account.account_id)}
               className='flex space-x-4'
             >
               <BankCheckBox
-                checked={selectedAccount === account.mockacc_id}
-                onChange={() => onSelectAccount(account.mockacc_id)}
+                checked={selectedAccount === account.account_id}
+                onChange={() => onSelectAccount(account.account_id)}
               />
               <div className='flex flex-col font-semibold justify-center text-md cursor-pointer'>
                 <div className='text-[16px] font-semibold text-black'>

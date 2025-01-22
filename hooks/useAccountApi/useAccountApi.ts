@@ -1,6 +1,7 @@
 import { useApi } from '@/hooks/useApi';
 import {
   TAccount,
+  TSavings,
   TSetAccountReq,
   TSetSavingsAccountReq,
 } from '@/types/Account';
@@ -41,5 +42,11 @@ export const useAccountApi = () => {
     return response.code === 200;
   };
 
-  return { setAccount, getMyAccount, setSavingsAccount };
+  // 적금 계좌 목록 조회
+  const getSavingsAccounts = async (): Promise<TSavings[]> => {
+    const response = await fetchApi(`${baseUrl}/savings`);
+    return response;
+  };
+
+  return { setAccount, getMyAccount, setSavingsAccount, getSavingsAccounts };
 };
