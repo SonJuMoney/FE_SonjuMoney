@@ -7,16 +7,11 @@ import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { TSendAllowanceReq } from '@/types/Allowance';
 
 const EnterPasscode = () => {
-  const { selectedFamily, selectedMember, amount, message, files } =
-    useSendAllowanceStore();
+  const { selectedMember, amount, message, files } = useSendAllowanceStore();
 
   const { sendAllowance } = useAllowanceApi();
 
-  const selectedMemberData = selectedFamily?.members.find(
-    (member) => member.member_name === selectedMember
-  );
-
-  if (!selectedMemberData) {
+  if (!selectedMember) {
     console.error('Selected member not found!');
     return;
   }
@@ -39,9 +34,9 @@ const EnterPasscode = () => {
           route='/allowance/send/complete'
           onComplete={() =>
             onComplete({
-              image: files[0],
+              file: files[0],
               data: {
-                to_id: selectedMemberData.member_id,
+                to_id: selectedMember.member_id,
                 amount: parseFloat(amount),
                 message: message,
               },

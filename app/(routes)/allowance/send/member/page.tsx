@@ -1,19 +1,39 @@
 'use client';
 
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
+import RoleCard from '@/components/atoms/Cards/RoleCard';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
-import RoleList from '@/components/molecules/Lists/RoleList';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import useSendAllowanceStore from '@/store/useSendAllowanceStore';
+import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const SelectRecipient = () => {
   const { selectedFamily, selectedMember, setSelectedMember } =
     useSendAllowanceStore();
   const router = useRouter();
+  const { getFamilyMembers } = useFamilyApi();
+  const [family, setFamily] = useState<TFamily | null>(null);
 
-  if (!selectedFamily) return null;
-  const { members } = selectedFamily;
+  useEffect(() => {
+    const fetchMembers = async () => {
+      if (!selectedFamily) return null;
+
+      try {
+        const response = await getFamilyMembers(
+          selectedFamily.family_id,
+          'EXCEPTME'
+        );
+        setFamily(response);
+      } catch (error) {
+        console.error('Failed to fetch family members except me:', error);
+      }
+    };
+
+    fetchMembers();
+  }, []);
 
   const handleNextStep = () => {
     router.push(`/allowance/send/amount`);
@@ -28,11 +48,22 @@ const SelectRecipient = () => {
 보낼까요?`}
         />
 
-        <RoleList
-          roles={members.map((member) => member.member_name)}
-          selectedRole={selectedMember}
-          setSelectedRole={setSelectedMember}
-        />
+        <div className='grid grid-cols-2 gap-5'>
+          {family?.members.map((member, index) => (
+            <RoleCard
+              key={index}
+              image='/Role1.png' // 이미지 바꾸기
+              // image={member.profile_link}
+              name={member.member_name}
+              selected={selectedMember?.member_id === member.member_id}
+              onClick={() =>
+                setSelectedMember(
+                  selectedMember?.member_id === member.member_id ? null : member
+                )
+              }
+            />
+          ))}
+        </div>
       </div>
 
       <div className='fixed bottom-0 left-0 w-full p-5'>

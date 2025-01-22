@@ -62,7 +62,7 @@ const SendResponse = () => {
       <div>
         <div className='p-5'>
           <PageTitle
-            title={`${selectedMember}님에게
+            title={`${selectedMember?.member_name}님에게
 마음을 전해주세요`}
           />
         </div>
