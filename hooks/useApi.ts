@@ -31,8 +31,7 @@ export const useApi = () => {
 
     const headers = new Headers(options.headers);
     headers.set('Authorization', `Bearer ${session.user?.accessToken}`);
-    if (isMultiPart) headers.set('Content-Type', 'multipart/form-data');
-    else headers.set('Content-Type', 'application/json');
+    if (!isMultiPart) headers.set('Content-Type', 'application/json');
 
     const response = await fetch(url, {
       ...options,

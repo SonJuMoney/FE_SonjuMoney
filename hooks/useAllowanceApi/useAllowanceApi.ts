@@ -13,7 +13,12 @@ export const useAllowanceApi = () => {
     // 파일 추가
     formData.append('file', allowanceData.image);
 
-    formData.append('data', JSON.stringify(allowanceData.data));
+    formData.append(
+      'data',
+      new Blob([JSON.stringify(allowanceData.data)], {
+        type: 'application/json',
+      })
+    );
 
     // FormData 내용 로깅
     console.log('FormData entries:', Object.fromEntries(formData.entries()));
