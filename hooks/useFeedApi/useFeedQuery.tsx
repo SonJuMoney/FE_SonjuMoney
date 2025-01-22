@@ -14,7 +14,7 @@ const useFeedQuery = () => {
     familyId: number
   ): UseInfiniteQueryResult<InfiniteData<GetPaginationResult<TFeed>>> => {
     return useInfiniteQuery({
-      queryKey: ['feeds'],
+      queryKey: ['feeds', familyId],
       queryFn: ({ pageParam }) => getFeedList(familyId, pageParam),
       initialPageParam: 0,
       getNextPageParam: (lastPage) => {

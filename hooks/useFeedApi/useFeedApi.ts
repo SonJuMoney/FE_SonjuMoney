@@ -15,5 +15,11 @@ export const useFeedApi = () => {
     return data.result;
   };
 
-  return { getFeedList };
+  const deleteFeed = async (feed_id: number) => {
+    const data = await fetchApi(`${baseUrl}/${feed_id}`, { method: 'DELETE' });
+    console.log(data);
+    return data;
+  };
+
+  return { getFeedList, deleteFeed };
 };
