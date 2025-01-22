@@ -6,6 +6,7 @@ import { useEventApi } from '@/hooks/useEventApi/useEventApi';
 import { TEvent } from '@/types/Events';
 import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const TitleComponent = (title: string) => {
@@ -28,6 +29,7 @@ const categories: { type: string; color: string }[] | undefined = [
 const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
   const { eventId } = params;
   const { getEventDetail, deleteEvent } = useEventApi();
+  const router = useRouter();
 
   const [event, setEvent] = useState<TEvent>();
 
@@ -59,6 +61,18 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
 
   const onDelete = async () => {
     const response = await deleteEvent(eventId);
+
+    if (!response) {
+      console.log('삭제 실패');
+      return;
+    }
+
+    alert('삭제되었습니다');
+    router.push('/calendar');
+  };
+
+  const goToUpdate = () => {
+    router.push(`/calendar/update/${eventId}`);
   };
 
   return (
@@ -67,7 +81,9 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
         <Header title='일정 조회' />
         <div className='h-full p-5 flex flex-col justify-start space-y-4'>
           <div className='flex justify-end space-x-4'>
-            <Button variant={'outline'}>수정</Button>
+            <Button variant={'outline'} onClick={goToUpdate}>
+              수정
+            </Button>
             <Button variant={'outline'} onClick={onDelete}>
               삭제
             </Button>
