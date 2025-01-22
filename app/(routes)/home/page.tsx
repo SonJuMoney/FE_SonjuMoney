@@ -1,16 +1,17 @@
 'use client';
 
-import FamilyCardSmall from '@/components/atoms/Cards/FamilyCardSmall';
+import FamilyCardLarge from '@/components/atoms/Cards/FamilyCardLarge';
 import RegisterCard from '@/components/atoms/Cards/RegisterCard';
-import RegisterCardSmall from '@/components/atoms/Cards/RegisterCardSmall';
 import LogoHeader from '@/components/atoms/Headers/LogoHeader';
 import AccountCard from '@/components/molecules/Cards/AccountCard';
 import AccountListCard from '@/components/molecules/Cards/AccountListCard';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TAccount, TSavings } from '@/types/Account';
 import { TFamily } from '@/types/Family';
 import { useSession } from 'next-auth/react';
+import { LuPlus } from 'react-icons/lu';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -23,6 +24,7 @@ const Home = () => {
   const [account, setAccount] = useState<TAccount | null>(null);
   const [families, setFamilies] = useState<TFamily[] | null>(null);
   const [savings, setSavings] = useState<TSavings[]>([]);
+  const { setSelectedFamily } = useSelectedFamilyStore();
 
   const { getMyAccount, getSavingsAccounts } = useAccountApi();
   const { getFamilies } = useFamilyApi();
@@ -50,24 +52,34 @@ const Home = () => {
   // 가족 목록
   const familyList = () => {
     const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
+    const handleClick = (family: TFamily) => {
+      setSelectedFamily(family);
+      router.push('/feed');
+    };
 
     return (
       <div className='overflow-x-auto'>
         <div className='flex space-x-4'>
           {families?.map((family, index) => (
             <div key={family.family_id} className='shrink-0'>
-              <FamilyCardSmall
+              <FamilyCardLarge
                 familyName={family.family_name}
                 familyMember={family.members}
                 color={`${colors[index % colors.length]}`}
-                onClick={() => router.push('/feed')} // 가족 번호별 소식 페이지로 연결
+                onClick={() => handleClick(family)}
               />
             </div>
           ))}
-          <RegisterCardSmall
-            text=''
+          <div
             onClick={() => router.push('/register/family')}
-          />
+            className='flex items-center justify-center gap-2.5 bg-white rounded-2xl min-w-[200px] border border-[#eaecef] cursor-pointer'
+          >
+            <div className='flex items-center justify-center w-5 h-5 rounded-full bg-appColor text-white'>
+              <LuPlus className='w-3 h-3' />
+            </div>
+
+            <p className='text-appColor font-medium text-sm'>가족 등록하기</p>
+          </div>
         </div>
       </div>
     );

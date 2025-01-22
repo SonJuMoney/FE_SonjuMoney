@@ -49,8 +49,8 @@ const InviteFamily = () => {
   };
 
   const isButtonDisabled =
-    inviteCards.length === 0 ||
-    inviteCards.some((card) => !card.phoneValue || !card.roleValue);
+    inviteCards.every((card) => !card.phoneValue || !card.roleValue) &&
+    selectedChilds.length === 0;
 
   const handleNextClick = () => {
     const familyData = {
