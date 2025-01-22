@@ -105,6 +105,9 @@ body {
     width: 100%;
     height: 100%;
   }
+  .animate-like {
+    animation: like 0.5s ease-in-out;
+  }
 }
 
 @layer base {
@@ -113,5 +116,17 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@keyframes like {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }

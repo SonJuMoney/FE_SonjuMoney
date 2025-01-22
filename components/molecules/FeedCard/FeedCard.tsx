@@ -1,20 +1,11 @@
 'use client';
 
-import { useScrollLock } from '@/app/(routes)/feed/useScrollBehavior';
 import CircleImg from '@/components/atoms/CircleImages/CircleImg';
-import CommentInput from '@/components/atoms/Inputs/CommentInput';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
 import {
   Popover,
   PopoverContent,
@@ -34,8 +25,16 @@ import { useState } from 'react';
 import CommentDrawer from './CommentDrawer';
 
 const FeedCard = ({ feed }: { feed: TFeed }) => {
-  const { deleteFeed } = useFeedApi();
+  const { likeFeed, deleteFeed } = useFeedApi();
   const [open, setOpen] = useState(false);
+  const [isLikeAnimating, setIsLikeAnimating] = useState(false);
+
+  const handleLike = (feedId: number) => {
+    setIsLikeAnimating(true);
+    likeFeed(feedId);
+    setTimeout(() => setIsLikeAnimating(false), 1000);
+  };
+
   return (
     <div className='flex flex-col w-full gap-[10px] py-[16px] bg-white'>
       <div className='flex justify-between w-full px-[16px]'>
@@ -104,7 +103,10 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
       </Carousel>
       <div className='flex justify-between px-[16px] items-center'>
         <div className='flex  gap-2'>
-          <div className='flex gap-1'>
+          <div
+            className={`flex gap-1 cursor-pointer ${isLikeAnimating ? 'animate-like' : ''}`}
+            onClick={() => handleLike(feed.feed_id)}
+          >
             {feed.like > 0 ? <LikeOn /> : <LikeOff />}
             <span
               className={`text-[13px] ${feed.like > 0 ? 'text-appColor' : 'text-placeHolder'}`}
