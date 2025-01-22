@@ -26,4 +26,10 @@ export type TComment = {
   message: string;
   is_update: boolean;
   created_at: string;
+  is_mine: boolean;
+};
+
+export type TAddCommentReq = {
+  feed_id: number;
+  message: string;
 };

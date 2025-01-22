@@ -1,4 +1,5 @@
 import BottomNav from '@/components/atoms/BottomNav/BottomNav';
+import { Toaster } from '@/components/ui/toaster';
 import StreamVideoProvider from '@/providers/StreamClientProvider';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
@@ -35,6 +36,7 @@ export default async function RootLayout({
           <SessionProvider session={session}>
             <StreamVideoProvider>
               {children}
+              <Toaster />
               <BottomNav />
             </StreamVideoProvider>
           </SessionProvider>

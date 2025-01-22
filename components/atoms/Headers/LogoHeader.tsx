@@ -64,7 +64,7 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
   };
 
   return (
-    <div className='flex flex-row justify-between items-center bg-transparent px-[20px] py-[12px] h-[48px] relative border w-full'>
+    <div className='flex flex-row justify-between items-center bg-transparent  px-[20px] py-[12px] h-[48px] relative  w-full'>
       {/* 왼쪽: 로고 */}
       <div className='flex h-full text-left font-bold text-appColor text-md'>
         손주머니

@@ -128,6 +128,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
           <CommentDrawer
             open={open}
             onOpenChange={setOpen}
+            feedId={feed.feed_id}
             comments={feed.comments}
           />
         </div>

@@ -7,7 +7,7 @@
     @apply flex justify-center w-full h-screen text-black font-pretendard;
   }
   body {
-    @apply bg-background text-foreground w-full h-full font-pretendard;
+    @apply bg-background text-foreground sm:max-w-[640px] w-full h-full font-pretendard;
     /* @apply bg-background text-foreground  w-full h-full font-pretendard; */
   }
   :root {

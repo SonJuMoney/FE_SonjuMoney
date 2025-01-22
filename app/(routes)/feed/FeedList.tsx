@@ -18,7 +18,9 @@ export default function FeedList() {
   const [isScrolling, setIsScrolling] = useState(false);
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-    GetFeed(selectedFamily?.family_id || 1);
+    GetFeed(selectedFamily?.family_id, {
+      enabled: !!selectedFamily?.family_id,
+    });
 
   useIntersectionObserver({
     target: bottomRef,
@@ -78,7 +80,7 @@ export default function FeedList() {
   }
 
   // 가족이 선택되지 않은 경우
-  if (!isFetching && !selectedFamily?.family_id) {
+  if (!selectedFamily?.family_id) {
     return (
       <div className='flex flex-col justify-center items-center w-full h-full pb-20'>
         <EmptyState
@@ -97,7 +99,9 @@ export default function FeedList() {
         <EmptyState
           title='아직 업로드된 소식이 없어요'
           subtitle={`피드를 업로드하고
-        소식을 주고 받아보세요!`}
+소식을 주고 받아보세요!`}
+          href='/feed/create'
+          buttonText='게시글 작성하기'
         />
       </div>
     );
@@ -106,20 +110,14 @@ export default function FeedList() {
   return (
     <div ref={scrollContainerRef} className='pageLayout overflow-y-scroll'>
       <div className='flex flex-col gap-[0.5px] pb-32 relative'>
-        {data?.pages?.length > 0 ? (
+        {data?.pages?.length > 0 && (
           <>
             {data.pages.map((page) =>
-              page.contents.map((feed) => (
+              page?.contents.map((feed) => (
                 <FeedCard key={feed.feed_id} feed={feed} />
               ))
             )}
           </>
-        ) : (
-          <EmptyState
-            title='아직 소속된 가족이 없어요'
-            subtitle={`가족을 생성하고
-소식을 주고 받아보세요!`}
-          />
         )}
         <Link
           href='/feed/create'
