@@ -1,6 +1,7 @@
 import { ButtonSmall } from '@/components/atoms/Buttons/ButtonSmall';
 import Bear from '@/public/AnimatedIcons/Bear.png';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type EmptyStateProps = {
   title: string;
@@ -19,7 +20,9 @@ const EmptyState = ({ title, subtitle }: EmptyStateProps) => {
           {subtitle}
         </span>
       </div>
-      <ButtonSmall text='가족 등록하러가기' active />
+      <Link href='/register/family'>
+        <ButtonSmall text='가족 등록하러가기' active />
+      </Link>
     </div>
   );
 };

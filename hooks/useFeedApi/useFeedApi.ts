@@ -5,21 +5,14 @@ export const useFeedApi = () => {
   const { fetchApi } = useApi();
   const baseUrl = '/feeds';
 
-  const getFeedList = async (
-    familyId: number,
-    pageParam: number
-  ): Promise<ResponseType<GetPaginationResult<TFeed>>> => {
-    const response = await fetchApi(
+  const getFeedList = async (familyId: number, pageParam: number) => {
+    const data: ResponseType<GetPaginationResult<TFeed>> = await fetchApi(
       `${baseUrl}`,
       { method: 'GET' },
-      {
-        page: pageParam,
-        family_id: familyId,
-      },
-      true
+      { family_id: familyId, page: pageParam }
     );
 
-    return response.data;
+    return data.result;
   };
 
   return { getFeedList };

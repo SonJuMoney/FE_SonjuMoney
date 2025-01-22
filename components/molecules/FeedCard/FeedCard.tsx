@@ -124,7 +124,10 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
                     <>
                       {feed.comments.map((comment, index) => (
                         <div key={index} className='flex items-start gap-2 '>
-                          <CircleImg imgUrl={comment.writer_image} size={24} />
+                          <CircleImg
+                            imgUrl={comment.writer_image || '/Role1.png'}
+                            size={24}
+                          />
                           <div>
                             <span className='font-bold text-sm'>
                               {comment.writer_name}

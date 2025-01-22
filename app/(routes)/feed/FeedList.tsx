@@ -1,44 +1,25 @@
 'use client';
 
+import EmptyState from '@/components/molecules/EmptyState/EmptyState';
 import FeedCard from '@/components/molecules/FeedCard/FeedCard';
 import { Skeleton } from '@/components/ui/skeleton';
-import { GetPaginationResult, ResponseType } from '@/hooks/useApi';
-import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
+import useFeedQuery from '@/hooks/useFeedApi/useFeedQuery';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
-import { TFeed } from '@/types/Feed';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { LuPlus } from 'react-icons/lu';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
-interface FeedListProps {
-  initialData: ResponseType<GetPaginationResult<TFeed>>;
-  familyId: number;
-}
-
-export default function FeedList({ initialData, familyId }: FeedListProps) {
-  const { getFeedList } = useFeedApi();
+export default function FeedList() {
+  const { selectedFamily } = useSelectedFamilyStore();
+  const { GetFeed } = useFeedQuery();
   const bottomRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isScrolling, setIsScrolling] = useState(false);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ['feeds'],
-      initialPageParam: 0,
-      queryFn: async ({ pageParam = 0 }) => {
-        const response = await getFeedList(familyId, pageParam);
-        return response;
-      },
-      initialData: {
-        pages: [initialData],
-        pageParams: [0],
-      },
-      getNextPageParam: (lastPage) => {
-        if (!lastPage.result?.hasNext) return undefined;
-        return lastPage.result.page + 1;
-      },
-    });
+  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+    GetFeed(selectedFamily?.family_id || 1);
+  console.log('data', data);
 
   useIntersectionObserver({
     target: bottomRef,
@@ -74,14 +55,49 @@ export default function FeedList({ initialData, familyId }: FeedListProps) {
       clearTimeout(timeoutId);
     };
   }, []);
+  if (isFetching) {
+    return <>로딩중</>;
+  }
+
+  // 가족이 선택되지 않은 경우
+  if (!isFetching && !selectedFamily?.family_id) {
+    return (
+      <EmptyState
+        title='아직 소속된 가족이 없어요'
+        subtitle={`가족을 생성하고
+소식을 주고 받아보세요!`}
+      />
+    );
+  }
+
+  // 데이터가 없거나 첫 페이지의 컨텐츠가 비어있는 경우
+  if (!data?.pages || data.pages[0]?.contents?.length === 0) {
+    return (
+      <EmptyState
+        title='아직 소속된 가족이 없어요'
+        subtitle={`가족을 생성하고
+소식을 주고 받아보세요!`}
+      />
+    );
+  }
 
   return (
     <div ref={scrollContainerRef} className='pageLayout overflow-y-scroll'>
       <div className='flex flex-col gap-[0.5px] pb-32 relative'>
-        {data?.pages.map((page) =>
-          page.result?.contents.map((feed) => (
-            <FeedCard key={feed.feed_id} feed={feed} />
-          ))
+        {data?.pages?.length > 0 ? (
+          <>
+            {data.pages.map((page) =>
+              page.contents.map((feed) => (
+                <FeedCard key={feed.feed_id} feed={feed} />
+              ))
+            )}
+          </>
+        ) : (
+          <EmptyState
+            title='아직 소속된 가족이 없어요'
+            subtitle={`가족을 생성하고
+소식을 주고 받아보세요!`}
+          />
         )}
         <Link
           href='/feed/create'
