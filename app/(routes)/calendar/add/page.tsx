@@ -75,10 +75,6 @@ const AddPlan = () => {
     fetchMembers();
   }, []);
 
-  useEffect(() => {
-    console.log(eventMembers);
-  }, [eventMembers]);
-
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
   };

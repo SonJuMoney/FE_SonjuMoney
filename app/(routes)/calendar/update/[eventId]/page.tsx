@@ -67,8 +67,6 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
   useEffect(() => {
     const fetchEvent = async () => {
       const response = await getEventDetail(eventId);
-      console.log(response);
-
       if (response) {
         setSelectedType(
           categories.find((c) => c.type === response.event_category)?.value ??
@@ -88,7 +86,6 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
           selectedFamily?.family_id,
           'ALL'
         );
-        console.log(response);
         setFamilyMembers(response.members);
       }
     };
@@ -96,10 +93,6 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
     fetchEvent();
     fetchMembers();
   }, []);
-
-  useEffect(() => {
-    console.log(eventMembers);
-  }, [eventMembers]);
 
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
