@@ -1,23 +1,17 @@
-import { Card } from '@/components/atoms/Cards/Card';
+'use client';
+
 import CircleImg from '@/components/atoms/CircleImages/CircleImg';
-import CommentInput from '@/components/atoms/Inputs/CommentInput';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
 import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
 import LoveLetter from '@/public/AnimatedIcons/LoveLetter.png';
 import CommentOff from '@/public/Icons/commentOff_20.svg';
 import CommentOn from '@/public/Icons/commentOn_20.svg';
@@ -25,9 +19,22 @@ import LikeOff from '@/public/Icons/likeOff_20.svg';
 import LikeOn from '@/public/Icons/likeOn_20.svg';
 import ShowMore from '@/public/Icons/showMore_24.svg';
 import { TFeed } from '@/types/Feed';
+import ReactPlayer from 'react-player/lazy';
 import Image from 'next/image';
+import { useState } from 'react';
+import CommentDrawer from './CommentDrawer';
 
 const FeedCard = ({ feed }: { feed: TFeed }) => {
+  const { likeFeed, deleteFeed } = useFeedApi();
+  const [open, setOpen] = useState(false);
+  const [isLikeAnimating, setIsLikeAnimating] = useState(false);
+
+  const handleLike = (feedId: number) => {
+    setIsLikeAnimating(true);
+    likeFeed(feedId);
+    setTimeout(() => setIsLikeAnimating(false), 1000);
+  };
+
   return (
     <div className='flex flex-col w-full gap-[10px] py-[16px] bg-white'>
       <div className='flex justify-between w-full px-[16px]'>
@@ -53,7 +60,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
               </button>
             </PopoverTrigger>
             <PopoverContent className='absolute p-4 -right-8 w-40 text-center'>
-              <button>삭제하기</button>
+              <button onClick={() => deleteFeed(feed.feed_id)}>삭제하기</button>
             </PopoverContent>
           </Popover>
         )}
@@ -79,11 +86,14 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
                   />
                 </div>
               ) : (
-                <div className='relative w-full aspect-square '>
-                  <iframe
-                    src={image.url}
-                    allowFullScreen
-                    className='w-full h-full'
+                <div className='relative w-full aspect-square'>
+                  <ReactPlayer
+                    url={image.url}
+                    width='100%'
+                    height='100%'
+                    controls={true}
+                    playing={false}
+                    muted={true}
                   />
                 </div>
               )}
@@ -93,7 +103,10 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
       </Carousel>
       <div className='flex justify-between px-[16px] items-center'>
         <div className='flex  gap-2'>
-          <div className='flex gap-1'>
+          <div
+            className={`flex gap-1 cursor-pointer ${isLikeAnimating ? 'animate-like' : ''}`}
+            onClick={() => handleLike(feed.feed_id)}
+          >
             {feed.like > 0 ? <LikeOn /> : <LikeOff />}
             <span
               className={`text-[13px] ${feed.like > 0 ? 'text-appColor' : 'text-placeHolder'}`}
@@ -101,55 +114,22 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
               {feed.like}
             </span>
           </div>
-
-          <Drawer>
-            <DrawerTrigger asChild>
-              <div className='flex gap-1 cursor-pointer'>
-                {feed.comments.length > 0 ? <CommentOn /> : <CommentOff />}
-                <span
-                  className={`text-[13px] ${feed.comments.length > 0 ? 'text-appColor' : 'text-placeHolder'}`}
-                >
-                  {feed.comments.length}
-                </span>
-              </div>
-            </DrawerTrigger>
-            <DrawerContent className='flex flex-col max-h-[500px]'>
-              <DrawerHeader>
-                <DrawerTitle>댓글</DrawerTitle>
-              </DrawerHeader>
-              <div className='flex h-full flex-col'>
-                {/* 기존 댓글 목록 */}
-                <div className='flex flex-col space-y-4 max-h-[500px]  w-full overflow-y-scroll p-4'>
-                  {feed.comments.length ? (
-                    <>
-                      {feed.comments.map((comment, index) => (
-                        <div key={index} className='flex items-start gap-2 '>
-                          <CircleImg
-                            imgUrl={comment.writer_image || '/Role1.png'}
-                            size={24}
-                          />
-                          <div>
-                            <span className='font-bold text-sm'>
-                              {comment.writer_name}
-                            </span>
-                            <p className='text-sm'>{comment.message}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  ) : (
-                    <span className='flex w-full items-center justify-center text-darkGray text-[16px]'>
-                      아직 댓글이 없어요. 처음으로 댓글을 남겨주세요!
-                    </span>
-                  )}
-                </div>
-                {/* 댓글 입력 영역 */}
-                <div className='flex gap-2'>
-                  <CommentInput onSubmit={() => {}} />
-                </div>
-              </div>
-            </DrawerContent>
-          </Drawer>
+          <div
+            className='flex gap-1 cursor-pointer'
+            onClick={() => setOpen(true)}
+          >
+            {feed.comments.length > 0 ? <CommentOn /> : <CommentOff />}
+            <span
+              className={`text-[13px] ${feed.comments.length > 0 ? 'text-appColor' : 'text-placeHolder'}`}
+            >
+              {feed.comments.length}
+            </span>
+          </div>
+          <CommentDrawer
+            open={open}
+            onOpenChange={setOpen}
+            comments={feed.comments}
+          />
         </div>
         <span className='font-semibold text-[14px]'>
           {new Date(feed.created_at).toLocaleDateString('KO-KR')}

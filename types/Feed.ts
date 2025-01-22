@@ -9,7 +9,7 @@ export type TFeed = {
   like: number;
   is_update: boolean;
   contents: Image[];
-  comments: Comment[];
+  comments: TComment[];
   created_at: string;
 };
 
@@ -18,7 +18,7 @@ type Image = {
   content_type: 'IMAGE' | 'VIDEO';
 };
 
-type Comment = {
+export type TComment = {
   comment_id: number;
   writer_id: number;
   writer_name: string;

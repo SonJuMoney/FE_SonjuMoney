@@ -71,6 +71,15 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      keyframes: {
+        like: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.2)' },
+        },
+      },
+      animation: {
+        like: 'like 0.5s ease-in-out',
+      },
     },
   },
   plugins: [tailwindcssAnimate],

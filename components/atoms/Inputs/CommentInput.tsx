@@ -24,7 +24,6 @@ export default function CommentInput({ onSubmit }: CommentInputProps) {
       setHasValue(false);
     }
   }, [onSubmit]);
-  console.log('hi');
 
   return (
     <div className='w-full bg-white px-5 py-4  border-t border-gray-100'>

@@ -19,7 +19,6 @@ export default function FeedList() {
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     GetFeed(selectedFamily?.family_id || 1);
-  console.log('data', data);
 
   useIntersectionObserver({
     target: bottomRef,
@@ -55,29 +54,52 @@ export default function FeedList() {
       clearTimeout(timeoutId);
     };
   }, []);
-  if (isFetching) {
-    return <>로딩중</>;
+
+  if (!data) {
+    return (
+      <div ref={bottomRef} className='flex flex-col w-full gap-4 py-4'>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div key={index} className='flex flex-col space-y-3'>
+            <div className='flex gap-2 items-center pl-3'>
+              <Skeleton className='h-[30px] w-[30px] rounded-full' />
+              <Skeleton className='h-4 w-[70px]' />
+            </div>
+            <Skeleton className=' w-full aspect-square ' />
+            <div className='flex gap-4 pl-4'>
+              <div className='space-y-2'>
+                <Skeleton className='h-4 w-[250px]' />
+                <Skeleton className='h-4 w-[200px]' />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   // 가족이 선택되지 않은 경우
   if (!isFetching && !selectedFamily?.family_id) {
     return (
-      <EmptyState
-        title='아직 소속된 가족이 없어요'
-        subtitle={`가족을 생성하고
+      <div className='flex flex-col justify-center items-center w-full h-full pb-20'>
+        <EmptyState
+          title='아직 소속된 가족이 없어요'
+          subtitle={`가족을 생성하고
 소식을 주고 받아보세요!`}
-      />
+        />
+      </div>
     );
   }
 
   // 데이터가 없거나 첫 페이지의 컨텐츠가 비어있는 경우
   if (!data?.pages || data.pages[0]?.contents?.length === 0) {
     return (
-      <EmptyState
-        title='아직 소속된 가족이 없어요'
-        subtitle={`가족을 생성하고
-소식을 주고 받아보세요!`}
-      />
+      <div className='flex flex-col justify-center items-center w-full h-full pb-20'>
+        <EmptyState
+          title='아직 업로드된 소식이 없어요'
+          subtitle={`피드를 업로드하고
+        소식을 주고 받아보세요!`}
+        />
+      </div>
     );
   }
 
