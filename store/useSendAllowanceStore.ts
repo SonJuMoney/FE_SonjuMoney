@@ -1,15 +1,15 @@
-import { TFamily } from '@/types/Family';
+import { TFamily, TMember } from '@/types/Family';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface SendAllowanceStore {
   selectedFamily: TFamily | null;
-  selectedMember: string;
+  selectedMember: TMember | null;
   amount: string;
   message: string;
   files: File[];
   setSelectedFamily: (family: TFamily) => void;
-  setSelectedMember: (member: string) => void;
+  setSelectedMember: (member: TMember | null) => void;
   setAmount: (amount: string) => void;
   setMessage: (message: string) => void;
   setFiles: (files: File[]) => void;
@@ -20,7 +20,7 @@ const useSendAllowanceStore = create<SendAllowanceStore>()(
   persist(
     (set) => ({
       selectedFamily: null,
-      selectedMember: '',
+      selectedMember: null,
       amount: '',
       message: '',
       files: [],
@@ -32,7 +32,7 @@ const useSendAllowanceStore = create<SendAllowanceStore>()(
       resetState: () =>
         set({
           selectedFamily: null,
-          selectedMember: '',
+          selectedMember: null,
           amount: '',
           message: '',
           files: [],
