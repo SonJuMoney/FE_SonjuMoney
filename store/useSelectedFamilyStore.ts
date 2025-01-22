@@ -5,7 +5,9 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface SelectedFamilyStore {
   selectedFamily: TFamily | null;
-  setSelectedFamily: (family: TFamily) => void;
+  setSelectedFamily: (family: TFamily | null) => void;
+  hydrated: boolean;
+  setHydrated: (state: boolean) => void;
 }
 
 export const useSelectedFamilyStore = create<SelectedFamilyStore>()(
@@ -13,10 +15,13 @@ export const useSelectedFamilyStore = create<SelectedFamilyStore>()(
     (set) => ({
       selectedFamily: null,
       setSelectedFamily: (family) => set({ selectedFamily: family }),
+      hydrated: false,
+      setHydrated: (state) => set({ hydrated: state }),
     }),
     {
       name: 'selected-family-storage',
       storage: createJSONStorage(() => sessionStorage),
+      skipHydration: true,
     }
   )
 );

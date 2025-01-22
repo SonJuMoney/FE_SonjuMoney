@@ -9,7 +9,7 @@ type Props = {
 
 const AccountList = ({ accounts, selectedAccount, onSelectAccount }: Props) => {
   return (
-    <div className='flex flex-col  '>
+    <div className='flex flex-col'>
       {accounts.map((account, index) => (
         <div
           key={index}
