@@ -13,8 +13,13 @@ export const useFamilyApi = () => {
   };
 
   // 가족 멤버 목록 조회
-  const getFamilyMembers = async (family_id: number): Promise<TFamily[]> => {
-    const response = await fetchApi(`${baseUrl}/${family_id}/members`);
+  const getFamilyMembers = async (
+    family_id: number,
+    range: 'ALL' | 'EXCEPTME' | 'CHILDREN'
+  ): Promise<TFamily[]> => {
+    const response = await fetchApi(
+      `${baseUrl}/${family_id}/members?range=${range}`
+    );
 
     return response;
   };
@@ -30,5 +35,5 @@ export const useFamilyApi = () => {
     return response.code === 200;
   };
 
-  return { getFamilies, setFamily };
+  return { getFamilies, getFamilyMembers, setFamily };
 };
