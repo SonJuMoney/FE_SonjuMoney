@@ -5,17 +5,35 @@ export const useAllowanceApi = () => {
   const { fetchApi } = useApi();
   const baseUrl = '/allowances';
 
+  const createFormDataWithFile = (
+    allowanceData: TSendAllowanceReq
+  ): FormData => {
+    const formData = new FormData();
+
+    // 파일 추가
+    formData.append('file', allowanceData.image);
+
+    formData.append('data', JSON.stringify(allowanceData.data));
+
+    // FormData 내용 로깅
+    console.log('FormData entries:', Object.fromEntries(formData.entries()));
+
+    return formData;
+  };
+
   // 용돈 보내기
   const sendAllowance = async (
     allowanceData: TSendAllowanceReq
   ): Promise<boolean> => {
+    const formData = createFormDataWithFile(allowanceData);
+
     const options: RequestInit = {
       method: 'POST',
-      body: JSON.stringify(allowanceData),
+      body: formData,
     };
-    const response = await fetchApi(`${baseUrl}`, options, undefined, true);
 
-    return response.code === 200;
+    const response = await fetchApi(`${baseUrl}`, options, undefined, true);
+    return response?.code === 200;
   };
 
   return { sendAllowance };
