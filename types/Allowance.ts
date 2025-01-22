@@ -4,15 +4,6 @@ export type AllowanceResponse = {
   amount: number;
 };
 
-export type AllowanceReq = {
-  image: File;
-  data: {
-    to_id: number;
-    allowance_id: number;
-    message: string;
-  };
-};
-
 export type TSendAllowanceReq = {
   file: File;
   data: {

@@ -5,7 +5,9 @@ import { auth } from '@/lib/auth';
 export async function fetchData(
   apiRoute: string,
   method: string = 'GET',
-  body?: Record<string, unknown>
+  options: RequestInit = {},
+  body?: Record<string, unknown>,
+  isMultiPart?: boolean
 ) {
   // 서버 세션 가져오기
   const session = await auth();
@@ -22,18 +24,20 @@ export async function fetchData(
   // 요청 헤더 설정
   const headers: HeadersInit = {
     Authorization: `Bearer ${session.user.accessToken}`,
-    'Content-Type': 'application/json',
   };
+  if (!isMultiPart) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  });
 
   // 요청 옵션 설정
-  const options: RequestInit = {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  };
 
   // API 호출
-  const response = await fetch(url, options);
+  // const response = await fetch(url, options);
   // console.log(response);
   // 응답 체크
   if (!response.ok) {
