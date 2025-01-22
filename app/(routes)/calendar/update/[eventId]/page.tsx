@@ -47,11 +47,12 @@ const SelectTypeComponent = (type: string, color: string) => {
   );
 };
 
-const AddPlan = () => {
+const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
   const router = useRouter();
-  const { setEvent } = useEventApi();
-  const { selectedFamily } = useSelectedFamilyStore();
+  const { eventId } = params;
+  const { getEventDetail, updateEvent } = useEventApi();
   const { getFamilyMembers } = useFamilyApi();
+  const { selectedFamily } = useSelectedFamilyStore();
   const [familyMembers, setFamilyMembers] = useState<TMember[]>([]);
 
   const [selectedType, setSelectedType] = useState<string>('');
@@ -61,7 +62,24 @@ const AddPlan = () => {
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
   const [eventMembers, setEventMembers] = useState<number[]>([]);
 
+  const [inputError, setInputError] = useState<string>('');
+
   useEffect(() => {
+    const fetchEvent = async () => {
+      const response = await getEventDetail(eventId);
+      if (response) {
+        setSelectedType(
+          categories.find((c) => c.type === response.event_category)?.value ??
+            ''
+        );
+        setTitle(response.event_name);
+        setIsAllday(response.all_day_status === '하루 종일');
+        setStartDate(new Date(response.start_date_time));
+        setEndDate(new Date(response.end_date_time));
+        setEventMembers(response.event_participants.map((p) => p.member_id));
+      }
+    };
+
     const fetchMembers = async () => {
       if (selectedFamily) {
         const response = await getFamilyMembers(
@@ -72,48 +90,12 @@ const AddPlan = () => {
       }
     };
 
+    fetchEvent();
     fetchMembers();
   }, []);
 
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
-  };
-
-  const validateInputs = () => {
-    if (!selectedType) {
-      alert('분류를 선택해주세요.');
-      return false;
-    }
-
-    if (!title.trim()) {
-      alert('제목을 입력해주세요.');
-      return false;
-    }
-
-    if (!startDate || !endDate) {
-      alert('시작일과 종료일을 모두 선택해주세요.');
-      return false;
-    }
-
-    if (!eventMembers || eventMembers.length === 0) {
-      alert('최소 한 명 이상의 구성원을 선택해주세요.');
-      return false;
-    }
-
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    if (isAllday) {
-      start.setHours(0, 0, 0, 0);
-      end.setHours(0, 0, 0, 0);
-    }
-
-    if (start > end) {
-      alert('종료일이 시작일보다 앞설 수 없습니다.');
-      return false;
-    }
-
-    return true;
   };
 
   const handleEventMembers = (memberId: number) => {
@@ -130,40 +112,80 @@ const AddPlan = () => {
     return eventMembers.includes(memberId);
   };
 
-  const handleOnClick = async () => {
-    if (!validateInputs()) return;
-
-    if (selectedFamily) {
-      const eventData = JSON.stringify({
-        event_category: selectedType,
-        event_name: title,
-        start_date_time: setMinutes(
-          setHours(startDate!, startDate!.getHours() + 9),
-          startDate!.getMinutes()
-        ).toISOString(),
-        end_date_time: setMinutes(
-          setHours(endDate!, endDate!.getHours() + 9),
-          endDate!.getMinutes()
-        ).toISOString(),
-        event_participants: eventMembers,
-        all_day_status: isAllday ? 'ALL_DAY' : 'SPECIFIC_TIME',
-      });
-      const response = await setEvent(selectedFamily?.family_id, eventData);
-
-      if (!response) {
-        console.log('일정 추가 실패');
-        return;
-      }
-
-      alert('일정이 등록되었습니다');
-      router.push('/calendar');
+  const validateInputs = () => {
+    if (!selectedType) {
+      setInputError('분류를 선택해주세요.');
+      return false;
     }
+
+    if (!title.trim()) {
+      setInputError('제목을 입력해주세요.');
+      return false;
+    }
+
+    if (!startDate || !endDate) {
+      setInputError('시작일과 종료일을 모두 선택해주세요.');
+      return false;
+    }
+
+    if (!eventMembers || eventMembers.length === 0) {
+      setInputError('최소 한 명 이상의 구성원을 선택해주세요.');
+      return false;
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (isAllday) {
+      start.setHours(0, 0, 0, 0);
+      end.setHours(0, 0, 0, 0);
+    }
+
+    if (start > end) {
+      setInputError('종료일이 시작일보다 앞설 수 없습니다.');
+      return false;
+    }
+
+    setInputError('');
+    return true;
+  };
+
+  const handleOnClick = async () => {
+    if (!validateInputs()) {
+      alert(inputError);
+      return;
+    }
+
+    const eventData = JSON.stringify({
+      event_category: selectedType,
+      event_name: title,
+      start_date_time: setMinutes(
+        setHours(startDate!, startDate!.getHours() + 9),
+        startDate!.getMinutes()
+      ).toISOString(),
+      end_date_time: setMinutes(
+        setHours(endDate!, endDate!.getHours() + 9),
+        endDate!.getMinutes()
+      ).toISOString(),
+      event_participants: eventMembers,
+      all_day_status: isAllday ? 'ALL_DAY' : 'SPECIFIC_TIME',
+    });
+    const response = await updateEvent(eventId, eventData);
+    console.log(response);
+
+    if (!response) {
+      console.log('수정 실패');
+      return;
+    }
+
+    alert('수정되었습니다');
+    router.push('/calendar');
   };
 
   return (
     <>
       <div className='pageLayout'>
-        <Header title='일정 추가' />
+        <Header title='일정 수정' />
         <div className='h-full px-5 pt-10 pb-5 flex flex-col justify-between'>
           <div className='flex flex-col space-y-12'>
             <div className='flex justify-between items-center'>
@@ -252,4 +274,4 @@ const AddPlan = () => {
   );
 };
 
-export default AddPlan;
+export default UpdateEvent;

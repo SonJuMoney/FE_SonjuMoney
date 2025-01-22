@@ -11,6 +11,7 @@ export type TMember = {
   user_id: number;
   member_name: string;
   member_role: string;
+  profile_link: string | null;
 };
 
 export type TSetFamilyReq = {

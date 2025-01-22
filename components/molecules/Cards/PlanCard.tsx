@@ -44,7 +44,7 @@ const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
   }, [isToday]);
 
   const goEventDetail = (eventId: number) => {
-    router.push(`/calendar/${eventId}`);
+    router.push(`/calendar/detail/${eventId}`);
   };
 
   return (
