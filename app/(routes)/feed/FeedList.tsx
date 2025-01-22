@@ -55,7 +55,7 @@ export default function FeedList() {
       scrollContainer.removeEventListener('scroll', handleScroll);
       clearTimeout(timeoutId);
     };
-  }, []);
+  });
 
   if (!data) {
     return (
