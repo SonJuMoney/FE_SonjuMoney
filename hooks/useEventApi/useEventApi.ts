@@ -37,9 +37,7 @@ export const useEventApi = () => {
       options
     );
 
-    console.log(response);
-
-    return false;
+    return !!response;
   };
 
   const deleteEvent = async (eventId: string): Promise<boolean> => {
@@ -47,11 +45,22 @@ export const useEventApi = () => {
       method: 'DELETE',
     });
 
-    console.log(response);
-    console.log(response.code);
-
-    return response === null || response.code === 200;
+    return response.code === 200;
   };
 
-  return { getEvents, getEventDetail, setEvent, deleteEvent };
+  const updateEvent = async (
+    eventId: string,
+    eventData: string
+  ): Promise<boolean> => {
+    const options: RequestInit = {
+      method: 'PATCH',
+      body: eventData,
+    };
+
+    const response = await fetchApi(`${baseUrl}/${eventId}`, options);
+
+    return !!response;
+  };
+
+  return { getEvents, getEventDetail, setEvent, deleteEvent, updateEvent };
 };
