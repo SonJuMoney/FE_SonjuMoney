@@ -137,7 +137,7 @@ export default function FeedList() {
           </span>
         </Link>
 
-        <div ref={bottomRef} className='w-full pb-5'>
+        <div ref={bottomRef} className='w-full p-5 pb-5'>
           {isFetchingNextPage && (
             <div className='flex flex-col space-y-3'>
               <Skeleton className='h-[125px] w-full rounded-xl' />
