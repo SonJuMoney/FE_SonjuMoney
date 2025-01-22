@@ -24,7 +24,10 @@ const SendAllowanceComplete = () => {
         <CompleteMessage
           title={
             <>
-              <span className='text-appColor'>{selectedMember}님</span>에게
+              <span className='text-appColor'>
+                {selectedMember?.member_name}님
+              </span>
+              에게
               <br />
               <span className='text-appColor'>{amount}원</span>
               {message ? <>과 메시지를 보냈습니다.</> : <>을 보냈습니다.</>}

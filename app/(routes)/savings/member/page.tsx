@@ -1,31 +1,43 @@
 'use client';
 
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
+import RoleCard from '@/components/atoms/Cards/RoleCard';
 import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
-import RoleList from '@/components/molecules/Lists/RoleList';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import useSavingsAccountStore from '@/store/useSavingsAccountStore';
+import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SelectChild = () => {
-  const { selectedFamily, setSelectedChild } = useSavingsAccountStore();
+  const { selectedFamily, selectedChild, setSelectedChild } =
+    useSavingsAccountStore();
   const router = useRouter();
-  const [child, setChild] = useState<string>('');
+  const { getFamilyMembers } = useFamilyApi();
 
-  if (!selectedFamily) return null;
-  const { members } = selectedFamily;
+  const [family, setFamily] = useState<TFamily | null>(null);
 
+  useEffect(() => {
+    const fetchMembers = async () => {
+      if (!selectedFamily) return null;
+
+      try {
+        const response = await getFamilyMembers(
+          selectedFamily.family_id,
+          'CHILDREN'
+        );
+        console.log(response);
+        setFamily(response);
+      } catch (error) {
+        console.error('Failed to fetch only children:', error);
+      }
+    };
+
+    fetchMembers();
+  }, []);
   const handleSelect = () => {
-    const selectedMember = members.find(
-      (member) => member.member_name === child
-    );
-    if (selectedMember) {
-      setSelectedChild(selectedMember);
-      router.push('/savings/agreement');
-    } else {
-      alert('선택된 멤버를 찾을 수 없습니다.');
-    }
+    router.push('/savings/agreement');
   };
 
   return (
@@ -37,15 +49,30 @@ const SelectChild = () => {
 가입할까요?`}
         />
 
-        <RoleList
-          roles={members.map((member) => member.member_name)}
-          selectedRole={child}
-          setSelectedRole={setChild}
-        />
+        <div className='grid grid-cols-2 gap-5'>
+          {family?.members.map((member, index) => (
+            <RoleCard
+              key={index}
+              image='/Role1.png' // 이미지 바꾸기
+              // image={member.profile_link}
+              name={member.member_name}
+              selected={selectedChild?.member_id === member.member_id}
+              onClick={() =>
+                setSelectedChild(
+                  selectedChild?.member_id === member.member_id ? null : member
+                )
+              }
+            />
+          ))}
+        </div>
       </div>
 
       <div className='fixed bottom-0 left-0 w-full p-5'>
-        <ButtonLarge text='선택완료' disabled={!child} onClick={handleSelect} />
+        <ButtonLarge
+          text='선택완료'
+          disabled={!selectedChild}
+          onClick={handleSelect}
+        />
       </div>
     </div>
   );

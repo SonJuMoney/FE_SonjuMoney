@@ -18,3 +18,11 @@ export type TSetSavingsAccountReq = {
   pay_day?: number;
   pay_amount?: number;
 };
+
+export type TSavings = {
+  account_id: number;
+  account_name: string;
+  bank: string;
+  account_num: string;
+  balance: number;
+};

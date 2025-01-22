@@ -48,7 +48,10 @@ const EnterAmount = () => {
           <PageTitle
             title={
               <>
-                <span className='text-appColor'>{selectedMember}</span>님 계좌로
+                <span className='text-appColor'>
+                  {selectedMember?.member_name}
+                </span>
+                님 계좌로
               </>
             }
           />
