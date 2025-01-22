@@ -11,7 +11,7 @@ export const useAllowanceApi = () => {
     const formData = new FormData();
 
     // 파일 추가
-    formData.append('file', allowanceData.image);
+    formData.append('file', allowanceData.file);
 
     formData.append(
       'data',
