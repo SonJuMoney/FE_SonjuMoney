@@ -2,8 +2,10 @@
 
 import FamilyCardSmall from '@/components/atoms/Cards/FamilyCardSmall';
 import RegisterCard from '@/components/atoms/Cards/RegisterCard';
+import RegisterCardSmall from '@/components/atoms/Cards/RegisterCardSmall';
 import LogoHeader from '@/components/atoms/Headers/LogoHeader';
 import AccountCard from '@/components/molecules/Cards/AccountCard';
+import AccountListCard from '@/components/molecules/Cards/AccountListCard';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { TAccount } from '@/types/Account';
@@ -20,6 +22,23 @@ const Home = () => {
   const router = useRouter();
   const [account, setAccount] = useState<TAccount | null>(null);
   const [families, setFamilies] = useState<TFamily[] | null>(null);
+  const [savings, setSavings] = useState<TAccount[]>([
+    {
+      account_num: '1',
+      account_name: '달달하나통장',
+      balance: 500000,
+      mockacc_id: 1,
+      bank: '하나은행',
+    },
+    {
+      account_num: '2',
+      account_name: 'Vacation Fund',
+      balance: 300000,
+      mockacc_id: 2,
+      bank: '하나은행',
+    },
+  ]); // 적금 api 연결
+
   const { getMyAccount } = useAccountApi();
   const { getFamilies } = useFamilyApi();
 
@@ -32,6 +51,7 @@ const Home = () => {
         ]);
         setAccount(accountResponse);
         setFamilies(familiesResponse);
+        console.log(accountResponse);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
@@ -57,6 +77,10 @@ const Home = () => {
               />
             </div>
           ))}
+          <RegisterCardSmall
+            text=''
+            onClick={() => router.push('/register/family')}
+          />
         </div>
       </div>
     );
@@ -107,9 +131,21 @@ const Home = () => {
         {/* 적금 */}
         <div className='flex flex-col gap-2.5 font-semibold'>
           <div className='text-[#272727] text-lg'>납입 중인 적금</div>
-          <Link href='/savings'>
-            <RegisterCard text='아이 적금 만들기' />
-          </Link>
+
+          {savings ? (
+            <AccountListCard
+              accounts={savings}
+              onSelectAccount={(selectedAccount) =>
+                router.push(`/savings/${selectedAccount}`)
+              } // 이체 내역 보기
+              onButtonClick={() => router.push('/savings/send')} // 적금 보내기
+              onClick={() => router.push('/savings')}
+            />
+          ) : (
+            <Link href='/savings'>
+              <RegisterCard text='아이 적금 만들기' />
+            </Link>
+          )}
         </div>
       </div>
     </div>
