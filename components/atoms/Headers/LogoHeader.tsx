@@ -22,13 +22,19 @@ type HeaderProps = {
 export default function LogoHeader({ showFamily }: HeaderProps) {
   const { getFamilies } = useFamilyApi();
   const [families, setFamilies] = useState<TFamily[]>([]);
-  const { selectedFamily, setSelectedFamily } = useSelectedFamilyStore();
+  const { selectedFamily, setSelectedFamily, hydrated, setHydrated } =
+    useSelectedFamilyStore();
   const [isAlarm, setIsAlarm] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
 
   const selectedFamilyName =
     selectedFamily?.family_name ||
     (families.length > 0 ? families[0].family_name : '');
+
+  useEffect(() => {
+    useSelectedFamilyStore.persist.rehydrate();
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     const fetchFamilies = async () => {
@@ -39,10 +45,13 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
       }
     };
 
-    fetchFamilies();
-  }, []);
+    if (hydrated) {
+      fetchFamilies();
+    }
+  }, [hydrated]);
 
   const handleSignOut = async () => {
+    setSelectedFamily(null);
     await signOut({
       redirect: true,
       callbackUrl: '/login',
