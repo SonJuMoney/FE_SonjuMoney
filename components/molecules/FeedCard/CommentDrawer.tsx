@@ -6,10 +6,20 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { useToast } from '@/hooks/use-toast';
+import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
+import ShowMore from '@/public/Icons/showMore_24.svg';
 import { TComment } from '@/types/Feed';
+import { formatUpdatedAt } from '@/lib/utils';
 
 interface CommentDrawerProps {
   open: boolean;
+  feedId: number;
   onOpenChange: (open: boolean) => void;
   comments: TComment[];
 }
@@ -17,8 +27,28 @@ interface CommentDrawerProps {
 const CommentDrawer = ({
   open,
   onOpenChange,
+  feedId,
   comments,
 }: CommentDrawerProps) => {
+  const { deleteComment } = useFeedApi();
+  const { toast } = useToast();
+
+  const handleDeleteComment = (comment_id: number) => {
+    deleteComment(comment_id, {
+      onSuccess: () => {
+        toast({
+          description: '댓글이 삭제되었습니다.',
+        });
+      },
+      onError: () => {
+        toast({
+          variant: 'destructive',
+          description: '댓글 삭제에 실패했습니다.',
+        });
+      },
+    });
+  };
+
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className='flex flex-col max-h-[500px]'>
@@ -30,17 +60,42 @@ const CommentDrawer = ({
             {comments.length ? (
               <>
                 {comments.map((comment, index) => (
-                  <div key={index} className='flex items-start gap-2'>
-                    <CircleImg
-                      imgUrl={comment.writer_image || '/Role1.png'}
-                      size={24}
-                    />
-                    <div>
-                      <span className='font-bold text-sm'>
-                        {comment.writer_name}
-                      </span>
-                      <p className='text-sm'>{comment.message}</p>
+                  <div key={index} className='flex w-full justify-between'>
+                    <div className='flex items-start gap-2'>
+                      <CircleImg
+                        imgUrl={comment.writer_image || '/Role1.png'}
+                        size={45}
+                      />
+                      <div>
+                        <div className='flex gap-2 items-center'>
+                          <span className='font-bold text-md'>
+                            {comment.writer_name}
+                          </span>
+                          <span className='text-[11px] text-appColor'>
+                            {formatUpdatedAt(comment.created_at)}
+                          </span>
+                        </div>
+                        <p className='text-lg'>{comment.message}</p>
+                      </div>
                     </div>
+                    {comment.is_mine && (
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <button>
+                            <ShowMore />
+                          </button>
+                        </PopoverTrigger>
+                        <PopoverContent className='absolute p-4 -right-6 w-28 text-center'>
+                          <button
+                            onClick={() =>
+                              handleDeleteComment(comment.comment_id)
+                            }
+                          >
+                            삭제하기
+                          </button>
+                        </PopoverContent>
+                      </Popover>
+                    )}
                   </div>
                 ))}
               </>
@@ -51,7 +106,7 @@ const CommentDrawer = ({
             )}
           </div>
           <div className='flex gap-2 sticky bottom-0 bg-white  border-t'>
-            <CommentInput onSubmit={() => {}} />
+            <CommentInput feed_id={feedId} />
           </div>
         </div>
       </DrawerContent>

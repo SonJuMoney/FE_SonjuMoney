@@ -86,7 +86,7 @@ const Home = () => {
   };
 
   return (
-    <div className='pageLayout bg-pageBg'>
+    <div className='pageLayout bg-[#FAE4D4]'>
       <LogoHeader showFamily={false} />
 
       <div className='p-5 flex flex-col gap-5'>

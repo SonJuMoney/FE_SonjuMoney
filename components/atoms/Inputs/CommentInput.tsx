@@ -1,15 +1,19 @@
 'use client';
 
+import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
 import CommentOff from '@/public/Icons/commentOff_32.svg';
 import CommentOn from '@/public/Icons/commentOn_32.svg';
 import { useCallback, useRef, useState } from 'react';
 
 type CommentInputProps = {
-  onSubmit?: (comment: string) => void;
+  // onSubmit: () => void;
+  feed_id: number;
 };
 
-export default function CommentInput({ onSubmit }: CommentInputProps) {
+export default function CommentInput({ feed_id }: CommentInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { addComment } = useFeedApi();
+
   const [hasValue, setHasValue] = useState(false);
 
   const handleInput = useCallback(() => {
@@ -19,11 +23,11 @@ export default function CommentInput({ onSubmit }: CommentInputProps) {
   const handleSubmit = useCallback(() => {
     const input = inputRef.current;
     if (input && input.value.trim()) {
-      onSubmit?.(input.value);
+      addComment({ feed_id: feed_id, message: input.value });
       input.value = '';
       setHasValue(false);
     }
-  }, [onSubmit]);
+  }, []);
 
   return (
     <div className='w-full bg-white px-5 py-4  border-t border-gray-100'>

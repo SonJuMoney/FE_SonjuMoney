@@ -18,7 +18,7 @@ const CompleteMessage = ({
     <div className='flex justify-center items-center h-3/4'>
       <div className='flex flex-col gap-[70px] justify-center items-center'>
         <div className='flex flex-col w-full text-center items-center gap-[18px]'>
-          <span className='text-black text-2xl font-semibold max-w-[250px]  whitespace-pre'>
+          <span className='text-black text-2xl font-semibold  whitespace-pre leading-10'>
             {title}
           </span>
           {subTitle && (

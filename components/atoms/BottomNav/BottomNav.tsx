@@ -42,7 +42,7 @@ const BottomNav = () => {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0  flex py-3 justify-evenly bg-white border-t border-gray-200 rounded-t-3xl transition-all duration-300 ease-in-out z-50 ${
+      className={`fixed bottom-0 left-0 right-0  flex py-3 justify-evenly  bg-white/80 backdrop-blur-xl border-2 border-white  border-t rounded-t-3xl transition-all duration-300 ease-in-out z-50 ${
         isOpen ? 'visible opacity-100' : 'invisible opacity-0 -bottom-[50px]'
       }`}
     >
