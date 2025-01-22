@@ -14,6 +14,9 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { useEventApi } from '@/hooks/useEventApi/useEventApi';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
+import { TMember } from '@/types/Family';
 import { setHours, setMinutes } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -45,16 +48,19 @@ const SelectTypeComponent = (type: string, color: string) => {
 };
 
 const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
+  const router = useRouter();
   const { eventId } = params;
   const { getEventDetail, updateEvent } = useEventApi();
-  const router = useRouter();
+  const { getFamilyMembers } = useFamilyApi();
+  const { selectedFamily } = useSelectedFamilyStore();
+  const [familyMembers, setFamilyMembers] = useState<TMember[]>([]);
 
   const [selectedType, setSelectedType] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [isAllday, setIsAllday] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
-  const [eventMembers, setEventMembers] = useState<number[]>([1, 2, 4]);
+  const [eventMembers, setEventMembers] = useState<number[]>([]);
 
   const [inputError, setInputError] = useState<string>('');
 
@@ -72,14 +78,45 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
         setIsAllday(response.all_day_status === '하루 종일');
         setStartDate(new Date(response.start_date_time));
         setEndDate(new Date(response.end_date_time));
+        setEventMembers(response.event_participants.map((p) => p.member_id));
+      }
+    };
+
+    const fetchMembers = async () => {
+      if (selectedFamily) {
+        const response = await getFamilyMembers(
+          selectedFamily?.family_id,
+          'ALL'
+        );
+        console.log(response);
+        setFamilyMembers(response.members);
       }
     };
 
     fetchEvent();
+    fetchMembers();
   }, []);
+
+  useEffect(() => {
+    console.log(eventMembers);
+  }, [eventMembers]);
 
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
+  };
+
+  const handleEventMembers = (memberId: number) => {
+    setEventMembers((prevMembers) => {
+      if (prevMembers.includes(memberId)) {
+        return prevMembers.filter((id) => id !== memberId);
+      } else {
+        return [...prevMembers, memberId];
+      }
+    });
+  };
+
+  const isMemberSelected = (memberId: number) => {
+    return eventMembers.includes(memberId);
   };
 
   const validateInputs = () => {
@@ -204,8 +241,37 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
                 <DateTimePicker date={endDate} setDate={setEndDate} />
               )}
             </div>
-            <div className='flex justify-between items-center'>
-              {TitleComponent('구성원')}
+            <div className='flex flex-col space-y-6'>
+              {TitleComponent('참여자')}
+              <div className='grid grid-cols-4 gap-4'>
+                {familyMembers.map((member) => (
+                  <div
+                    key={member.member_id}
+                    className='flex flex-col items-center gap-4'
+                  >
+                    <div className='w-14 h-14 border rounded-full overflow-hidden'>
+                      <img
+                        src={member.profile_link ?? '/Role1.png'}
+                        alt={member.member_name}
+                        className='w-full h-full object-cover'
+                      />
+                    </div>
+                    <div className='flex justify-between items-center space-x-2'>
+                      <button
+                        className={`w-4 h-4 border rounded-full cursor-pointer ${
+                          isMemberSelected(member.member_id)
+                            ? 'bg-appColor'
+                            : ''
+                        }`}
+                        onClick={() => handleEventMembers(member.member_id)}
+                      ></button>
+                      <span className='text-sm font-medium'>
+                        {member.member_name}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <ButtonLarge text={'저장'} onClick={handleOnClick} />

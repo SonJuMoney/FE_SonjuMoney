@@ -14,9 +14,12 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { useEventApi } from '@/hooks/useEventApi/useEventApi';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
+import { TMember } from '@/types/Family';
 import { setHours, setMinutes } from 'date-fns';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const categories: { value: string; type: string; color: string }[] = [
   { value: 'BIRTHDAY', type: '생일', color: 'lemon' },
@@ -45,17 +48,36 @@ const SelectTypeComponent = (type: string, color: string) => {
 };
 
 const AddPlan = () => {
+  const router = useRouter();
   const { setEvent } = useEventApi();
   const { selectedFamily } = useSelectedFamilyStore();
+  const { getFamilyMembers } = useFamilyApi();
+  const [familyMembers, setFamilyMembers] = useState<TMember[]>([]);
 
   const [selectedType, setSelectedType] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [isAllday, setIsAllday] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
-  const [eventMembers, setEventMembers] = useState<number[]>([1, 2, 4]);
+  const [eventMembers, setEventMembers] = useState<number[]>([]);
 
-  const [inputError, setInputError] = useState<string>('');
+  useEffect(() => {
+    const fetchMembers = async () => {
+      if (selectedFamily) {
+        const response = await getFamilyMembers(
+          selectedFamily?.family_id,
+          'ALL'
+        );
+        setFamilyMembers(response.members);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
+  useEffect(() => {
+    console.log(eventMembers);
+  }, [eventMembers]);
 
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
@@ -63,22 +85,22 @@ const AddPlan = () => {
 
   const validateInputs = () => {
     if (!selectedType) {
-      setInputError('분류를 선택해주세요.');
+      alert('분류를 선택해주세요.');
       return false;
     }
 
     if (!title.trim()) {
-      setInputError('제목을 입력해주세요.');
+      alert('제목을 입력해주세요.');
       return false;
     }
 
     if (!startDate || !endDate) {
-      setInputError('시작일과 종료일을 모두 선택해주세요.');
+      alert('시작일과 종료일을 모두 선택해주세요.');
       return false;
     }
 
     if (!eventMembers || eventMembers.length === 0) {
-      setInputError('최소 한 명 이상의 구성원을 선택해주세요.');
+      alert('최소 한 명 이상의 구성원을 선택해주세요.');
       return false;
     }
 
@@ -91,19 +113,29 @@ const AddPlan = () => {
     }
 
     if (start > end) {
-      setInputError('종료일이 시작일보다 앞설 수 없습니다.');
+      alert('종료일이 시작일보다 앞설 수 없습니다.');
       return false;
     }
 
-    setInputError('');
     return true;
   };
 
+  const handleEventMembers = (memberId: number) => {
+    setEventMembers((prevMembers) => {
+      if (prevMembers.includes(memberId)) {
+        return prevMembers.filter((id) => id !== memberId);
+      } else {
+        return [...prevMembers, memberId];
+      }
+    });
+  };
+
+  const isMemberSelected = (memberId: number) => {
+    return eventMembers.includes(memberId);
+  };
+
   const handleOnClick = async () => {
-    if (!validateInputs()) {
-      alert(inputError);
-      return;
-    }
+    if (!validateInputs()) return;
 
     if (selectedFamily) {
       const eventData = JSON.stringify({
@@ -121,7 +153,14 @@ const AddPlan = () => {
         all_day_status: isAllday ? 'ALL_DAY' : 'SPECIFIC_TIME',
       });
       const response = await setEvent(selectedFamily?.family_id, eventData);
-      console.log(response);
+
+      if (!response) {
+        console.log('일정 추가 실패');
+        return;
+      }
+
+      alert('일정이 등록되었습니다');
+      router.push('/calendar');
     }
   };
 
@@ -177,8 +216,37 @@ const AddPlan = () => {
                 <DateTimePicker date={endDate} setDate={setEndDate} />
               )}
             </div>
-            <div className='flex justify-between items-center'>
-              {TitleComponent('구성원')}
+            <div className='flex flex-col space-y-6'>
+              {TitleComponent('참여자')}
+              <div className='grid grid-cols-4 gap-4'>
+                {familyMembers.map((member) => (
+                  <div
+                    key={member.member_id}
+                    className='flex flex-col items-center gap-4'
+                  >
+                    <div className='w-14 h-14 border rounded-full overflow-hidden'>
+                      <img
+                        src={member.profile_link ?? '/Role1.png'}
+                        alt={member.member_name}
+                        className='w-full h-full object-cover'
+                      />
+                    </div>
+                    <div className='flex justify-between items-center space-x-2'>
+                      <button
+                        className={`w-4 h-4 border rounded-full cursor-pointer ${
+                          isMemberSelected(member.member_id)
+                            ? 'bg-appColor'
+                            : ''
+                        }`}
+                        onClick={() => handleEventMembers(member.member_id)}
+                      ></button>
+                      <span className='text-sm font-medium'>
+                        {member.member_name}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <ButtonLarge text={'저장'} onClick={handleOnClick} />

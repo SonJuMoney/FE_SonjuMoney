@@ -16,7 +16,7 @@ export const useFamilyApi = () => {
   const getFamilyMembers = async (
     family_id: number,
     range: 'ALL' | 'EXCEPTME' | 'CHILDREN'
-  ): Promise<TFamily[]> => {
+  ): Promise<TFamily> => {
     const response = await fetchApi(
       `${baseUrl}/${family_id}/members?range=${range}`
     );

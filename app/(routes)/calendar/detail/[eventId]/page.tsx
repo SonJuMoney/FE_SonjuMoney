@@ -112,8 +112,27 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
               {TitleComponent('종료일')}
               {event && <div>{formatDate(event.end_date_time)}</div>}
             </div>
-            <div className='flex justify-between items-center'>
-              {TitleComponent('구성원')}
+            <div className='flex flex-col space-y-6'>
+              {TitleComponent('참여자')}
+              <div className='grid grid-cols-4 gap-4'>
+                {event?.event_participants.map((participant) => (
+                  <div
+                    key={participant.member_id}
+                    className='flex flex-col items-center gap-4'
+                  >
+                    <div className='w-14 h-14 border rounded-full overflow-hidden'>
+                      <img
+                        src={participant.profile_link ?? '/Role1.png'}
+                        alt={participant.user_name}
+                        className='w-full h-full object-cover'
+                      />
+                    </div>
+                    <span className='text-sm font-medium'>
+                      {participant.user_name}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
