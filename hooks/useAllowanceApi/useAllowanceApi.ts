@@ -9,20 +9,14 @@ export const useAllowanceApi = () => {
     allowanceData: TSendAllowanceReq
   ): FormData => {
     const formData = new FormData();
-
     // 파일 추가
     formData.append('file', allowanceData.file);
-
     formData.append(
       'data',
       new Blob([JSON.stringify(allowanceData.data)], {
         type: 'application/json',
       })
     );
-
-    // FormData 내용 로깅
-    console.log('FormData entries:', Object.fromEntries(formData.entries()));
-
     return formData;
   };
 

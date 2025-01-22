@@ -1,5 +1,5 @@
 import { ResponseType, GetPaginationResult, useApi } from '@/hooks/useApi';
-import { TAddCommentReq, TFeed } from '@/types/Feed';
+import { TAddCommentReq, TCreateFeedReq, TFeed } from '@/types/Feed';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useFeedApi = () => {
@@ -8,26 +8,34 @@ export const useFeedApi = () => {
 
   const baseUrl = '/feeds';
 
-  // const createFormDataWithFile = (
-  //   allowanceData: TSendAllowanceReq
-  // ): FormData => {
-  //   const formData = new FormData();
+  const createFormDataWithFile = (feedData: TCreateFeedReq): FormData => {
+    const formData = new FormData();
+    // 파일 추가
+    formData.append('file', feedData.file);
+    formData.append(
+      'data',
+      new Blob([JSON.stringify(feedData.data)], {
+        type: 'application/json',
+      })
+    );
+    return formData;
+  };
 
-  //   // 파일 추가
-  //   formData.append('file', allowanceData.file);
-
-  //   formData.append(
-  //     'data',
-  //     new Blob([JSON.stringify(allowanceData.data)], {
-  //       type: 'application/json',
-  //     })
-  //   );
-
-  //   // FormData 내용 로깅
-  //   console.log('FormData entries:', Object.fromEntries(formData.entries()));
-
-  //   return formData;
-  // };
+  // 피드 생성
+  const createFeedMutation = useMutation({
+    mutationFn: async (feedData: TCreateFeedReq) => {
+      const formData = createFormDataWithFile(feedData);
+      const options: RequestInit = {
+        method: 'POST',
+        body: formData,
+      };
+      const response = await fetchApi(`${baseUrl}`, options, undefined, true);
+      return response?.code === 200;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['feeds'] });
+    },
+  });
 
   const getFeedList = async (familyId: number, pageParam: number) => {
     const data: ResponseType<GetPaginationResult<TFeed>> = await fetchApi(
@@ -75,6 +83,7 @@ export const useFeedApi = () => {
   });
 
   return {
+    createFeed: createFeedMutation.mutate,
     getFeedList,
     likeFeed: likeFeedMutation.mutate,
     deleteFeed: deleteFeedMutation.mutate,
