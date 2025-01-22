@@ -1,14 +1,13 @@
 import { useSession } from 'next-auth/react';
 
-export const useApi = () => {
+export const useFormData = () => {
   const { data: session } = useSession();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchApi = async (
     apiRoute: string,
     options: RequestInit = {},
-    queryParams?: Record<string, unknown>,
-    isMultiPart?: boolean
+    queryParams?: Record<string, unknown>
   ) => {
     if (!session?.user?.accessToken) {
       throw new Error('No JWT token found');
@@ -31,12 +30,26 @@ export const useApi = () => {
 
     const headers = new Headers(options.headers);
     headers.set('Authorization', `Bearer ${session.user?.accessToken}`);
-    if (!isMultiPart) headers.set('Content-Type', 'application/json');
 
-    const response = await fetch(url, {
+    const finalOptions = {
       ...options,
       headers,
-    });
+    };
+
+    // body 처리
+    if (options.body) {
+      const formData = new FormData();
+      Object.entries(options.body).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => formData.append(key, item));
+        } else {
+          formData.append(key, value);
+        }
+      });
+      finalOptions.body = formData;
+    }
+
+    const response = await fetch(url, finalOptions);
 
     if (!response.ok) {
       throw new Error(`API request failed: ${response.statusText}`);
@@ -46,16 +59,3 @@ export const useApi = () => {
 
   return { fetchApi };
 };
-
-export interface ResponseType<T = unknown> {
-  isSuccess: boolean;
-  code: number;
-  message: string;
-  result?: T;
-}
-
-export interface GetPaginationResult<T> {
-  hasNext: boolean;
-  page: number;
-  contents: Array<T>;
-}
