@@ -8,6 +8,7 @@ import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { getProfileImage } from '@/lib/utils';
 
 const TitleComponent = (title: string) => {
   return (
@@ -122,7 +123,10 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
                   >
                     <div className='w-14 h-14 border rounded-full overflow-hidden'>
                       <img
-                        src={participant.profile_link ?? '/Role1.png'}
+                        src={
+                          participant.profile_link ??
+                          getProfileImage(participant.member_role)
+                        }
                         alt={participant.user_name}
                         className='w-full h-full object-cover'
                       />

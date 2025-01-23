@@ -106,7 +106,7 @@ export default function SavingList({ savingId }: { savingId: number }) {
 
   return (
     <div>
-      <div className='flex flex-col space-y-4 px-5 pt-10'>
+      <div className='flex flex-col space-y-4 px-5 pt-10 pb-5'>
         <PageTitle
           title={
             <>

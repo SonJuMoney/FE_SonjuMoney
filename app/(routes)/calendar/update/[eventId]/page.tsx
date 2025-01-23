@@ -20,6 +20,7 @@ import { TMember } from '@/types/Family';
 import { setHours, setMinutes } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { getProfileImage } from '@/lib/utils';
 
 const categories: { value: string; type: string; color: string }[] = [
   { value: 'BIRTHDAY', type: '생일', color: 'lemon' },
@@ -244,7 +245,10 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
                   >
                     <div className='w-14 h-14 border rounded-full overflow-hidden'>
                       <img
-                        src={member.profile_link ?? '/Role1.png'}
+                        src={
+                          member.profile_link ??
+                          getProfileImage(member.member_role)
+                        }
                         alt={member.member_name}
                         className='w-full h-full object-cover'
                       />
