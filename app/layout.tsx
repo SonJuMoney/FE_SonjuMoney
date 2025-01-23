@@ -1,5 +1,6 @@
 import BottomNav from '@/components/atoms/BottomNav/BottomNav';
 import { Toaster } from '@/components/ui/toaster';
+import { WebSocketProvider } from '@/context/WebSocketContext';
 import StreamVideoProvider from '@/providers/StreamClientProvider';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
@@ -34,11 +35,13 @@ export default async function RootLayout({
       >
         <Providers>
           <SessionProvider session={session}>
-            <StreamVideoProvider>
-              {children}
-              <Toaster />
-              <BottomNav />
-            </StreamVideoProvider>
+            <WebSocketProvider>
+              <StreamVideoProvider>
+                {children}
+                <Toaster />
+                <BottomNav />
+              </StreamVideoProvider>
+            </WebSocketProvider>
           </SessionProvider>
         </Providers>
       </body>
