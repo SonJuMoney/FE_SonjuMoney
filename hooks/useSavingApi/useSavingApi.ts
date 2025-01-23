@@ -1,6 +1,7 @@
 import { ResponseType, GetPaginationResult, useApi } from '@/hooks/useApi';
 import { SavingsResponse, TSavings } from '@/types/Account';
 import { TFeed } from '@/types/Feed';
+import { TSavingLimit } from '@/types/Saving';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useSavingApi = () => {
@@ -16,6 +17,11 @@ export const useSavingApi = () => {
     );
 
     return data.result;
+  };
+
+  const getSavingLimit = async (savingId: number): Promise<TSavingLimit> => {
+    const response = await fetchApi(`${baseUrl}/${savingId}/limit`);
+    return response;
   };
 
   const sendSaving = async (
@@ -47,5 +53,5 @@ export const useSavingApi = () => {
     return response;
   };
 
-  return { getSavingDetails, sendSaving, getSavingsAccounts };
+  return { getSavingDetails, sendSaving, getSavingsAccounts, getSavingLimit };
 };

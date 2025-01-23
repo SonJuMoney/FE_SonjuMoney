@@ -5,16 +5,21 @@ import TransactionCard from '@/components/molecules/Cards/TransactionCard';
 import EmptyState from '@/components/molecules/EmptyState/EmptyState';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import useSavingQuery from '@/hooks/useSavingApi/useSavingQuery';
+import useSendSavingStore from '@/store/useSendSavingStore';
+import { TSavingLimit } from '@/types/Saving';
 import { useEffect, useRef, useState } from 'react';
 
 export default function SavingList({ savingId }: { savingId: number }) {
-  console.log('22', savingId);
   const { GetSavings } = useSavingQuery();
   const bottomRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { selectedSaving } = useSendSavingStore();
+  const { getSavingLimit } = useSavingApi();
+  const [savingInfo, setSavingInfo] = useState<TSavingLimit>();
 
-  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     GetSavings(savingId);
 
   useIntersectionObserver({
@@ -53,6 +58,17 @@ export default function SavingList({ savingId }: { savingId: number }) {
       scrollContainer.removeEventListener('scroll', handleScroll);
       clearTimeout(timeoutId);
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchLimit = async () => {
+      if (!selectedSaving) return;
+
+      const response = await getSavingLimit(selectedSaving?.account_id);
+      setSavingInfo(response);
+    };
+
+    fetchLimit();
   }, []);
 
   if (!data) {
@@ -94,7 +110,8 @@ export default function SavingList({ savingId }: { savingId: number }) {
         <PageTitle
           title={
             <>
-              <span className='text-appColor'>장호준</span>님에게 납입한
+              <span className='text-appColor'>{savingInfo?.receiver_name}</span>
+              님에게 납입한
               <br />
               적금 내역이에요
             </>
@@ -103,15 +120,15 @@ export default function SavingList({ savingId }: { savingId: number }) {
         <div className='flex flex-col gap-1'>
           <div className='flex justify-between text-[18px] font-semibold mt-2'>
             <div>총 납입 내역</div>
-            <div className='text-appColor'>2,350,000원</div>
+            <div className='text-appColor'>{savingInfo?.total_payment}</div>
           </div>
           <div className='flex justify-between text-[18px] font-semibold'>
             <div>이번달 납입 내역</div>
-            <div className='text-appColor'>300,000원</div>
+            <div className='text-appColor'>{savingInfo?.month_payment}</div>
           </div>
           <div className='flex justify-between text-[14px] font-semibold'>
             <div>이번달 납입 가능 금액</div>
-            <div>300,000원</div>
+            <div>{savingInfo?.month_available_amount}</div>
           </div>
         </div>
       </div>

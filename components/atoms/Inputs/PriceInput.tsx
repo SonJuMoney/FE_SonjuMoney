@@ -5,9 +5,11 @@ import { ChangeEvent, useState } from 'react';
 type Props = {
   value: string;
   onChange: (value: string) => void;
+  balance?: number;
+  limitAmount?: number;
 };
 
-const PriceInput = ({ value, onChange }: Props) => {
+const PriceInput = ({ value, onChange, balance, limitAmount }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -29,7 +31,7 @@ const PriceInput = ({ value, onChange }: Props) => {
 
     const numericAmount = Number(numericValue);
 
-    if (numericAmount > 500000) {
+    if (limitAmount && numericAmount > limitAmount) {
       setErrorMessage('납입 한도를 초과했습니다.');
     } else {
       setErrorMessage('');

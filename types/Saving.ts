@@ -11,3 +11,10 @@ export type TTransaction = {
   amount: number;
   after_balance: number;
 };
+
+export type TSavingLimit = {
+  receiver_name: string;
+  total_payment: number;
+  month_payment: number;
+  month_available_amount: number;
+};
