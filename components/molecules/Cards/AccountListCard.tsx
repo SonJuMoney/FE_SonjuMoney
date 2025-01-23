@@ -7,7 +7,7 @@ type AccountListCardProps = {
   accounts: TSavings[];
   selectedAccount?: number;
   onSelectAccount: (accountId: number) => void;
-  onButtonClick?: () => void;
+  onButtonClick?: (accountId: number) => void;
   onClick?: () => void;
 };
 
@@ -45,7 +45,7 @@ const AccountListCard = ({
             </div>
 
             <div
-              onClick={onButtonClick}
+              onClick={() => onButtonClick?.(account.account_id)}
               className='px-[11px] py-2 bg-appColor rounded-xl cursor-pointer'
             >
               <div className='text-white text-xs font-bold'>적금 보내기</div>
