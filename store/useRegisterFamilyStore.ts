@@ -1,6 +1,5 @@
 import { Child, Role } from '@/types/user';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface InviteCard {
   phoneValue: string;
@@ -21,41 +20,31 @@ interface RegisterFamilyState {
   resetState: () => void;
 }
 
-const useRegisterFamilyStore = create<RegisterFamilyState>()(
-  persist(
-    (set) => ({
+const useRegisterFamilyStore = create<RegisterFamilyState>()((set) => ({
+  familyName: '',
+  selectedRole: '',
+  inviteCards: [],
+  selectedChilds: [],
+  setFamilyName: (name) => set({ familyName: name }),
+  setSelectedRole: (role) => set({ selectedRole: role }),
+  addInviteCard: (card) =>
+    set((state) => ({ inviteCards: [...state.inviteCards, card] })),
+  updateInviteCard: (index, card) =>
+    set((state) => ({
+      inviteCards: state.inviteCards.map((c, i) => (i === index ? card : c)),
+    })),
+  deleteInviteCard: (index) =>
+    set((state) => ({
+      inviteCards: state.inviteCards.filter((_, i) => i !== index),
+    })),
+  setSelectedChilds: (childs) => set(() => ({ selectedChilds: childs })),
+  resetState: () =>
+    set({
       familyName: '',
       selectedRole: '',
       inviteCards: [],
       selectedChilds: [],
-      setFamilyName: (name) => set({ familyName: name }),
-      setSelectedRole: (role) => set({ selectedRole: role }),
-      addInviteCard: (card) =>
-        set((state) => ({ inviteCards: [...state.inviteCards, card] })),
-      updateInviteCard: (index, card) =>
-        set((state) => ({
-          inviteCards: state.inviteCards.map((c, i) =>
-            i === index ? card : c
-          ),
-        })),
-      deleteInviteCard: (index) =>
-        set((state) => ({
-          inviteCards: state.inviteCards.filter((_, i) => i !== index),
-        })),
-      setSelectedChilds: (childs) => set(() => ({ selectedChilds: childs })),
-      resetState: () =>
-        set({
-          familyName: '',
-          selectedRole: '',
-          inviteCards: [],
-          selectedChilds: [],
-        }),
     }),
-    {
-      name: 'register-family-storage',
-      storage: createJSONStorage(() => sessionStorage),
-    }
-  )
-);
+}));
 
 export default useRegisterFamilyStore;

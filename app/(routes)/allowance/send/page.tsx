@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 
 const SelectFamily = () => {
   const [families, setFamilies] = useState<TFamily[]>([]);
-  const { setSelectedFamily } = useSendAllowanceStore();
+  const { setSelectedFamily, resetState } = useSendAllowanceStore();
   const router = useRouter();
   const { getFamilies } = useFamilyApi();
 
@@ -30,9 +30,15 @@ const SelectFamily = () => {
     setSelectedFamily(family);
     router.push(`/allowance/send/member`);
   };
+
+  const onBack = () => {
+    resetState();
+    router.back();
+  };
+
   return (
     <div>
-      <Header title='용돈 보내기' />
+      <Header title='용돈 보내기' onBack={onBack} />
 
       <div className='p-5'>
         <PageTitle title='가족을 선택해주세요' />

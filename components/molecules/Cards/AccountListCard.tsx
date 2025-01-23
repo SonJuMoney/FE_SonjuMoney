@@ -36,7 +36,7 @@ const AccountListCard = ({
               />
               <div className='flex flex-col font-semibold justify-center text-md cursor-pointer'>
                 <div className='text-[16px] font-semibold text-black'>
-                  {account.account_name}
+                  {account.user_name}님 {account.account_name}
                 </div>
                 <div className='text-black text-[16px]'>
                   {account.balance.toLocaleString()}원
