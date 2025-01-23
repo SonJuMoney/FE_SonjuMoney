@@ -37,13 +37,13 @@ const TransactionCard = ({
         <div key={transaction.after_balance}>
           <div className='w-full flex justify-between'>
             <div className='flex space-x-2 items-center'>
-              <Image
+              {/* <Image
                 src={transaction.profile_link ?? '/Role1.png'}
                 alt={transaction.user_name}
                 width={40}
                 height={40}
                 className='object-cover rounded-full '
-              />
+              /> */}
               <div className='flex flex-col justify-center space-y-1 font-medium'>
                 <div className='text-appColor text-[15px]'>
                   {transaction.user_name}
@@ -55,7 +55,7 @@ const TransactionCard = ({
             </div>
             <div className='flex flex-col justify-center items-end space-y-1 font-medium'>
               <div className='text-appColor text-[15px]'>{`${transaction.amount.toLocaleString()}원`}</div>
-              <div className='text-darkGray text-[11px]'>{`${transaction.after_balance.toLocaleString()}원`}</div>
+              {/* <div className='text-darkGray text-[11px]'>{`${transaction.after_balance.toLocaleString()}원`}</div> */}
             </div>
           </div>
           <Accordion type='single' collapsible>

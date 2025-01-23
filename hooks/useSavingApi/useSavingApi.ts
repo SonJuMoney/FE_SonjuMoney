@@ -21,14 +21,15 @@ export const useSavingApi = () => {
   const sendSaving = async (
     selectedSaving: TSavings,
     amount: number,
-    message: string
+    message: string,
+    password: string
   ): Promise<boolean> => {
     const options: RequestInit = {
       method: 'POST',
       body: JSON.stringify({
         amount: amount,
         message: message,
-        status: true,
+        pin: password,
       }),
     };
 
@@ -36,7 +37,8 @@ export const useSavingApi = () => {
       `${baseUrl}/${selectedSaving.account_id}/transfer`,
       options
     );
-    return response.code === 200;
+    console.log(response);
+    return response.code === 201;
   };
 
   return { getSavingDetails, sendSaving };

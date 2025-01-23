@@ -10,8 +10,8 @@ export default function CompletePage() {
   const router = useRouter();
 
   const handleOnClick = () => {
-    // resetState;
-    // router.push('/home');
+    resetState();
+    router.push('/home');
   };
 
   return (

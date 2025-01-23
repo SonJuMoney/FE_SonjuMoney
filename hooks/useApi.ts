@@ -39,7 +39,7 @@ export const useApi = () => {
     });
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.statusText}`);
+      throw new Error(`${response.status}`);
     }
     return response.json();
   };

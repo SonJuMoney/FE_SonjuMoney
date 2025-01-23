@@ -13,7 +13,6 @@ export default function SavingList({ savingId }: { savingId: number }) {
   const { GetSavings } = useSavingQuery();
   const bottomRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isScrolling, setIsScrolling] = useState(false);
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     GetSavings(savingId);
@@ -23,6 +22,13 @@ export default function SavingList({ savingId }: { savingId: number }) {
     onIntersect: fetchNextPage,
     enabled: hasNextPage,
   });
+
+  const formatDate = (data: string) => {
+    const dateArray = data.split('-');
+    const month = parseInt(dateArray[1], 10);
+    const date = dateArray[2];
+    return `${month}월 ${date}일`;
+  };
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -34,15 +40,11 @@ export default function SavingList({ savingId }: { savingId: number }) {
     const handleScroll = () => {
       const currentScrollTop = scrollContainer.scrollTop;
 
-      setIsScrolling(true);
-
       lastScrollTop = currentScrollTop;
 
       // 스크롤이 멈추면 버튼 표시
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        setIsScrolling(false);
-      }, 100);
+      timeoutId = setTimeout(() => {}, 100);
     };
 
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
@@ -90,17 +92,40 @@ export default function SavingList({ savingId }: { savingId: number }) {
     <div>
       <div className='flex flex-col space-y-4 px-5 pt-10'>
         <PageTitle
-          title={`홍길동님에게
-이체한 내역이에요`}
+          title={
+            <>
+              <span className='text-appColor'>장호준</span>님에게 납입한
+              <br />
+              적금 내역이에요
+            </>
+          }
         />
-        <div className='text-[18px] font-semibold'>최근 거래 내역</div>
+        <div className='flex flex-col gap-1'>
+          <div className='flex justify-between text-[18px] font-semibold mt-2'>
+            <div>총 납입 내역</div>
+            <div className='text-appColor'>2,350,000원</div>
+          </div>
+          <div className='flex justify-between text-[18px] font-semibold'>
+            <div>이번달 납입 내역</div>
+            <div className='text-appColor'>300,000원</div>
+          </div>
+          <div className='flex justify-between text-[14px] font-semibold'>
+            <div>이번달 납입 가능 금액</div>
+            <div>300,000원</div>
+          </div>
+        </div>
       </div>
-      <div ref={scrollContainerRef} className='w-full h-full overflow-y-scroll'>
+      <div
+        ref={scrollContainerRef}
+        className='w-full h-full px-5 pt-5 overflow-y-scroll'
+      >
         <div className='flex flex-col gap-[0.5px] pb-32'>
           {data.pages.map((page) =>
             page.contents.map((content) => (
               <div key={content.date}>
-                <div className='text-[13px] text-darkGray'>{content.date}</div>
+                <div className='text-[13px] font-semibold py-2 text-darkGray'>
+                  {formatDate(content.date)}
+                </div>
                 <TransactionCard transactions={content.transactions} />
               </div>
             ))

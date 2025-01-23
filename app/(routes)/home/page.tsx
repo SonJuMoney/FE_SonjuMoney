@@ -138,7 +138,7 @@ const Home = () => {
               accounts={savings}
               onSelectAccount={(accountId) => {
                 console.log(accountId);
-                router.push(`/savings/${accountId}`);
+                router.push(`/savings/detail?id=${accountId}`);
               }} // 이체 내역 보기
               onButtonClick={(accountId) => {
                 setSelectedSaving(

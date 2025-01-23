@@ -4,13 +4,12 @@ import SavingList from './SavingList';
 const SavingDetailPage = ({
   searchParams,
 }: {
-  searchParams: { id: number };
+  searchParams: { id: string };
 }) => {
-  const savingId = searchParams.id;
-  console.log('11', savingId);
+  const savingId = Number(searchParams.id);
   return (
     <div className='pageLayout'>
-      <Header title='이체 내역 확인하기' />
+      <Header title='적금 내역 확인하기' />
       <SavingList savingId={savingId} />
     </div>
   );
