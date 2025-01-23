@@ -11,6 +11,7 @@ import { EffectCards } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { getProfileImage } from '@/lib/utils';
 
 interface User {
   id: string;
@@ -53,22 +54,26 @@ export default function VideoCallSwiper() {
             slideShadows: false,
           }}
         >
-          {familyMembers.map((user) => (
+          {familyMembers.map((member) => (
             <SwiperSlide
-              key={user.member_id}
+              key={member.member_id}
               className='bg-white/60 rounded-[15px] border-2 border-white backdrop-blur-xl'
             >
               <div className='flex flex-col items-center justify-between h-full p-6'>
                 <div className='relative w-60 h-60'>
                   <Image
-                    src={user.profile_link || '/Role1.png'}
+                    src={
+                      member.profile_link
+                        ? member.profile_link
+                        : getProfileImage(member.member_role) || ''
+                    }
                     alt={''}
                     fill
-                    className='rounded-full object-cover border bg-secondary p-5'
+                    className='rounded-full object-cover border border-appColor bg-secondary/20 p-5'
                   />
                 </div>
-                <h3 className='text-xl font-bold mt-4'>{user.member_name}</h3>
-                <CreateMeeting calleeId={user.user_id.toString()} />
+                <h3 className='text-xl font-bold mt-4'>{member.member_name}</h3>
+                <CreateMeeting calleeId={member.user_id.toString()} />
               </div>
             </SwiperSlide>
           ))}
