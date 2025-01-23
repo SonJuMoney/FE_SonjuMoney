@@ -20,6 +20,7 @@ export type TSetSavingsAccountReq = {
 };
 
 export type TSavings = {
+  user_name: string;
   account_id: number;
   account_name: string;
   bank: string;

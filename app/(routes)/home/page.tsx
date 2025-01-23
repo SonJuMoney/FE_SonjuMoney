@@ -8,6 +8,7 @@ import AccountListCard from '@/components/molecules/Cards/AccountListCard';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
+import useSendSavingStore from '@/store/useSendSavingStore';
 import { TAccount, TSavings } from '@/types/Account';
 import { TFamily } from '@/types/Family';
 import { useSession } from 'next-auth/react';
@@ -25,6 +26,7 @@ const Home = () => {
   const [families, setFamilies] = useState<TFamily[] | null>(null);
   const [savings, setSavings] = useState<TSavings[]>([]);
   const { setSelectedFamily } = useSelectedFamilyStore();
+  const { setSelectedSaving } = useSendSavingStore();
 
   const { getMyAccount, getSavingsAccounts } = useAccountApi();
   const { getFamilies } = useFamilyApi();
@@ -134,10 +136,16 @@ const Home = () => {
           {savings && savings.length > 0 ? (
             <AccountListCard
               accounts={savings}
-              onSelectAccount={(accountId) =>
-                router.push(`/savings/${accountId}`)
-              } // 이체 내역 보기
-              onButtonClick={() => router.push('/savings/send')} // 적금 보내기
+              onSelectAccount={(accountId) => {
+                console.log(accountId);
+                router.push(`/savings/${accountId}`);
+              }} // 이체 내역 보기
+              onButtonClick={(accountId) => {
+                setSelectedSaving(
+                  savings.find((s) => s.account_id === accountId) ?? null
+                );
+                router.push('/savings/send');
+              }} // 적금 보내기
               onClick={() => router.push('/savings')}
             />
           ) : (
