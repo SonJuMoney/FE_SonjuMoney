@@ -1,9 +1,11 @@
+'use client';
+
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import CompleteMessage from '@/components/molecules/CompleteMessages/CompleteMessage';
 import useSendSavingStore from '@/store/useSendSavingStore';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export default function CompletePage() {
   const { selectedSaving, resetState } = useSendSavingStore();
@@ -16,7 +18,6 @@ export default function CompletePage() {
 
   return (
     <div className='pageLayout'>
-      <Header title='적금 송금 완료' showBackButton={false} />
       <div className='defaultLayout'>
         <CompleteMessage
           title={

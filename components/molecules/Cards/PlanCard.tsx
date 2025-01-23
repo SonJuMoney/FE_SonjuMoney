@@ -5,6 +5,7 @@ import { TEvent } from '@/types/Events';
 import { format, isSameDay, parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
+import { getProfileImage } from '@/lib/utils';
 
 enum EventType {
   여행 = 'bg-lavendar',
@@ -109,7 +110,10 @@ const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
                 {event.event_participants.slice(0, 4).map((participation) => (
                   <CircleImg
                     key={participation.participation_id}
-                    imgUrl={participation.profile_link ?? '/Role1.png'}
+                    imgUrl={
+                      participation.profile_link ??
+                      getProfileImage(participation.member_role)
+                    }
                     size={20}
                     border={true}
                   />

@@ -2,18 +2,16 @@
 
 import LogoHeader from '@/components/atoms/Headers/LogoHeader';
 import PlanCard from '@/components/molecules/Cards/PlanCard';
-import { buttonVariants } from '@/components/ui/button';
+import EmptyState from '@/components/molecules/EmptyState/EmptyState';
+import MonthSelector from '@/components/molecules/MonthSelector/MonthSelector';
 import MonthPicker from '@/components/ui/monthPicker';
 import { useEventApi } from '@/hooks/useEventApi/useEventApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TEvent } from '@/types/Events';
 import { add, format, sub } from 'date-fns';
-import { ko } from 'date-fns/locale';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { FaPlus } from 'react-icons/fa6';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib/shadcn';
 
 type Events = {
   current_date: string;
@@ -36,7 +34,6 @@ const PlanList = () => {
       const month = currentMonth.getMonth() + 1;
       if (selectedFamily) {
         const response = await getEvents(selectedFamily.family_id, year, month);
-        console.log(response);
         const groupedEvents = groupEventsByDate(response);
         setEvents(groupedEvents);
       }
@@ -44,6 +41,10 @@ const PlanList = () => {
 
     fetchEvents();
   }, [currentMonth, selectedFamily]);
+
+  useEffect(() => {
+    console.log(events);
+  }, [events]);
 
   const groupEventsByDate = (events: TEvent[]) => {
     const grouped = events.reduce((acc: { [key: string]: Events }, event) => {
@@ -87,47 +88,12 @@ const PlanList = () => {
         <LogoHeader showFamily={true} />
 
         {!showMonthPicker && (
-          <div className='px-5'>
-            <div className='w-full relative flex items-center justify-center py-5'>
-              <div
-                className='text-lg font-semibold'
-                aria-live='polite'
-                role='presentation'
-                id='month-picker'
-                onClick={() => setShowMonthPicker(true)}
-              >
-                {format(currentMonth, 'yyyy년 MM월', { locale: ko })}
-              </div>
-              <div className='flex items-center space-x-1'>
-                <button
-                  name='previous-year'
-                  aria-label='Go to previous year'
-                  className={cn(
-                    buttonVariants({ variant: 'ghost' }),
-                    'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100',
-                    'absolute left-1'
-                  )}
-                  type='button'
-                  onClick={previousMonth}
-                >
-                  <ChevronLeft className='h-4 w-4' />
-                </button>
-                <button
-                  name='next-year'
-                  aria-label='Go to next year'
-                  className={cn(
-                    buttonVariants({ variant: 'ghost' }),
-                    'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100',
-                    'absolute right-1 disabled:bg-slate-100'
-                  )}
-                  type='button'
-                  onClick={nextMonth}
-                >
-                  <ChevronRight className='h-4 w-4' />
-                </button>
-              </div>
-            </div>
-          </div>
+          <MonthSelector
+            currentMonth={currentMonth}
+            onPreviousMonth={previousMonth}
+            onNextMonth={nextMonth}
+            onMonthClick={() => setShowMonthPicker(true)}
+          />
         )}
 
         {showMonthPicker && (
@@ -138,25 +104,38 @@ const PlanList = () => {
           />
         )}
       </div>
-      <div className='px-5 mt-[120px] pb-[120px]'>
-        {events?.map((date) => (
-          <PlanCard
-            key={date.current_date}
-            date={date.current_date}
-            day={date.current_day}
-            events={date.events}
-            isToday={date.current_date === today}
-          />
-        ))}
-        <div className='fixed bottom-[85px] right-[24px]'>
-          <Link
-            href='/calendar/add'
-            className='w-[40px] h-[40px] flex justify-center items-center rounded-full bg-appColor'
-          >
-            <FaPlus className='mx-auto text-white text-lg text-center' />
-          </Link>
+      {events.length > 0 ? (
+        <div className='px-5 mt-[120px] pb-[120px]'>
+          {events?.map((date) => (
+            <PlanCard
+              key={date.current_date}
+              date={date.current_date}
+              day={date.current_day}
+              events={date.events}
+              isToday={date.current_date === today}
+            />
+          ))}
+          <div className='fixed bottom-[85px] right-[24px]'>
+            <Link
+              href='/calendar/add'
+              className='w-[105px] h-[40px] flex justify-center space-x-1 items-center rounded-full bg-appColor text-white'
+            >
+              <FaPlus className='text-white text-lg text-center' />
+              <div>일정 추가</div>
+            </Link>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className='h-full flex flex-col justify-center items-center px-5 '>
+          <EmptyState
+            title='아직 등록된 일정이 없어요'
+            subtitle={`가족 일정을 등록하고
+서로 공유해보세요`}
+            href='/calendar/add'
+            buttonText='일정 등록하러가기'
+          />
+        </div>
+      )}
     </div>
   );
 };

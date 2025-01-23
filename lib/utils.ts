@@ -72,5 +72,7 @@ export const getProfileImage = (role: string) => {
       return '/Avatar/boy.png';
     case '딸':
       return '/Avatar/girl.png';
+    default:
+      return '';
   }
 };

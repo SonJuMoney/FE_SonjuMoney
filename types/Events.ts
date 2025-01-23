@@ -12,6 +12,7 @@ export type TEvent = {
 type TEventParticipants = {
   participation_id: number;
   member_id: number;
+  member_role: string;
   user_name: string;
   profile_link: string | null;
 };

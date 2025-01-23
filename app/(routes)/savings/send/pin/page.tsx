@@ -18,14 +18,6 @@ const CheckPinPage = () => {
   const { sendSaving } = useSavingApi();
   const [password, setPassword] = useState<string>('');
 
-  //   const onComplete = async () => {
-  //     if (selectedSaving) {
-  //       return await sendSaving(selectedSaving, Number(amount), message, );
-  //     } else {
-  //       return false;
-  //     }
-  //   };
-
   useEffect(() => {
     if (password.length !== 6) return;
 
@@ -40,7 +32,7 @@ const CheckPinPage = () => {
           password
         );
 
-        if (result) router.push('/home');
+        if (result) router.push('/savings/send/complete');
       } catch (err) {
         if (err == 401) alert('비밀번호 오류');
       } finally {

@@ -5,6 +5,7 @@ import Header from '@/components/atoms/Headers/Header';
 import PriceInput from '@/components/atoms/Inputs/PriceInput';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
+import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import useSendSavingStore from '@/store/useSendSavingStore';
 import { TAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
@@ -14,9 +15,11 @@ const SendPage = () => {
   const { selectedSaving, setAmount } = useSendSavingStore();
   const [localAmount, setLocalAmount] = useState('');
   const [account, setAccount] = useState<TAccount | null>(null);
+  const [limitAmount, setLimitAmount] = useState<number>();
   const router = useRouter();
 
   const { getMyAccount } = useAccountApi();
+  const { getSavingLimit } = useSavingApi();
 
   useEffect(() => {
     const fetchAccount = async () => {
@@ -24,7 +27,15 @@ const SendPage = () => {
       setAccount(response);
     };
 
+    const fetchLimit = async () => {
+      if (!selectedSaving) return;
+
+      const response = await getSavingLimit(selectedSaving?.account_id);
+      setLimitAmount(response.month_available_amount);
+    };
+
     fetchAccount();
+    fetchLimit();
   }, []);
 
   const handleNextStep = () => {
@@ -59,7 +70,12 @@ const SendPage = () => {
             {'하나'} {selectedSaving?.account_num}
           </div>
         </div>
-        <PriceInput value={localAmount} onChange={setLocalAmount} />
+        <PriceInput
+          value={localAmount}
+          onChange={setLocalAmount}
+          balance={account.balance}
+          limitAmount={limitAmount}
+        />
       </div>
 
       <div className='fixed bottom-0 left-0 w-full p-5'>
