@@ -1,3 +1,4 @@
+import { useAlarmApi } from '@/hooks/useAlarmApi/useAlarmApi';
 import { TAlarm } from '@/types/Alarm';
 import Image from 'next/image';
 import { formatUpdatedAt, getAlarmImage } from '@/lib/utils';
@@ -7,8 +8,12 @@ type AlarmProps = {
 };
 
 const Alarm = ({ data }: AlarmProps) => {
+  const { readAlarm } = useAlarmApi();
   return (
-    <div className='flex gap-4 items-center border-b-[1px] border-disabled px-5 py-4'>
+    <div
+      className={`flex gap-4 items-center border-b-[1px] border-disabled px-5 py-4 bg-white ${data.status === 'CHECKED' && 'opacity-25'}`}
+      onClick={() => readAlarm(data.alarm_id)}
+    >
       <Image
         src={getAlarmImage(data.alarm_type)}
         width={55}
