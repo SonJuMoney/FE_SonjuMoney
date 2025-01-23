@@ -9,6 +9,7 @@ import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { getProfileImage } from '@/lib/utils';
 
 const SelectRecipient = () => {
   const { selectedFamily, selectedMember, setSelectedMember } =
@@ -52,8 +53,11 @@ const SelectRecipient = () => {
           {family?.members.map((member, index) => (
             <RoleCard
               key={index}
-              image='/Role1.png' // 이미지 바꾸기
-              // image={member.profile_link}
+              image={
+                member.profile_link
+                  ? member.profile_link
+                  : getProfileImage(member.member_role) || ''
+              }
               name={member.member_name}
               selected={selectedMember?.member_id === member.member_id}
               onClick={() =>
