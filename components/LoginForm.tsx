@@ -16,7 +16,7 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const webSocket = useWebSocketContext();
+  const { connect } = useWebSocketContext();
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -46,7 +46,7 @@ export function LoginForm() {
         }
 
         if (result?.ok) {
-          webSocket.connect('ws://dev.sonjumoney.topician.com/ws/alarms');
+          connect('ws://dev.sonjumoney.topician.com/ws/alarms');
           router.push('/home');
           router.refresh();
         }
@@ -54,7 +54,7 @@ export function LoginForm() {
         console.error('로그인 에러:', error);
       }
     },
-    [router]
+    [router, connect]
   );
 
   return (
