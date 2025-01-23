@@ -1,0 +1,61 @@
+name: NEXT CI/CD 
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup node pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: setup pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: next
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+            node-version: 21
+  
+      - name: Install dependencies
+        run: pnpm install
+  
+      - name: set .env
+        run: |
+            echo "${{ secrets.ENV }}" > .env
+            
+      - name: setup ssh
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh-keyscan ${{ secrets.WAS }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Build with Next.js
+        run: pnpm next build
+
+      - name: zip next
+        run: zip -rq next.zip .next
+
+      - name: scp next to was
+        run: |
+          scp my-app/next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
+
+      - name: restart next
+        run: |
+          ssh ec2-user@${{ secrets.WAS }} '
+            cd /home/ec2-user/workspace
+            rm -rf .next
+            unzip -q next.zip -d &&
+            pm2 reload hana-next
+          '
