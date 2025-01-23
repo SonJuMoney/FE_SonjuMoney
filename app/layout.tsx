@@ -6,8 +6,8 @@ import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { auth } from '@/lib/auth';
+import QueryProviders from './QueryProviders';
 import './globals.css';
-import Providers from './providers';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -33,7 +33,7 @@ export default async function RootLayout({
       <body
         className={`font-pretendard ${pretendard.variable} antialiased text-black`}
       >
-        <Providers>
+        <QueryProviders>
           <SessionProvider session={session}>
             <WebSocketProvider>
               <StreamVideoProvider>
@@ -43,7 +43,7 @@ export default async function RootLayout({
               </StreamVideoProvider>
             </WebSocketProvider>
           </SessionProvider>
-        </Providers>
+        </QueryProviders>
       </body>
     </html>
   );

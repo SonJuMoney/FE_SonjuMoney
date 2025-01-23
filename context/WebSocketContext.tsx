@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { webSocketManager } from '@/lib/websocket';
 
@@ -14,6 +15,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isConnected, setIsConnected] = useState(false);
+  const { data: session } = useSession();
 
   const connect = (url: string) => {
     if (!isConnected) {
@@ -41,6 +43,13 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [isConnected]);
+
+  useEffect(() => {
+    if (session?.user && !isConnected) {
+      webSocketManager.connect('ws://dev.sonjumoney.topician.com/ws/alarms');
+      setIsConnected(true);
+    }
+  }, [session, isConnected]);
 
   return (
     <WebSocketContext.Provider value={{ connect, disconnect }}>

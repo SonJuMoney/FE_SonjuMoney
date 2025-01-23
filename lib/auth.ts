@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
+import { webSocketManager } from '@/lib/websocket';
 
 declare module 'next-auth' {
   interface User {
@@ -67,6 +68,9 @@ export const {
           const data = await response.json();
 
           if (data?.access_token && data?.refresh_token) {
+            webSocketManager.connect(
+              'ws://dev.sonjumoney.topician.com/ws/alarms'
+            );
             return {
               accessToken: data.access_token,
               refreshToken: data.refresh_token,
