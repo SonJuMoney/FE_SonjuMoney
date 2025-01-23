@@ -19,9 +19,9 @@ const RoleCard = ({ image, name, onClick, selected }: RoleCardProps) => {
         <Image
           src={image}
           alt={name}
-          width={100}
-          height={100}
-          className='object-cover'
+          width={120}
+          height={120}
+          className='object-cover rounded-full'
         />
       </div>
       <p className='text-[15px] font-semibold text-appColor'>{name}</p>
