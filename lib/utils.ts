@@ -57,3 +57,20 @@ export const formatUpdatedAt = (updatedAt: string): string => {
     return `${year}.${month}.${day}`;
   }
 };
+
+export const getProfileImage = (role: string) => {
+  switch (role) {
+    case '할아버지':
+      return '/Avatar/grandpa.png';
+    case '할머니':
+      return '/Avatar/grandma.png';
+    case '아빠':
+      return '/Avatar/dad.png';
+    case '엄마':
+      return '/Avatar/mom.png';
+    case '아들':
+      return '/Avatar/boy.png';
+    case '딸':
+      return '/Avatar/girl.png';
+  }
+};

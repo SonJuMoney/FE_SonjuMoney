@@ -9,6 +9,7 @@ import useSavingsAccountStore from '@/store/useSavingsAccountStore';
 import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { getProfileImage } from '@/lib/utils';
 
 const SelectChild = () => {
   const { selectedFamily, selectedChild, setSelectedChild } =
@@ -53,8 +54,11 @@ const SelectChild = () => {
           {family?.members.map((member, index) => (
             <RoleCard
               key={index}
-              image='/Role1.png' // 이미지 바꾸기
-              // image={member.profile_link}
+              image={
+                member.profile_link
+                  ? member.profile_link
+                  : getProfileImage(member.member_role) || ''
+              }
               name={member.member_name}
               selected={selectedChild?.member_id === member.member_id}
               onClick={() =>

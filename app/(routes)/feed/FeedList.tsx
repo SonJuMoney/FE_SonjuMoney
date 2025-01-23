@@ -57,7 +57,7 @@ export default function FeedList() {
     };
   });
 
-  if (!data) {
+  if (isFetching && !data) {
     return (
       <div ref={bottomRef} className='flex flex-col w-full gap-4 py-4'>
         {Array.from({ length: 3 }).map((_, index) => (
@@ -80,7 +80,7 @@ export default function FeedList() {
   }
 
   // 가족이 선택되지 않은 경우
-  if (!selectedFamily?.family_id) {
+  if (!data && !selectedFamily?.family_id) {
     return (
       <div className='flex flex-col justify-center items-center w-full h-full pb-20'>
         <EmptyState

@@ -1,4 +1,5 @@
 import RoleCard from '@/components/atoms/Cards/RoleCard';
+import { getProfileImage } from '@/lib/utils';
 
 type RoleListProps = {
   roles: string[];
@@ -12,7 +13,7 @@ const RoleList = ({ roles, selectedRole, setSelectedRole }: RoleListProps) => {
       {roles.map((role, index) => (
         <RoleCard
           key={index}
-          image='/Role1.png' // 역할에 따라 이미지 불러오기
+          image={getProfileImage(role) || ''}
           name={role}
           selected={selectedRole === role}
           onClick={() => {
