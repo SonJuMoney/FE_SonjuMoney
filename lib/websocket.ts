@@ -1,4 +1,4 @@
-import { getSession } from 'next-auth/react';
+import { auth } from '@/lib/auth';
 
 export type WebSocketMessage = {
   type: string;
@@ -9,7 +9,7 @@ export class WebSocketManager {
   private socket: WebSocket | null = null;
 
   async connect(url: string): Promise<void> {
-    const session = await getSession();
+    const session = await auth();
 
     if (!session || !session.user?.accessToken) {
       console.error('Session or accessToken not found');
