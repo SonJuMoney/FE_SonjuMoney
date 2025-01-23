@@ -4,15 +4,17 @@ import { createFeed } from '@/app/actions/createFeed';
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import TextArea, { TextAreaRef } from '@/components/atoms/TextArea/TextArea';
 import AddPhoto from '@/components/molecules/AddPhotos/AddPhoto';
+import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { useRouter } from 'next/navigation';
 import { useCallback, useRef, useState } from 'react';
 
-export default function FeedForm({ family_id }: { family_id: number }) {
+export default function FeedForm() {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const textAreaRef = useRef<TextAreaRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [isDisabled, setIsDisabled] = useState(true);
+  const { selectedFamily } = useSelectedFamilyStore();
 
   const MAX_FILES = 5;
 
@@ -38,14 +40,17 @@ export default function FeedForm({ family_id }: { family_id: number }) {
 
   async function handleSubmit(formData: FormData) {
     const message = textAreaRef.current?.getValue() || '';
-    formData.set('message', message);
 
-    if (files.length > 0) {
-      formData.delete('image');
-      files.forEach((file) => {
-        formData.append('image', file);
-      });
-    }
+    formData.delete('message');
+    formData.delete('file');
+
+    formData.append('message', message);
+
+    // 파일들 추가
+    files.forEach((file) => {
+      formData.append('file', file);
+    });
+
     try {
       await createFeed(formData).then(() => {
         router.push('/feed/create/complete');
@@ -64,7 +69,11 @@ export default function FeedForm({ family_id }: { family_id: number }) {
         onDelete={handleDeletePhoto}
       />
       <form ref={formRef} action={handleSubmit} className='flex flex-col px-5'>
-        <input type='hidden' name='family_id' value={family_id} />
+        <input
+          type='hidden'
+          name='family_id'
+          value={selectedFamily?.family_id}
+        />
         <TextArea
           ref={textAreaRef}
           maxLength={300}

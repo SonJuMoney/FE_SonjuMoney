@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useToast } from '@/hooks/use-toast';
 import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
 import LoveLetter from '@/public/AnimatedIcons/LoveLetter.png';
 import CommentOff from '@/public/Icons/commentOff_20.svg';
@@ -28,6 +29,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
   const { likeFeed, deleteFeed } = useFeedApi();
   const [open, setOpen] = useState(false);
   const [isLikeAnimating, setIsLikeAnimating] = useState(false);
+  const { toast } = useToast();
 
   const handleLike = (feedId: number) => {
     setIsLikeAnimating(true);
@@ -35,6 +37,21 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
     setTimeout(() => setIsLikeAnimating(false), 1000);
   };
 
+  const handleDelete = (feed_id: number) => {
+    deleteFeed(feed_id, {
+      onSuccess: () => {
+        toast({
+          description: '피드가 삭제되었습니다.',
+        });
+      },
+      onError: () => {
+        toast({
+          variant: 'destructive',
+          description: '피드 삭제에 실패했습니다.',
+        });
+      },
+    });
+  };
   return (
     <div className='flex flex-col w-full gap-[10px] py-[16px] bg-white'>
       <div className='flex justify-between w-full px-[16px]'>
@@ -60,7 +77,9 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
               </button>
             </PopoverTrigger>
             <PopoverContent className='absolute p-4 -right-8 w-40 text-center'>
-              <button onClick={() => deleteFeed(feed.feed_id)}>삭제하기</button>
+              <button onClick={() => handleDelete(feed.feed_id)}>
+                삭제하기
+              </button>
             </PopoverContent>
           </Popover>
         )}

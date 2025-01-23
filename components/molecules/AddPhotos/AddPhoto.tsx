@@ -43,7 +43,7 @@ const AddPhoto = ({
           <PhotoInput maxLength={maxLength} onClick={onClick}>
             <input
               id='inputFile'
-              name='image'
+              name='file'
               type='file'
               accept='image/*,video/*'
               onChange={(e) => changeImg(e)}
@@ -65,7 +65,7 @@ const AddPhoto = ({
               <input
                 id='inputFile'
                 type='file'
-                name='image'
+                name='file'
                 accept='image/*,video/*'
                 onChange={(e) => changeImg(e)}
                 style={{ display: 'none' }}

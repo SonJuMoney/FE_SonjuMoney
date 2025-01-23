@@ -33,3 +33,11 @@ export type TAddCommentReq = {
   feed_id: number;
   message: string;
 };
+
+export type TCreateFeedReq = {
+  file: File;
+  data: {
+    family_id: number;
+    message: string;
+  };
+};

@@ -1,24 +1,41 @@
 'use server';
 
-import { redirect } from 'next/navigation';
 import { fetchData } from './fetchData';
 
 export async function createFeed(formData: FormData) {
-  const message = formData.get('message') as string;
-  const images = formData.getAll('image') as File[];
-  const family_id = formData.get('family_id') as string;
+  // FormData 객체 새로 생성
+  const newFormData = new FormData();
 
-  const response = await fetchData('/feeds', 'POST', {
-    images: images,
-    data: {
-      family_id: Number(family_id),
-      message,
-    },
+  // 파일들 추가
+  const files = formData.getAll('file');
+  files.forEach((file) => {
+    newFormData.append('files', file);
   });
 
-  if (!response.ok) {
+  // data 객체 생성 및 추가
+  const data = {
+    message: formData.get('message'),
+    family_id: Number(formData.get('family_id')),
+  };
+
+  newFormData.append(
+    'data',
+    new Blob([JSON.stringify(data)], {
+      type: 'application/json',
+    })
+  );
+  console.log('newFormData', newFormData);
+
+  const options: RequestInit = {
+    method: 'POST',
+    body: newFormData,
+  };
+
+  const response = await fetchData('/feeds', 'POST', options, undefined, true);
+  console.log(response);
+  if (response.code !== 200) {
     throw new Error('Failed to submit response');
   }
 
-  return response.json();
+  return response;
 }
