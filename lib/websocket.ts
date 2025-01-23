@@ -1,3 +1,5 @@
+import { getSession } from 'next-auth/react';
+
 export type WebSocketMessage = {
   type: string;
   payload?: unknown;
@@ -6,9 +8,16 @@ export type WebSocketMessage = {
 export class WebSocketManager {
   private socket: WebSocket | null = null;
 
-  connect(url: string): void {
+  async connect(url: string): Promise<void> {
+    const session = await getSession();
+
+    if (!session || !session.user?.accessToken) {
+      console.error('Session or accessToken not found');
+      return;
+    }
     if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
-      this.socket = new WebSocket(url);
+      this.socket = new WebSocket(url, [`${session.user?.accessToken}`]);
+      console.log(this.socket);
 
       this.socket.onopen = () => {
         console.log('WebSocket connected');
