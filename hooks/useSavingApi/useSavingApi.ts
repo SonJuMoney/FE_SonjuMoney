@@ -1,5 +1,5 @@
 import { ResponseType, GetPaginationResult, useApi } from '@/hooks/useApi';
-import { TSavings } from '@/types/Account';
+import { SavingsResponse, TSavings } from '@/types/Account';
 import { TFeed } from '@/types/Feed';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -41,5 +41,11 @@ export const useSavingApi = () => {
     return response.code === 201;
   };
 
-  return { getSavingDetails, sendSaving };
+  // 적금 계좌 목록 조회
+  const getSavingsAccounts = async (): Promise<SavingsResponse> => {
+    const response = await fetchApi(baseUrl);
+    return response;
+  };
+
+  return { getSavingDetails, sendSaving, getSavingsAccounts };
 };

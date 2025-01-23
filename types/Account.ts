@@ -27,3 +27,8 @@ export type TSavings = {
   account_num: string;
   balance: number;
 };
+
+export type SavingsResponse = {
+  is_child: boolean;
+  savings: TSavings[];
+};

@@ -7,9 +7,10 @@ import AccountCard from '@/components/molecules/Cards/AccountCard';
 import AccountListCard from '@/components/molecules/Cards/AccountListCard';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import useSendSavingStore from '@/store/useSendSavingStore';
-import { TAccount, TSavings } from '@/types/Account';
+import { SavingsResponse, TAccount } from '@/types/Account';
 import { TFamily } from '@/types/Family';
 import { useSession } from 'next-auth/react';
 import { LuPlus } from 'react-icons/lu';
@@ -24,12 +25,14 @@ const Home = () => {
   const router = useRouter();
   const [account, setAccount] = useState<TAccount | null>(null);
   const [families, setFamilies] = useState<TFamily[] | null>(null);
-  const [savings, setSavings] = useState<TSavings[]>([]);
+  const [savings, setSavings] = useState<SavingsResponse | null>(null);
+
   const { setSelectedFamily } = useSelectedFamilyStore();
   const { setSelectedSaving } = useSendSavingStore();
 
-  const { getMyAccount, getSavingsAccounts } = useAccountApi();
+  const { getMyAccount } = useAccountApi();
   const { getFamilies } = useFamilyApi();
+  const { getSavingsAccounts } = useSavingApi();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +63,7 @@ const Home = () => {
     };
 
     return (
-      <div className='overflow-x-auto'>
+      <div className='overflow-x-auto scrollbar-hide'>
         <div className='flex space-x-4'>
           {families?.map((family, index) => (
             <div key={family.family_id} className='shrink-0'>
@@ -116,7 +119,12 @@ const Home = () => {
           <div className='text-[#272727] text-lg'>내 가족</div>
 
           {families ? (
-            familyList()
+            <>
+              <div className='text-[#616161] text-xs'>
+                우리 가족의 소식을 확인해보세요
+              </div>
+              {familyList()}
+            </>
           ) : (
             <>
               <div className='text-[#616161] text-xs'>
@@ -130,30 +138,33 @@ const Home = () => {
         </div>
 
         {/* 적금 */}
-        <div className='flex flex-col gap-2.5 font-semibold'>
-          <div className='text-[#272727] text-lg'>납입 중인 적금</div>
+        {!savings?.is_child && (
+          <div className='flex flex-col gap-2.5 font-semibold'>
+            <div className='text-[#272727] text-lg'>납입 중인 적금</div>
 
-          {savings && savings.length > 0 ? (
-            <AccountListCard
-              accounts={savings}
-              onSelectAccount={(accountId) => {
-                console.log(accountId);
-                router.push(`/savings/detail?id=${accountId}`);
-              }} // 이체 내역 보기
-              onButtonClick={(accountId) => {
-                setSelectedSaving(
-                  savings.find((s) => s.account_id === accountId) ?? null
-                );
-                router.push('/savings/send');
-              }} // 적금 보내기
-              onClick={() => router.push('/savings')}
-            />
-          ) : (
-            <Link href='/savings'>
-              <RegisterCard text='아이 적금 만들기' />
-            </Link>
-          )}
-        </div>
+            {savings && savings.savings.length > 0 ? (
+              <AccountListCard
+                accounts={savings.savings}
+                onSelectAccount={(accountId) => {
+                  console.log(accountId);
+                  router.push(`/savings/detail?id=${accountId}`);
+                }} // 이체 내역 보기
+                onButtonClick={(accountId) => {
+                  setSelectedSaving(
+                    savings.savings.find((s) => s.account_id === accountId) ??
+                      null
+                  );
+                  router.push('/savings/send');
+                }} // 적금 보내기
+                onClick={() => router.push('/savings')}
+              />
+            ) : (
+              <Link href='/savings'>
+                <RegisterCard text='아이 적금 만들기' />
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import useRegisterFamilyStore from '@/store/useRegisterFamilyStore';
 import { useRouter } from 'next/navigation';
 
 const RegisterFamily = () => {
-  const { familyName, setFamilyName } = useRegisterFamilyStore();
+  const { familyName, setFamilyName, resetState } = useRegisterFamilyStore();
 
   const router = useRouter();
 
@@ -23,9 +23,14 @@ const RegisterFamily = () => {
     router.push('/register/family/select');
   };
 
+  const onBack = () => {
+    resetState();
+    router.back();
+  };
+
   return (
     <div>
-      <Header title='가족 등록하기' />
+      <Header title='가족 등록하기' onBack={onBack} />
       <div className='p-5'>
         <PageTitle
           title={`가족 이름을
