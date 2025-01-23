@@ -3,12 +3,8 @@
 import Alert from '@/components/Calls/Alert';
 import MeetingRoom from '@/components/Calls/MeetingRoom';
 import MeetingSetup from '@/components/Calls/MeetingSetup';
-import { useGetCallById } from '@/hooks/useCalls/useGetCallById';
-import {
-  RingingCall,
-  StreamCall,
-  StreamTheme,
-} from '@stream-io/video-react-sdk';
+import { useGetCallById } from '@/hooks/useCallApi/useGetCallById';
+import { StreamCall, StreamTheme } from '@stream-io/video-react-sdk';
 import { Loader } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
@@ -29,7 +25,6 @@ const MeetingPage = () => {
       </p>
     );
 
-  // get more info about custom call type:  https://getstream.io/video/docs/react/guides/configuring-call-types/
   const notAllowed =
     call.type === 'invited' &&
     (!session?.user ||
