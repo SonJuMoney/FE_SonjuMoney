@@ -1,4 +1,5 @@
 import { ResponseType, GetPaginationResult, useApi } from '@/hooks/useApi';
+import { TSavings } from '@/types/Account';
 import { TFeed } from '@/types/Feed';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -17,5 +18,26 @@ export const useSavingApi = () => {
     return data.result;
   };
 
-  return { getSavingDetails };
+  const sendSaving = async (
+    selectedSaving: TSavings,
+    amount: number,
+    message: string
+  ): Promise<boolean> => {
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify({
+        amount: amount,
+        message: message,
+        status: true,
+      }),
+    };
+
+    const response = await fetchApi(
+      `${baseUrl}/${selectedSaving.account_id}/transfer`,
+      options
+    );
+    return response.code === 200;
+  };
+
+  return { getSavingDetails, sendSaving };
 };

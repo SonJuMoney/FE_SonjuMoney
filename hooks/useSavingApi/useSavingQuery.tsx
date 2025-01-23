@@ -15,7 +15,7 @@ const useSavingQuery = () => {
     savingId: number
   ): UseInfiniteQueryResult<InfiniteData<GetPaginationResult<TSavingList>>> => {
     return useInfiniteQuery({
-      queryKey: ['feeds', savingId],
+      queryKey: ['savings', savingId],
       queryFn: ({ pageParam }) => getSavingDetails(savingId, pageParam),
       initialPageParam: 0,
       getNextPageParam: (lastPage) => {
