@@ -6,13 +6,11 @@ import CompleteMessage from '@/components/molecules/CompleteMessages/CompleteMes
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import { AllowanceResponse } from '@/types/Allowance';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export const dynamic = 'force-dynamic';
 
-export default function CompletePage() {
-  const { id } = useParams();
+export default function CompletePage({ params }: { params: { id: string } }) {
   const { getAllowanceData } = useAllowanceApi();
   const [allowanceData, setAllowanceData] = useState<AllowanceResponse | null>(
     null
@@ -20,16 +18,16 @@ export default function CompletePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
+    if (params.id) {
       const fetchAllowanceData = async () => {
-        const data = await getAllowanceData(Number(id));
+        const data = await getAllowanceData(Number(params.id));
         setAllowanceData(data);
         setLoading(false);
       };
 
       fetchAllowanceData();
     }
-  }, [id]);
+  }, [params.id]);
 
   if (loading) {
     return <div>Loading...</div>;

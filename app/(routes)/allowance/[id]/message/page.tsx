@@ -4,14 +4,12 @@ import Header from '@/components/atoms/Headers/Header';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import { AllowanceResponse } from '@/types/Allowance';
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import MessageForm from './MessageForm';
 
 export const dynamic = 'force-dynamic';
 
-export default function MessagePage() {
-  const { id } = useParams();
+export default function MessagePage({ params }: { params: { id: string } }) {
   const { getAllowanceData } = useAllowanceApi();
 
   const [allowanceData, setAllowanceData] = useState<AllowanceResponse | null>(
@@ -20,16 +18,16 @@ export default function MessagePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
+    if (params.id) {
       const fetchAllowanceData = async () => {
-        const data = await getAllowanceData(Number(id));
+        const data = await getAllowanceData(Number(params.id));
         setAllowanceData(data);
         setLoading(false);
       };
 
       fetchAllowanceData();
     }
-  }, [id]);
+  }, [params.id]);
 
   if (loading) {
     return <div>Loading...</div>;

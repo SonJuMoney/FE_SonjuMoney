@@ -5,13 +5,11 @@ import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import type { AllowanceResponse } from '@/types/Allowance';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export const dynamic = 'force-dynamic';
 
-export default function AllowancePage() {
-  const { id } = useParams();
+export default function AllowancePage({ params }: { params: { id: string } }) {
   const { getAllowanceData } = useAllowanceApi();
   const [allowanceData, setAllowanceData] = useState<AllowanceResponse | null>(
     null
@@ -19,16 +17,16 @@ export default function AllowancePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
+    if (params.id) {
       const fetchAllowanceData = async () => {
-        const data = await getAllowanceData(Number(id));
+        const data = await getAllowanceData(Number(params.id));
         setAllowanceData(data);
         setLoading(false);
       };
 
       fetchAllowanceData();
     }
-  }, [id]);
+  }, [params.id]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -72,7 +70,7 @@ export default function AllowancePage() {
 
         <div className='flex flex-col w-full max-w-md gap-4'>
           <Link
-            href={`/allowance/${id}/message`}
+            href={`/allowance/${params.id}/message`}
             className='block p-4 bg-white rounded-lg border border-gray-200 shadow-sm'
           >
             <div className='flex items-center justify-center space-x-2'>
