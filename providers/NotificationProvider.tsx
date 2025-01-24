@@ -62,13 +62,12 @@ export function NotificationProvider({
     };
 
     ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log(data);
-      addNotification({
-        id: data.id,
-        title: 'New Notification',
-        message: data.message,
-      });
+      // const data = JSON.parse(event.data);
+      // addNotification({
+      //   id: data.id,
+      //   title: 'New Notification',
+      //   message: data.message,
+      // });
     };
 
     ws.onclose = () => {
