@@ -11,7 +11,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const socketManager = SocketManager.getInstance();
-
+    console.log(socketManager);
     if (session?.user?.accessToken) {
       socketManager.connect(session.user.accessToken);
     } else {

@@ -17,11 +17,12 @@ class SocketManager {
   connect(token: string) {
     if (this.socket?.connected) return;
 
-    this.socket = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
+    this.socket = io('ws://localhost:8080', {
       auth: {
         token: token,
       },
       autoConnect: false,
+      path: '/ws/alarm',
       transports: ['websocket'],
     });
 
