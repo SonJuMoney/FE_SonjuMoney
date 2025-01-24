@@ -1,26 +1,41 @@
-import { fetchData } from '@/app/actions/fetchData';
+'use client';
+
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import CompleteMessage from '@/components/molecules/CompleteMessages/CompleteMessage';
+import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import { AllowanceResponse } from '@/types/Allowance';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-async function getAllowanceData(id: number): Promise<AllowanceResponse> {
-  return await fetchData(`/allowances/${id}`, { method: 'GET' })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
+export default function CompletePage() {
+  const { id } = useParams();
+  const { getAllowanceData } = useAllowanceApi();
+  const [allowanceData, setAllowanceData] = useState<AllowanceResponse | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
 
-export default async function CompletePage({
-  params,
-}: {
-  params: { id: number };
-}) {
-  const allowanceData = await getAllowanceData(params.id);
+  useEffect(() => {
+    if (id) {
+      const fetchAllowanceData = async () => {
+        const data = await getAllowanceData(Number(id));
+        setAllowanceData(data);
+        setLoading(false);
+      };
+
+      fetchAllowanceData();
+    }
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!allowanceData) {
+    return <div>Data not found</div>;
+  }
 
   return (
     <div className='pageLayout'>

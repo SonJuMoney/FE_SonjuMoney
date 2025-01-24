@@ -45,9 +45,18 @@ export default function MessageForm({
     const message = textAreaRef.current?.getValue() || '';
     formData.set('message', message);
 
-    if (files.length > 0) {
-      formData.set('image', files[0]);
-    }
+    files.forEach((file) => {
+      formData.append('file', file);
+    });
+    formData.forEach((value, key) => {
+      if (value instanceof File) {
+        console.log(
+          `${key}: File name=${value.name}, size=${value.size}, type=${value.type}`
+        );
+      } else {
+        console.log(`${key}: ${value}`);
+      }
+    });
     try {
       await sendResponse(formData);
       router.push(`/allowance/${allowanceId}/complete`);
