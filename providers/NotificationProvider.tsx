@@ -1,30 +1,20 @@
 'use client';
 
-import {
-  Toast,
-  ToastProps,
-  ToastActionElement,
-  ToastProvider,
-  ToastViewport,
-  ToastTitle,
-  ToastDescription,
-  ToastClose,
-  ToastAction,
-} from '@/components/ui/toast';
+import { CustomToast } from '@/components/ui/customToast';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
 import { createContext, useContext, useState, useEffect } from 'react';
 
-type Notification = {
-  id: string;
+export type Notification = {
+  id: number;
   title: string;
   message: string;
 };
 
 type NotificationContextType = {
   notifications: Notification[];
-  addNotification: (notification: Omit<Notification, 'id'>) => void;
-  removeNotification: (id: string) => void;
+  addNotification: (notification: Notification) => void;
+  removeNotification: (id: number) => void;
 };
 
 const NotificationContext = createContext<NotificationContextType | null>(null);
@@ -48,16 +38,15 @@ export function NotificationProvider({
   const { toast } = useToast();
   const { data: session } = useSession();
 
-  const addNotification = (notification: Omit<Notification, 'id'>) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    setNotifications((prev) => [...prev, { ...notification, id }]);
+  const addNotification = (notification: Notification) => {
+    setNotifications((prev) => [...prev, { ...notification }]);
     toast({
       title: notification.title,
       description: notification.message,
     });
   };
 
-  const removeNotification = (id: string) => {
+  const removeNotification = (id: number) => {
     setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id)
     );
@@ -74,7 +63,12 @@ export function NotificationProvider({
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      addNotification({ title: 'New Notification', message: data.message });
+      console.log(data);
+      addNotification({
+        id: data.id,
+        title: 'New Notification',
+        message: data.message,
+      });
     };
 
     ws.onclose = () => {
@@ -95,6 +89,9 @@ export function NotificationProvider({
       value={{ notifications, addNotification, removeNotification }}
     >
       {children}
+      {notifications.length > 0 && (
+        <CustomToast notifications={notifications} />
+      )}
     </NotificationContext.Provider>
   );
 }
