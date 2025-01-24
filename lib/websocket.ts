@@ -1,61 +1,50 @@
-import { auth } from '@/lib/auth';
+import { io, Socket } from 'socket.io-client';
 
-export type WebSocketMessage = {
-  type: string;
-  payload?: unknown;
-};
+class SocketManager {
+  private static instance: Socket | null = null;
+  private static isConnected: boolean = false;
 
-export class WebSocketManager {
-  private socket: WebSocket | null = null;
+  static getInstance(): Socket {
+    if (!this.instance) {
+      this.instance = io('ws://dev.sonjumoney.topician.com/ws/alarms', {
+        transports: ['websocket'],
+        autoConnect: false,
+        withCredentials: true, // 쿠키 전송을 위해 필요
+      });
 
-  async connect(url: string): Promise<void> {
-    const session = await auth();
+      // 연결 상태 모니터링
+      this.instance.on('connect', () => {
+        console.log('소켓 연결 성공');
+        this.isConnected = true;
+      });
 
-    if (!session || !session.user?.accessToken) {
-      console.error('Session or accessToken not found');
-      return;
+      this.instance.on('connect_error', (error) => {
+        console.error('소켓 연결 에러:', error.message);
+        this.isConnected = false;
+      });
+
+      this.instance.on('disconnect', () => {
+        console.log('소켓 연결 해제');
+        this.isConnected = false;
+      });
     }
-    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
-      this.socket = new WebSocket(url, [`${session.user?.accessToken}`]);
-      console.log(this.socket);
+    return this.instance;
+  }
 
-      this.socket.onopen = () => {
-        console.log('WebSocket connected');
-      };
-
-      this.socket.onclose = () => {
-        console.log('WebSocket disconnected');
-      };
-
-      this.socket.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
+  static connect() {
+    if (this.instance) {
+      this.instance.connect();
+      console.log('소켓 연결');
     }
   }
 
-  send(message: WebSocketMessage): void {
-    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-      this.socket.send(JSON.stringify(message));
-    } else {
-      console.warn('WebSocket is not connected');
-    }
-  }
-
-  disconnect(): void {
-    if (this.socket) {
-      this.socket.close();
-      this.socket = null;
-    }
-  }
-
-  onMessage(callback: (data: WebSocketMessage) => void): void {
-    if (this.socket) {
-      this.socket.onmessage = (event: MessageEvent) => {
-        const data: WebSocketMessage = JSON.parse(event.data);
-        callback(data);
-      };
+  static disconnect() {
+    if (this.instance) {
+      this.instance.disconnect();
+      console.log('소켓 연결 닫음');
+      this.instance = null;
     }
   }
 }
 
-export const webSocketManager = new WebSocketManager();
+export default SocketManager;
