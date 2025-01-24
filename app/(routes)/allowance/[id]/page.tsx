@@ -1,6 +1,5 @@
 'use client';
 
-import { fetchData } from '@/app/actions/fetchData';
 import Header from '@/components/atoms/Headers/Header';
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import type { AllowanceResponse } from '@/types/Allowance';
@@ -8,6 +7,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+export const dynamic = 'force-dynamic';
 
 export default function AllowancePage() {
   const { id } = useParams();

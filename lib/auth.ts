@@ -68,9 +68,6 @@ export const {
           const data = await response.json();
 
           if (data?.access_token && data?.refresh_token) {
-            if (typeof window !== 'undefined') {
-              document.cookie = `accessToken=${data?.access_token}; path=/; secure; samesite=strict`;
-            }
             return {
               accessToken: data.access_token,
               refreshToken: data.refresh_token,
