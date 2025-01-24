@@ -7,18 +7,14 @@ export async function sendResponse(formData: FormData) {
   const message = formData.get('message') as string;
   const file = formData.get('file') as File;
   const allowanceId = formData.get('allowanceId') as string;
-  const toId = formData.get('toId') as string;
 
   const newFormData = new FormData();
 
-  newFormData.append('files', file);
+  newFormData.append('file', file);
 
   // data 객체 생성 및 추가
   const data = {
     message: message,
-    family_id: Number(formData.get('family_id')),
-    allowance_id: allowanceId,
-    to_id: toId,
   };
   newFormData.append(
     'data',
@@ -34,15 +30,16 @@ export async function sendResponse(formData: FormData) {
   };
 
   const response = await fetchData(
-    '/allowances/response',
+    `/allowances/${allowanceId}/thanks`,
     options,
     undefined,
     true
   );
+  console.log('response', response);
 
-  if (!response.ok) {
-    throw new Error('Failed to submit response');
-  }
+  // if (!response.ok) {
+  //   throw new Error('Failed to submit response');
+  // }
 
   return response.json();
 }

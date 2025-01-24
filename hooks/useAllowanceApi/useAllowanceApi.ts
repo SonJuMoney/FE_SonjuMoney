@@ -1,5 +1,5 @@
 import { useApi } from '@/hooks/useApi';
-import { TSendAllowanceReq } from '@/types/Allowance';
+import { AllowanceResponse, TSendAllowanceReq } from '@/types/Allowance';
 
 export const useAllowanceApi = () => {
   const { fetchApi } = useApi();
@@ -35,5 +35,13 @@ export const useAllowanceApi = () => {
     return response?.code === 200;
   };
 
-  return { sendAllowance };
+  const getAllowanceData = async (
+    allowanceId: number
+  ): Promise<AllowanceResponse> => {
+    const response = await fetchApi(`${baseUrl}/${allowanceId}`);
+
+    return response;
+  };
+
+  return { sendAllowance, getAllowanceData };
 };
