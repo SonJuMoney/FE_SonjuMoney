@@ -35,7 +35,6 @@ export async function sendResponse(formData: FormData) {
 
   const response = await fetchData(
     '/allowances/response',
-    'POST',
     options,
     undefined,
     true
