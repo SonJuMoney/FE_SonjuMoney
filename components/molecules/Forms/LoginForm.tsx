@@ -5,7 +5,6 @@ import {
   LabelInput,
   LabelInputRef,
 } from '@/components/atoms/Inputs/LabelInput';
-import { useWebSocketContext } from '@/context/WebSocketContext';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState, FormEvent, useRef, useCallback } from 'react';
@@ -15,8 +14,6 @@ export function LoginForm() {
   const passwordRef = useRef<LabelInputRef>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
-  const webSocket = useWebSocketContext();
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -46,7 +43,6 @@ export function LoginForm() {
         }
 
         if (result?.ok) {
-          webSocket.connect('ws://dev.sonjumoney.topician.com/ws/alarms');
           router.push('/home');
           router.refresh();
         }

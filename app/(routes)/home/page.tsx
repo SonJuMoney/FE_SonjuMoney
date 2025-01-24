@@ -19,80 +19,80 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const Home = () => {
-  // const session = useSession();
-  // // console.log(session);
+  const session = useSession();
+  // console.log(session);
 
-  // const router = useRouter();
-  // const [account, setAccount] = useState<TAccount | null>(null);
-  // const [families, setFamilies] = useState<TFamily[] | null>(null);
-  // const [savings, setSavings] = useState<TSavings[]>([]);
-  // const { setSelectedFamily } = useSelectedFamilyStore();
-  // const { setSelectedSaving } = useSendSavingStore();
+  const router = useRouter();
+  const [account, setAccount] = useState<TAccount | null>(null);
+  const [families, setFamilies] = useState<TFamily[] | null>(null);
+  const [savings, setSavings] = useState<TSavings[]>([]);
+  const { setSelectedFamily } = useSelectedFamilyStore();
+  const { setSelectedSaving } = useSendSavingStore();
 
-  // const { getMyAccount, getSavingsAccounts } = useAccountApi();
-  // const { getFamilies } = useFamilyApi();
+  const { getMyAccount, getSavingsAccounts } = useAccountApi();
+  const { getFamilies } = useFamilyApi();
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const [accountResponse, familiesResponse, savingsResponse] =
-    //       await Promise.all([
-    //         getMyAccount(),
-    //         getFamilies(),
-    //         getSavingsAccounts(),
-    //       ]);
-    //     setAccount(accountResponse);
-    //     setFamilies(familiesResponse);
-    //     setSavings(savingsResponse);
-    //   } catch (error) {
-    //     console.error('Failed to fetch data:', error);
-    //   }
-    // };
-    // fetchData();
+    const fetchData = async () => {
+      try {
+        const [accountResponse, familiesResponse, savingsResponse] =
+          await Promise.all([
+            getMyAccount(),
+            getFamilies(),
+            getSavingsAccounts(),
+          ]);
+        setAccount(accountResponse);
+        setFamilies(familiesResponse);
+        setSavings(savingsResponse);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    };
+    fetchData();
   }, []);
 
   // 가족 목록
-  // const familyList = () => {
-  //   const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
-  //   const handleClick = (family: TFamily) => {
-  //     setSelectedFamily(family);
-  //     router.push('/feed');
-  //   };
+  const familyList = () => {
+    const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
+    const handleClick = (family: TFamily) => {
+      setSelectedFamily(family);
+      router.push('/feed');
+    };
 
-  //   return (
-  //     <div className='overflow-x-auto'>
-  //       <div className='flex space-x-4'>
-  //         {families?.map((family, index) => (
-  //           <div key={family.family_id} className='shrink-0'>
-  //             <FamilyCardLarge
-  //               familyName={family.family_name}
-  //               familyMember={family.members}
-  //               color={`${colors[index % colors.length]}`}
-  //               onClick={() => handleClick(family)}
-  //             />
-  //           </div>
-  //         ))}
-  //         <div
-  //           onClick={() => router.push('/register/family')}
-  //           className='flex items-center justify-center gap-2.5 bg-white rounded-2xl min-w-[200px] border border-[#eaecef] cursor-pointer'
-  //         >
-  //           <div className='flex items-center justify-center w-5 h-5 rounded-full bg-appColor text-white'>
-  //             <LuPlus className='w-3 h-3' />
-  //           </div>
+    return (
+      <div className='overflow-x-auto'>
+        <div className='flex space-x-4'>
+          {families?.map((family, index) => (
+            <div key={family.family_id} className='shrink-0'>
+              <FamilyCardLarge
+                familyName={family.family_name}
+                familyMember={family.members}
+                color={`${colors[index % colors.length]}`}
+                onClick={() => handleClick(family)}
+              />
+            </div>
+          ))}
+          <div
+            onClick={() => router.push('/register/family')}
+            className='flex items-center justify-center gap-2.5 bg-white rounded-2xl min-w-[200px] border border-[#eaecef] cursor-pointer'
+          >
+            <div className='flex items-center justify-center w-5 h-5 rounded-full bg-appColor text-white'>
+              <LuPlus className='w-3 h-3' />
+            </div>
 
-  //           <p className='text-appColor font-medium text-sm'>가족 등록하기</p>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // };
+            <p className='text-appColor font-medium text-sm'>가족 등록하기</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className='pageLayout bg-[#FAE4D4]'>
-      {/* <LogoHeader showFamily={false} />
+      <LogoHeader showFamily={false} />
 
       <div className='p-5 flex flex-col gap-5'>
-        내 계좌 
+        {/* 내 계좌  */}
         <div className='flex flex-col gap-2.5 font-semibold'>
           <div className='text-[#272727] text-lg'>내 계좌</div>
           {account ? (
@@ -111,7 +111,7 @@ const Home = () => {
           )}
         </div>
 
-        내 가족
+        {/* 내 가족 */}
         <div className='flex flex-col gap-2.5 font-semibold'>
           <div className='text-[#272727] text-lg'>내 가족</div>
 
@@ -134,7 +134,7 @@ const Home = () => {
           )}
         </div>
 
-        적금
+        {/* 적금 */}
         <div className='flex flex-col gap-2.5 font-semibold'>
           <div className='text-[#272727] text-lg'>납입 중인 적금</div>
 
@@ -144,13 +144,13 @@ const Home = () => {
               onSelectAccount={(accountId) => {
                 console.log(accountId);
                 router.push(`/savings/detail?id=${accountId}`);
-              }} 
+              }}
               onButtonClick={(accountId) => {
                 setSelectedSaving(
                   savings.find((s) => s.account_id === accountId) ?? null
                 );
                 router.push('/savings/send');
-              }} 
+              }}
               onClick={() => router.push('/savings')}
             />
           ) : (
@@ -159,7 +159,7 @@ const Home = () => {
             </Link>
           )}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

@@ -1,69 +1,21 @@
-'use client';
+// 'use client';
 
-import { useSession } from 'next-auth/react';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { webSocketManager } from '@/lib/websocket';
+// import { Socket, io } from 'socket.io-client';
+// import { createContext, useContext, useEffect, useState } from 'react';
 
-type WebSocketContextType = {
-  connect: (url: string) => void;
-  disconnect: () => void;
-};
+// interface SocketContextType {
+//   socket: Socket | null;
+// }
 
-const WebSocketContext = createContext<WebSocketContextType | null>(null);
+// const SocketContext = createContext<SocketContextType>({ socket: null });
 
-export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [isConnected, setIsConnected] = useState(false);
-  const { data: session } = useSession();
+// export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
-  const connect = (url: string) => {
-    if (!isConnected) {
-      webSocketManager.connect(url);
-      setIsConnected(true);
-    }
-  };
+//   return (
+//     <SocketContext.Provider >
+//       {children}
+//     </SocketContext.Provider>
+//   );
+// };
 
-  const disconnect = () => {
-    if (isConnected) {
-      webSocketManager.disconnect();
-      setIsConnected(false);
-    }
-  };
-
-  useEffect(() => {
-    // 페이지가 닫힐 때 웹소켓 연결 해제
-    const handleBeforeUnload = () => {
-      disconnect();
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      disconnect();
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [isConnected]);
-
-  useEffect(() => {
-    if (session?.user && !isConnected) {
-      webSocketManager.connect('ws://dev.sonjumoney.topician.com/ws/alarms');
-      setIsConnected(true);
-    }
-  }, [session, isConnected]);
-
-  return (
-    <WebSocketContext.Provider value={{ connect, disconnect }}>
-      {children}
-    </WebSocketContext.Provider>
-  );
-};
-
-export const useWebSocketContext = (): WebSocketContextType => {
-  const context = useContext(WebSocketContext);
-  if (!context) {
-    throw new Error(
-      'useWebSocketContext must be used within a WebSocketProvider'
-    );
-  }
-  return context;
-};
+// export const useSocket = () => useContext(SocketContext);
