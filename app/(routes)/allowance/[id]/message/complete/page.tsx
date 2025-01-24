@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+export const dynamic = 'force-dynamic';
+
 export default function CompletePage() {
   const { id } = useParams();
   const { getAllowanceData } = useAllowanceApi();
