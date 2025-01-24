@@ -39,17 +39,17 @@ jobs:
       - name: Build with Next.js
         run: pnpm next build
 
-      - name: zip next
+      - name: zip next = .next아래에 next.zip 이름의 zip 파일 생성
         run: zip -rq next.zip .next
 
-      - name: scp next to was
+      - name: scp next to was = was에 전송, next.zip을 workspace내에 저장
         run: |
           scp next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
 
-      - name: restart next
+      - name: restart next = workspace 아래 client 폴더의 .next 삭제
         run: |
           ssh ec2-user@${{ secrets.WAS }} '
-            cd /home/ec2-user/workspace/client
+            cd /home/ec2-user/workspace
             rm -rf .next
             unzip next.zip
             pm2 reload sonju-next
