@@ -49,8 +49,8 @@ jobs:
       - name: restart next
         run: |
           ssh ec2-user@${{ secrets.WAS }} '
-            cd /home/ec2-user/workspace
+            cd /home/ec2-user/workspace/client
             rm -rf .next
-            unzip -q next.zip -d ./client &&
+            unzip -q next.zip
             pm2 reload sonju-next
           '
