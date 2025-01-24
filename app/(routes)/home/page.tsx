@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 
 const Home = () => {
   const session = useSession();
-  console.log(session);
+  // console.log(session);
 
   const router = useRouter();
   const [account, setAccount] = useState<TAccount | null>(null);
@@ -50,7 +50,6 @@ const Home = () => {
         console.error('Failed to fetch data:', error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -95,7 +94,7 @@ const Home = () => {
       <LogoHeader showFamily={false} />
 
       <div className='p-5 flex flex-col gap-5'>
-        {/* 내 계좌 */}
+        {/* 내 계좌  */}
         <div className='flex flex-col gap-2.5 font-semibold'>
           <div className='text-[#272727] text-lg'>내 계좌</div>
           {account ? (
