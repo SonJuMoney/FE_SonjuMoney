@@ -12,12 +12,17 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // WebSocket 연결
-    const ws = new WebSocket('ws://dev.sonjumoney.topician.com/ws/alarms');
+    // const ws = new WebSocket();
+    if (!session?.user?.accessToken) return;
+    const protocols = ['Bearer', session.user.accessToken];
+    const ws = new WebSocket(
+      'ws://dev.sonjumoney.topician.com/ws/alarms',
+      protocols
+    );
     wsRef.current = ws;
 
     ws.onopen = () => {
       console.log('WebSocket connected');
-      alert('WebSocket connected');
     };
 
     ws.onmessage = (event) => {
@@ -26,15 +31,12 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
 
     ws.onclose = () => {
       console.log('WebSocket disconnected');
-      alert('WebSocket disconnected');
     };
 
     ws.onerror = (error) => {
       console.error('WebSocket error:', error);
-      alert('WebSocket error');
     };
 
-    // 컴포넌트 언마운트 시 WebSocket 연결 해제
     return () => {
       if (wsRef.current) {
         wsRef.current.close();
