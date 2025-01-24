@@ -71,8 +71,6 @@ export const {
             if (typeof window !== 'undefined') {
               document.cookie = `accessToken=${data?.access_token}; path=/; secure; samesite=strict`;
             }
-            SocketManager.getInstance();
-            SocketManager.connect();
             return {
               accessToken: data.access_token,
               refreshToken: data.refresh_token,
@@ -113,11 +111,6 @@ export const {
       session.user.userGender = token.userGender;
       session.user.userBirth = token.userBirth;
       return session;
-    },
-  },
-  events: {
-    signOut: () => {
-      SocketManager.disconnect();
     },
   },
 });
