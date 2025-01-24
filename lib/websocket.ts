@@ -1,49 +1,50 @@
+// lib/websocket.ts
 import { io, Socket } from 'socket.io-client';
 
 class SocketManager {
-  private static instance: Socket | null = null;
-  private static isConnected: boolean = false;
+  private static instance: SocketManager;
+  private socket: Socket | null = null;
 
-  static getInstance(): Socket {
-    if (!this.instance) {
-      this.instance = io('ws://dev.sonjumoney.topician.com/ws/alarms', {
-        transports: ['websocket'],
-        autoConnect: false,
-        withCredentials: true, // 쿠키 전송을 위해 필요
-      });
+  private constructor() {}
 
-      // 연결 상태 모니터링
-      this.instance.on('connect', () => {
-        console.log('소켓 연결 성공');
-        this.isConnected = true;
-      });
-
-      this.instance.on('connect_error', (error) => {
-        console.error('소켓 연결 에러:', error.message);
-        this.isConnected = false;
-      });
-
-      this.instance.on('disconnect', () => {
-        console.log('소켓 연결 해제');
-        this.isConnected = false;
-      });
+  static getInstance(): SocketManager {
+    if (!SocketManager.instance) {
+      SocketManager.instance = new SocketManager();
     }
-    return this.instance;
+    return SocketManager.instance;
   }
 
-  static connect() {
-    if (this.instance) {
-      this.instance.connect();
-      console.log('소켓 연결');
+  connect(token: string) {
+    if (this.socket?.connected) return;
+
+    this.socket = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
+      auth: {
+        token: token,
+      },
+      autoConnect: false,
+      transports: ['websocket'],
+    });
+
+    this.socket.connect();
+
+    this.socket.on('connect', () => {
+      console.log('Socket connected');
+    });
+
+    this.socket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+    });
+  }
+
+  disconnect() {
+    if (this.socket) {
+      this.socket.disconnect();
+      this.socket = null;
     }
   }
 
-  static disconnect() {
-    if (this.instance) {
-      this.instance.disconnect();
-      console.log('소켓 연결 닫음');
-      this.instance = null;
-    }
+  getSocket(): Socket | null {
+    return this.socket;
   }
 }
 
