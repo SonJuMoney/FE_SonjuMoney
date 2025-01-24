@@ -5,9 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 async function getAllowanceData(id: string): Promise<AllowanceResponse> {
-  const res = await fetchData(`/allowances/${id}`);
-  if (!res.ok) throw new Error('Failed to fetch allowance');
-  return res.json();
+  return await fetchData(`/allowances/${id}`, { method: 'GET' })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export default async function AllowancePage({
@@ -15,17 +19,7 @@ export default async function AllowancePage({
 }: {
   params: { id: string };
 }) {
-  const allowanceData: AllowanceResponse = {
-    allowance_id: 1,
-    sender_name: '박근하',
-    amount: 300000,
-  };
-
-  // try {
-  //   allowanceData = await getAllowanceData(params.id);
-  // } catch (error) {
-  //   notFound();
-  // }
+  const allowanceData = await getAllowanceData(params.id);
 
   return (
     <div className='pageLayout'>
@@ -36,7 +30,7 @@ export default async function AllowancePage({
       </Header>
 
       <div className='defaultLayout items-center justify-center gap-10'>
-        <div className='flex flex-col w-cull items-center'>
+        <div className='flex flex-col w-full items-center'>
           <div className='flex justify-center items-center w-32 h-32 rounded-full bg-secondary bg-opacity-20 mb-4 '>
             <Image
               src='/Role1.png'

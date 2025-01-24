@@ -4,7 +4,7 @@ import { auth } from '@/lib/auth';
 
 export async function fetchData(
   apiRoute: string,
-  method: string = 'GET',
+  // method: string = 'GET',
   options: RequestInit = {},
   body?: Record<string, unknown>,
   isMultiPart?: boolean
