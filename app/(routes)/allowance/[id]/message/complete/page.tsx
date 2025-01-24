@@ -6,9 +6,13 @@ import { AllowanceResponse } from '@/types/Allowance';
 import Link from 'next/link';
 
 async function getAllowanceData(id: number): Promise<AllowanceResponse> {
-  const res = await fetchData(`/allowances/${id}`);
-
-  return res.json();
+  return await fetchData(`/allowances/${id}`, { method: 'GET' })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export default async function CompletePage({
@@ -16,12 +20,7 @@ export default async function CompletePage({
 }: {
   params: { id: number };
 }) {
-  // const allowanceData = await getAllowanceData(params.id);
-  const allowanceData: AllowanceResponse = {
-    allowance_id: 1,
-    sender_name: '박근하',
-    amount: 300000,
-  };
+  const allowanceData = await getAllowanceData(params.id);
 
   return (
     <div className='pageLayout'>

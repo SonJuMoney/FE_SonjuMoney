@@ -1,12 +1,13 @@
 import BottomNav from '@/components/atoms/BottomNav/BottomNav';
 import { Toaster } from '@/components/ui/toaster';
+import { SocketProvider } from '@/providers/SocketProvider';
 import StreamVideoProvider from '@/providers/StreamClientProvider';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { auth } from '@/lib/auth';
+import QueryProviders from './QueryProviders';
 import './globals.css';
-import Providers from './providers';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -32,15 +33,17 @@ export default async function RootLayout({
       <body
         className={`font-pretendard ${pretendard.variable} antialiased text-black`}
       >
-        <Providers>
+        <QueryProviders>
           <SessionProvider session={session}>
-            <StreamVideoProvider>
-              {children}
-              <Toaster />
-              <BottomNav />
-            </StreamVideoProvider>
+            <SocketProvider>
+              <StreamVideoProvider>
+                {children}
+                <Toaster />
+                <BottomNav />
+              </StreamVideoProvider>
+            </SocketProvider>
           </SessionProvider>
-        </Providers>
+        </QueryProviders>
       </body>
     </html>
   );
