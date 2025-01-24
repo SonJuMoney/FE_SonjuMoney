@@ -8,8 +8,6 @@ import { AllowanceResponse } from '@/types/Allowance';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-export const dynamic = 'force-dynamic';
-
 export default function CompletePage({ params }: { params: { id: string } }) {
   const { getAllowanceData } = useAllowanceApi();
   const [allowanceData, setAllowanceData] = useState<AllowanceResponse | null>(
