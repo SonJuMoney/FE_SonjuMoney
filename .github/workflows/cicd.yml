@@ -16,11 +16,6 @@ jobs:
           version: 9
           run_install: false
 
-      - name: setup pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
-
       - name: Install Node
         uses: actions/setup-node@v4
         with:
@@ -49,7 +44,7 @@ jobs:
 
       - name: scp next to was
         run: |
-          scp my-app/next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
+          scp next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
 
       - name: restart next
         run: |
@@ -57,5 +52,5 @@ jobs:
             cd /home/ec2-user/workspace
             rm -rf .next
             unzip -q next.zip -d &&
-            pm2 reload hana-next
+            pm2 reload sonju-next
           '

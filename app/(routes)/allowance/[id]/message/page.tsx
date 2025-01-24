@@ -7,8 +7,6 @@ import { AllowanceResponse } from '@/types/Allowance';
 import { useEffect, useState } from 'react';
 import MessageForm from './MessageForm';
 
-export const dynamic = 'force-dynamic';
-
 export default function MessagePage({ params }: { params: { id: string } }) {
   const { getAllowanceData } = useAllowanceApi();
 
