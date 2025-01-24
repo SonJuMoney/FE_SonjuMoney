@@ -51,6 +51,6 @@ jobs:
           ssh ec2-user@${{ secrets.WAS }} '
             cd /home/ec2-user/workspace
             rm -rf .next
-            unzip -q next.zip -d &&
+            unzip -q next.zip -d ./client &&
             pm2 reload sonju-next
           '
