@@ -50,13 +50,13 @@ export default function FamilySection({
   return (
     <div className='flex flex-col gap-2.5 font-semibold '>
       <div className='text-[#272727] text-lg pl-5'>내 가족</div>
-      {families ? (
+      {families && families.length > 0 ? (
         <>
           <div className='text-[#616161] text-xs pl-5'>
             우리 가족의 소식을 확인해보세요
           </div>
-          <div className='overflow-x-auto scrollbar-hide'>
-            <div className='flex space-x-4 pl-5'>
+          <div className='flex w-full'>
+            <div className='flex w-full space-x-4 overflow-x-scroll scrollbar-hide px-5'>
               {families.map((family, index) => (
                 <div key={family.family_id} className='shrink-0'>
                   <FamilyCardLarge
@@ -67,9 +67,9 @@ export default function FamilySection({
                   />
                 </div>
               ))}
-              <div
-                onClick={() => router.push('/register/family')}
-                className='flex items-center justify-center gap-2.5 bg-white rounded-2xl min-w-[200px] border border-[#eaecef] cursor-pointer'
+              <Link
+                href='/register/family'
+                className='flex items-center justify-center gap-2.5 mr-5 bg-white rounded-2xl min-w-[200px] border border-[#eaecef] cursor-pointer'
               >
                 <div className='flex items-center justify-center w-5 h-5 rounded-full bg-appColor text-white'>
                   <LuPlus className='w-3 h-3' />
@@ -77,17 +77,14 @@ export default function FamilySection({
                 <p className='text-appColor font-medium text-sm'>
                   가족 등록하기
                 </p>
-              </div>
+              </Link>
             </div>
           </div>
         </>
       ) : (
-        <>
-          <div className='text-[#616161] text-xs'>우리 가족을 등록해보세요</div>
-          <Link href='/register/family'>
-            <RegisterCard text='우리 가족 등록하기' />
-          </Link>
-        </>
+        <Link href='/register/famiily' className='mx-5'>
+          <RegisterCard text='가족 등록하기' />
+        </Link>
       )}
     </div>
   );
