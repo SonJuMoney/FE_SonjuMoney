@@ -1,5 +1,4 @@
 import useSavingsAccountStore from '@/store/useSavingsAccountStore';
-import { useState } from 'react';
 import { ButtonMedium } from '../atoms/Buttons/ButtonMedium';
 import PriceInput from '../atoms/Inputs/PriceInput';
 
@@ -45,7 +44,11 @@ const Amount = () => {
             <span className='text-sm'>(최대 50만원)</span>
           </div>
 
-          <PriceInput value={customAmount} onChange={setCustomAmount} />
+          <PriceInput
+            value={customAmount}
+            onChange={setCustomAmount}
+            limitAmount={500000}
+          />
         </div>
       )}
     </div>
