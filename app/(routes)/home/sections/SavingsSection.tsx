@@ -3,10 +3,13 @@
 import RegisterCard from '@/components/atoms/Cards/RegisterCard';
 import AccountListCard from '@/components/molecules/Cards/AccountListCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/hooks/use-toast';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import useSendSavingStore from '@/store/useSendSavingStore';
 import type { SavingsResponse } from '@/types/Account';
-import Link from 'next/link';
+import { TFamily } from '@/types/Family';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 type SavingsSectionProps = {
   savings: SavingsResponse | null;
@@ -18,7 +21,10 @@ export default function SavingsSection({
   isLoading,
 }: SavingsSectionProps) {
   const router = useRouter();
+  const [families, setFamilies] = useState<TFamily[]>([]);
+  const { getFamilies } = useFamilyApi();
   const { setSelectedSaving } = useSendSavingStore();
+  const { toast } = useToast();
 
   const handleSelectAccount = (accountId: number) => {
     console.log(accountId);
@@ -31,6 +37,19 @@ export default function SavingsSection({
     );
     router.push('/savings/send');
   };
+
+  const handleCreateSavings = () => {
+    if (families.length === 0) {
+      toast({ title: '가족을 먼저 등록해주세요' });
+      return;
+    } else router.push('/savings/create');
+  };
+
+  useEffect(() => {
+    getFamilies().then((data) => {
+      setFamilies(data);
+    });
+  }, []);
 
   if (isLoading) {
     return (
@@ -52,9 +71,9 @@ export default function SavingsSection({
           onClick={() => router.push('/savings')}
         />
       ) : (
-        <Link href='/savings'>
+        <div onClick={handleCreateSavings}>
           <RegisterCard text='아이 적금 만들기' />
-        </Link>
+        </div>
       )}
     </div>
   );
