@@ -30,7 +30,7 @@ export default function FamilySection({
 
   if (isLoading) {
     return (
-      <div className='flex flex-col gap-2.5 font-semibold'>
+      <div className='flex flex-col gap-2.5 font-semibold px-5 '>
         <Skeleton className='h-7 w-24' />
         <Skeleton className='h-4 w-48' />
         <div className='overflow-x-auto scrollbar-hide'>
