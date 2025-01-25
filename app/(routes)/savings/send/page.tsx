@@ -38,6 +38,10 @@ const SendPage = () => {
     fetchLimit();
   }, []);
 
+  useEffect(() => {
+    console.log(limitAmount);
+  }, [limitAmount]);
+
   const handleNextStep = () => {
     setAmount(Number(localAmount));
     router.push(`/savings/send/message`);
@@ -76,12 +80,26 @@ const SendPage = () => {
           balance={account.balance}
           limitAmount={limitAmount}
         />
+        {!localAmount && (
+          <div className='text-sm'>
+            납입 한도 금액은{' '}
+            <span className='text-appColor'>
+              {limitAmount?.toLocaleString()}
+            </span>
+            원 입니다.
+          </div>
+        )}
       </div>
 
       <div className='fixed bottom-0 left-0 w-full p-5'>
         <ButtonLarge
           text='다음'
-          disabled={!localAmount || localAmount === '0'}
+          disabled={
+            !localAmount ||
+            localAmount === '0' ||
+            Number(localAmount) > account.balance ||
+            Number(localAmount) > (limitAmount ?? 0)
+          }
           onClick={handleNextStep}
         />
       </div>

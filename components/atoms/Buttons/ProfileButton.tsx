@@ -131,7 +131,11 @@ export default function ProfileButton() {
                     alt='authProfile'
                     className='border rounded-full'
                   />
-                  <div>{auth.name}</div>
+                  <div
+                    className={`${auth.user_id === session?.user?.userId ? 'text-appColor' : ''}`}
+                  >
+                    {auth.name}
+                  </div>
                 </div>
                 {session?.user?.userId !== auth.user_id && (
                   <button

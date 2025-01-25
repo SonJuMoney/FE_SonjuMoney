@@ -27,7 +27,9 @@ export default function SavingsSection({
   const { toast } = useToast();
 
   const handleSelectAccount = (accountId: number) => {
-    console.log(accountId);
+    setSelectedSaving(
+      savings?.savings.find((s) => s.account_id === accountId) ?? null
+    );
     router.push(`/savings/detail?id=${accountId}`);
   };
 
