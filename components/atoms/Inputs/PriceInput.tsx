@@ -31,7 +31,9 @@ const PriceInput = ({ value, onChange, balance, limitAmount }: Props) => {
 
     const numericAmount = Number(numericValue);
 
-    if (limitAmount && numericAmount > limitAmount) {
+    if (balance && numericAmount > balance) {
+      setErrorMessage('출금계좌 잔액이 부족합니다.');
+    } else if (limitAmount && numericAmount > limitAmount) {
       setErrorMessage('납입 한도를 초과했습니다.');
     } else {
       setErrorMessage('');

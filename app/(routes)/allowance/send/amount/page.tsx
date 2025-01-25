@@ -56,16 +56,24 @@ const EnterAmount = () => {
             }
           />
           <div className='text-xs font-semibold'>
-            {account.bank} {account.account_num}
+            {account.bank.substring(0, 2)} {account.account_num}
           </div>
         </div>
-        <PriceInput value={localAmount} onChange={setLocalAmount} />
+        <PriceInput
+          value={localAmount}
+          onChange={setLocalAmount}
+          balance={account.balance}
+        />
       </div>
 
       <div className='fixed bottom-0 left-0 w-full p-5'>
         <ButtonLarge
           text='다음'
-          disabled={!localAmount || localAmount === '0'}
+          disabled={
+            !localAmount ||
+            localAmount === '0' ||
+            Number(localAmount) > account.balance
+          }
           onClick={handleNextStep}
         />
       </div>
