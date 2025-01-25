@@ -27,8 +27,8 @@ const MeetingPage = () => {
 
   const notAllowed =
     call.type === 'invited' &&
-    (session?.user?.userId === undefined ||
-      !call.state.members.some((m) => m.user.id === session?.user?.userId));
+    (!session?.user ||
+      !call.state.members.find((m) => m.user.id === session?.user?.userId));
 
   if (notAllowed)
     return <Alert title='You are not allowed to join this meeting' />;
