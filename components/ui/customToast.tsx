@@ -3,20 +3,19 @@ import {
   ToastProvider,
   ToastViewport,
   ToastTitle,
-  ToastDescription,
 } from '@/components/ui/toast';
-import { Notification } from '@/providers/NotificationProvider';
+import { TAlarm } from '@/types/Alarm';
 
 type CustomToastProps = {
-  notifications: Notification[];
+  notifications: TAlarm[];
 };
 
 export function CustomToast({ notifications }: CustomToastProps) {
   return (
     <ToastProvider>
-      {notifications.map(({ id, title, message }) => (
+      {notifications.map(({ alarm_id, message }) => (
         <Toast
-          key={id}
+          key={alarm_id}
           className='w-full max-w-md bg-white shadow-lg rounded-lg pointer-events-auto overflow-hidden'
         >
           <div className='flex-1 w-0 p-4'>
@@ -26,11 +25,8 @@ export function CustomToast({ notifications }: CustomToastProps) {
               </div>
               <div className='ml-3 flex-1'>
                 <ToastTitle className='text-sm font-medium text-gray-900'>
-                  {title}
-                </ToastTitle>
-                <ToastDescription className='mt-1 text-sm text-gray-500'>
                   {message}
-                </ToastDescription>
+                </ToastTitle>
               </div>
             </div>
           </div>

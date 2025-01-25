@@ -2,18 +2,13 @@
 
 import { CustomToast } from '@/components/ui/customToast';
 import { useToast } from '@/hooks/use-toast';
+import { TAlarm } from '@/types/Alarm';
 import { useSession } from 'next-auth/react';
 import { createContext, useContext, useState, useEffect } from 'react';
 
-export type Notification = {
-  id: number;
-  title: string;
-  message: string;
-};
-
 type NotificationContextType = {
-  notifications: Notification[];
-  addNotification: (notification: Notification) => void;
+  notifications: TAlarm[];
+  addNotification: (notification: TAlarm) => void;
   removeNotification: (id: number) => void;
 };
 
@@ -34,40 +29,34 @@ export function NotificationProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<TAlarm[]>([]);
   const { toast } = useToast();
   const { data: session } = useSession();
 
-  const addNotification = (notification: Notification) => {
+  const addNotification = (notification: TAlarm) => {
     setNotifications((prev) => [...prev, { ...notification }]);
-    toast({
-      title: notification.title,
-      description: notification.message,
-    });
   };
 
   const removeNotification = (id: number) => {
     setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id)
+      prev.filter((notification) => notification.alarm_id !== id)
     );
   };
 
   useEffect(() => {
     if (!session?.user?.accessToken) return;
 
-    const ws = new WebSocket('ws://dev.sonjumoney.topician.com/ws/alarms');
+    const ws = new WebSocket(
+      `ws://dev.sonjumoney.topician.com/ws/alarms?userId=${session.user.userId}`
+    );
 
     ws.onopen = () => {
       console.log('WebSocket connected');
     };
 
     ws.onmessage = (event) => {
-      // const data = JSON.parse(event.data);
-      // addNotification({
-      //   id: data.id,
-      //   title: 'New Notification',
-      //   message: data.message,
-      // });
+      const data: TAlarm = JSON.parse(event.data);
+      addNotification(data);
     };
 
     ws.onclose = () => {
@@ -83,14 +72,24 @@ export function NotificationProvider({
     };
   }, [session?.user?.accessToken]);
 
+  // useEffect(() => {
+  //   // 임의의 알림 추가
+  //   const testNotification: TAlarm = {
+  //     alarm_id: 1,
+  //     alarm_type: 'BIRTHDAY',
+  //     message: 'This is a test notification',
+  //     link_id: 0,
+  //     created_at: new Date().toISOString(),
+  //     status: 'RECEIVED',
+  //   };
+  //   addNotification(testNotification);
+  // }, []);
+
   return (
     <NotificationContext.Provider
       value={{ notifications, addNotification, removeNotification }}
     >
       {children}
-      {notifications.length > 0 && (
-        <CustomToast notifications={notifications} />
-      )}
     </NotificationContext.Provider>
   );
 }

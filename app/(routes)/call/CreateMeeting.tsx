@@ -31,21 +31,23 @@ const CreateMeeting = ({ calleeId }: CreateMeetingProps) => {
       const call = client?.call('default', meetingId);
       if (!call) throw new Error('Failed to create call');
 
-      const startsAt =
-        values.dateTime.toISOString() || new Date(Date.now()).toISOString();
-      const description = values.description || 'Instant meeting';
       if (session?.user?.userId) {
-        const strUserId = session?.user?.userId.toString();
         await call.getOrCreate({
-          ring: true,
+          ring: true, // 'ringing' 대신 'ring' 사용
           data: {
-            starts_at: startsAt,
+            starts_at: new Date().toISOString(),
             members: [
-              { user_id: strUserId }, // 발신자
-              { user_id: calleeId }, // 수신자
+              {
+                user_id: session.user.userId.toString(),
+                role: 'host',
+              },
+              {
+                user_id: calleeId,
+                role: 'guest',
+              },
             ],
             custom: {
-              description,
+              description: 'Instant meeting',
             },
           },
         });

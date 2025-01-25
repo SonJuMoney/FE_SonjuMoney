@@ -108,6 +108,10 @@ body {
   .animate-like {
     animation: like 0.5s ease-in-out;
   }
+  .animate-border-rotate {
+    background-size: 300% 300%;
+    animation: border-rotate 3s ease infinite;
+  }
 }
 
 @layer base {
@@ -129,4 +133,21 @@ body {
   100% {
     transform: scale(1);
   }
+}
+
+@keyframes border-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-border-rotate {
+  background-size: 300% 300%;
+  animation: border-rotate 3s ease infinite;
 }
