@@ -30,7 +30,6 @@ export function NotificationProvider({
   children: React.ReactNode;
 }) {
   const [notifications, setNotifications] = useState<TAlarm[]>([]);
-  const { toast } = useToast();
   const { data: session } = useSession();
 
   const addNotification = (notification: TAlarm) => {
@@ -55,8 +54,10 @@ export function NotificationProvider({
     };
 
     ws.onmessage = (event) => {
-      const data: TAlarm = JSON.parse(event.data);
-      addNotification(data);
+      const data = JSON.stringify(event.data);
+
+      const parsedData: TAlarm = JSON.parse(data);
+      if (parsedData.alarm_id) addNotification(parsedData);
     };
 
     ws.onclose = () => {

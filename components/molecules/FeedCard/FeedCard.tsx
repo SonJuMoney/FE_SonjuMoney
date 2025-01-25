@@ -92,13 +92,11 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
       >
         <CarouselContent>
           {feed.contents.map((image) => (
-            <CarouselItem key={image.url}>
+            <CarouselItem key={feed.feed_id + image.url}>
               {image.url && image.content_type === 'IMAGE' ? (
                 <div className='relative w-full aspect-square'>
                   <Image
-                    src={
-                      'https://d35670s5pea8wg.cloudfront.net/feed/1/7d09ba71-0855-402a-b111-89743d12272f_SonjuMoney_erd.png'
-                    }
+                    src={image.url}
                     alt={image.url}
                     fill
                     className='object-cover'
