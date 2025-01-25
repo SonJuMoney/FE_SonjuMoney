@@ -22,3 +22,21 @@ export type TProfile = {
   gender: string;
   birth: string;
 };
+
+export type TAuth = {
+  user_id: string;
+  role: 'PARENT' | 'CHILD' | 'INDIVIDUAL';
+  name: string;
+  profile: string | null;
+  gender: 'FEMALE' | 'MALE';
+};
+
+export type TSession = {
+  access_token: string;
+  refresh_token: string;
+  user_id: string;
+  user_name: string;
+  user_profile: string;
+  gender: 'MALE' | 'FEMALE';
+  birth: string;
+};

@@ -87,7 +87,7 @@ export const {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session: updateData }) {
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -97,6 +97,18 @@ export const {
         token.userGender = user.userGender;
         token.userBirth = user.userBirth;
       }
+
+      if (trigger === 'update' && updateData) {
+        // response 데이터 구조에 맞게 매핑
+        token.accessToken = updateData.access_token;
+        token.refreshToken = updateData.refresh_token;
+        token.userId = updateData.user_id;
+        token.userName = updateData.user_name;
+        token.userProfile = updateData.user_profile;
+        token.userGender = updateData.gender;
+        token.userBirth = updateData.birth;
+      }
+
       return token;
     },
     async session({ session, token }) {

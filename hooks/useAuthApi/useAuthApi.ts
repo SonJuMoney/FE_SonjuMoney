@@ -1,6 +1,7 @@
 import { ChildData } from '@/components/atoms/Inputs/SignupIput';
 import { useApi } from '@/hooks/useApi';
 import { TPswdReq } from '@/types/Account';
+import { TAuth, TSession } from '@/types/user';
 
 export const useAuthApi = () => {
   const { fetchApi } = useApi();
@@ -33,5 +34,24 @@ export const useAuthApi = () => {
     return response.code === 200;
   };
 
-  return { signupChild, checkPassCode };
+  const getAuthList = async (): Promise<TAuth[]> => {
+    const response = await fetchApi(`${baseUrl}/list`);
+
+    return response;
+  };
+
+  const switchAccount = async (userId: string): Promise<TSession> => {
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify({
+        target_id: userId,
+      }),
+    };
+
+    const response = await fetchApi(`${baseUrl}/switch-account`, options);
+
+    return response;
+  };
+
+  return { signupChild, checkPassCode, getAuthList, switchAccount };
 };

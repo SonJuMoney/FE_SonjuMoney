@@ -11,9 +11,9 @@ import AlarmOn from '@/public/Icons/alarmOn_20.svg';
 import ArrowDown from '@/public/Icons/arrowDown_20.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TFamily } from '@/types/Family';
-import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
+import ProfileButton from '../Buttons/ProfileButton';
 
 type HeaderProps = {
   showFamily: boolean;
@@ -49,14 +49,6 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
       fetchFamilies();
     }
   }, [hydrated]);
-
-  const handleSignOut = async () => {
-    setSelectedFamily(null);
-    await signOut({
-      redirect: true,
-      callbackUrl: '/login',
-    });
-  };
 
   const handleSelect = (family: TFamily) => {
     setSelectedFamily(family);
@@ -103,8 +95,8 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
       )}
 
       {/* 오른쪽: 알람 버튼 */}
-      <div className='text-right flex space-x-4 justify-center items-center'>
-        <button onClick={handleSignOut}>LO</button>
+      <div className='text-right flex space-x-2 justify-center items-center'>
+        <ProfileButton />
         <a href='/alarm'>{isAlarm ? <AlarmOn /> : <AlarmOff />}</a>
       </div>
     </div>

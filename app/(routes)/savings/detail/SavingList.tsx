@@ -7,7 +7,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import useSavingQuery from '@/hooks/useSavingApi/useSavingQuery';
-import useSendSavingStore from '@/store/useSendSavingStore';
 import { TSavingLimit } from '@/types/Saving';
 import { useEffect, useRef, useState } from 'react';
 
@@ -15,7 +14,6 @@ export default function SavingList({ savingId }: { savingId: number }) {
   const { GetSavings } = useSavingQuery();
   const bottomRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { selectedSaving } = useSendSavingStore();
   const { getSavingLimit } = useSavingApi();
   const [savingInfo, setSavingInfo] = useState<TSavingLimit>();
 
@@ -47,7 +45,6 @@ export default function SavingList({ savingId }: { savingId: number }) {
 
       lastScrollTop = currentScrollTop;
 
-      // 스크롤이 멈추면 버튼 표시
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {}, 100);
     };
@@ -62,9 +59,7 @@ export default function SavingList({ savingId }: { savingId: number }) {
 
   useEffect(() => {
     const fetchLimit = async () => {
-      if (!selectedSaving) return;
-
-      const response = await getSavingLimit(selectedSaving?.account_id);
+      const response = await getSavingLimit(savingId);
       setSavingInfo(response);
     };
 
@@ -99,6 +94,8 @@ export default function SavingList({ savingId }: { savingId: number }) {
         <EmptyState
           title='아직 이체한 내역이 없어요'
           subtitle={`송금하고 메세지를 남겨보세요!`}
+          href='/savings/send'
+          buttonText='송금하러가기'
         />
       </div>
     );
