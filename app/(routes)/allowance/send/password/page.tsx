@@ -5,10 +5,11 @@ import PasswordForm from '@/components/molecules/Forms/PasswordForm';
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import useSendAllowanceStore from '@/store/useSendAllowanceStore';
 import { TSendAllowanceReq } from '@/types/Allowance';
+import { useRouter } from 'next/navigation';
 
 const EnterPasscode = () => {
   const { selectedMember, amount, message, files } = useSendAllowanceStore();
-
+  const router = useRouter();
   const { sendAllowance } = useAllowanceApi();
 
   if (!selectedMember) {
@@ -18,7 +19,9 @@ const EnterPasscode = () => {
 
   const onComplete = (data: TSendAllowanceReq) => {
     console.log(data);
-    return sendAllowance(data);
+    return sendAllowance(data).then(() => {
+      router.push('/allowance/send/complete');
+    });
   };
 
   return (
