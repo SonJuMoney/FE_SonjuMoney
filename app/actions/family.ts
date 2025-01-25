@@ -5,5 +5,12 @@ import { fetchData } from './fetchData';
 
 export async function getFamilies(): Promise<TFamily[]> {
   const baseUrl = '/families';
-  return fetchData(baseUrl);
+  return fetchData(baseUrl)
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.log(error);
+      return null;
+    });
 }
