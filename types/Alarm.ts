@@ -15,4 +15,5 @@ export type TAlarm = {
   message: string;
   link_id: number;
   created_at: string;
+  family_id: number;
 };
