@@ -2,7 +2,6 @@ import { ResponseType, GetPaginationResult, useApi } from '@/hooks/useApi';
 import { SavingsResponse, TSavings } from '@/types/Account';
 import { TFeed } from '@/types/Feed';
 import { TSavingLimit } from '@/types/Saving';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useSavingApi = () => {
   const { fetchApi } = useApi();

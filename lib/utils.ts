@@ -76,3 +76,21 @@ export const getProfileImage = (role: string) => {
       return '';
   }
 };
+
+export const getParentProfileImage = (gender: 'FEMALE' | 'MALE') => {
+  switch (gender) {
+    case 'FEMALE':
+      return '/Avatar/mom.png';
+    case 'MALE':
+      return '/Avatar/dad.png';
+  }
+};
+
+export const getChildProfileImage = (gender: 'FEMALE' | 'MALE') => {
+  switch (gender) {
+    case 'FEMALE':
+      return '/Avatar/girl.png';
+    case 'MALE':
+      return '/Avatar/boy.png';
+  }
+};
