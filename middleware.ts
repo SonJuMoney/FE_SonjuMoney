@@ -12,7 +12,11 @@ export async function middleware(req: NextRequest) {
   if (didLogin && req.nextUrl.pathname === signinPath) {
     return NextResponse.redirect(new URL('/', req.url));
   }
-  if (!didLogin && req.nextUrl.pathname !== signinPath) {
+  if (
+    !didLogin &&
+    req.nextUrl.pathname !== signinPath &&
+    req.nextUrl.pathname !== '/signup'
+  ) {
     // const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
     return NextResponse.redirect(new URL(`/login`, req.url));
   }
