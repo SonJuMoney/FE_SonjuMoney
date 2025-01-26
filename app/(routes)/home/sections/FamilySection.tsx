@@ -82,7 +82,7 @@ export default function FamilySection({
           </div>
         </>
       ) : (
-        <Link href='/register/famiily' className='mx-5'>
+        <Link href='/register/family' className='mx-5'>
           <RegisterCard text='가족 등록하기' />
         </Link>
       )}
