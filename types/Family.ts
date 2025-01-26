@@ -23,3 +23,8 @@ export type TSetFamilyReq = {
   }[];
   add_children: Child[];
 };
+
+export type TInvitationResponse = {
+  code: number;
+  family_id: number;
+};
