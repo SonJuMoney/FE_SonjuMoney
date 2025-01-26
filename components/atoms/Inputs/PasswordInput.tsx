@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 type Props = {
@@ -38,17 +39,30 @@ const PasswordInput = ({ password, setPassword }: Props) => {
   return (
     <div className='w-full py-10 px-4'>
       <div className='grid grid-cols-4 gap-2 '>
-        {numbers.map((num, index) => (
-          <Button
-            key={index}
-            onClick={() => handleNumberClick(num)}
-            disabled={num === '로고'}
-            variant='ghost'
-            className='w-full marker:aspect-square text-[26px] font-semibold text-center my-2'
-          >
-            {num}
-          </Button>
-        ))}
+        {numbers.map((num, index) =>
+          num === '로고' ? (
+            <div
+              key={index}
+              className='w-full h-full flex items-center justify-center'
+            >
+              <Image
+                height={30}
+                width={30}
+                src={'/Logo/Logo_Header.svg'}
+                alt='logo'
+              />
+            </div>
+          ) : (
+            <Button
+              key={index}
+              onClick={() => handleNumberClick(num)}
+              variant='ghost'
+              className='w-full marker:aspect-square text-[26px] font-semibold text-center my-2'
+            >
+              {num}
+            </Button>
+          )
+        )}
 
         <div
           onClick={handleBackspace}

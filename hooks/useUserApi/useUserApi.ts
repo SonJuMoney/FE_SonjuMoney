@@ -19,5 +19,21 @@ export const useUserApi = () => {
     return response;
   };
 
-  return { getUser, getChildren };
+  const patchProfile = async (image: FormData): Promise<string> => {
+    const options: RequestInit = {
+      method: 'PATCH',
+      body: image,
+    };
+
+    const response = await fetchApi(
+      `${baseUrl}/profiles`,
+      options,
+      undefined,
+      true
+    );
+
+    return response.url;
+  };
+
+  return { getUser, getChildren, patchProfile };
 };
