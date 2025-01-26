@@ -8,6 +8,8 @@ interface SelectedFamilyStore {
   setSelectedFamily: (family: TFamily | null) => void;
   hydrated: boolean;
   setHydrated: (state: boolean) => void;
+  familyList: TFamily[] | [];
+  setfamilyList: (familyList: TFamily[] | []) => void;
 }
 
 export const useSelectedFamilyStore = create<SelectedFamilyStore>()(
@@ -17,6 +19,8 @@ export const useSelectedFamilyStore = create<SelectedFamilyStore>()(
       setSelectedFamily: (family) => set({ selectedFamily: family }),
       hydrated: false,
       setHydrated: (state) => set({ hydrated: state }),
+      familyList: [],
+      setfamilyList: (familyList) => set({ familyList: familyList }),
     }),
     {
       name: 'selected-family-storage',

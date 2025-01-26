@@ -22,8 +22,13 @@ type HeaderProps = {
 export default function LogoHeader({ showFamily }: HeaderProps) {
   const { getFamilies } = useFamilyApi();
   const [families, setFamilies] = useState<TFamily[]>([]);
-  const { selectedFamily, setSelectedFamily, hydrated, setHydrated } =
-    useSelectedFamilyStore();
+  const {
+    selectedFamily,
+    setSelectedFamily,
+    hydrated,
+    setHydrated,
+    setfamilyList,
+  } = useSelectedFamilyStore();
   const [isAlarm, setIsAlarm] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
 
@@ -40,8 +45,10 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
     const fetchFamilies = async () => {
       const response = await getFamilies();
       setFamilies(response);
+
       if (!selectedFamily && response.length > 0) {
         setSelectedFamily(response[0]);
+        setfamilyList(response);
       }
     };
 
