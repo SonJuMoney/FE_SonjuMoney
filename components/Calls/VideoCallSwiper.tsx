@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { getProfileImage } from '@/lib/utils';
+import EmptyState from '../molecules/EmptyState/EmptyState';
 
 interface User {
   id: string;
@@ -37,48 +38,57 @@ export default function VideoCallSwiper() {
 
     fetchMembers();
   }, []);
-  const swiperRef = useRef(null);
 
   return (
     <div className='flex flex-col items-center w-ful h-full p-4 mt-20'>
-      <div className='w-[300px] h-[400px]'>
-        <Swiper
-          effect={'cards'}
-          grabCursor={true}
-          modules={[EffectCards]}
-          className='w-full h-full'
-          cardsEffect={{
-            rotate: true,
-            perSlideOffset: 8,
-            perSlideRotate: 2,
-            slideShadows: false,
-          }}
-        >
-          {familyMembers.map((member) => (
-            <SwiperSlide
-              key={member.member_id}
-              className='bg-white/60 rounded-[15px] border-2 border-white backdrop-blur-xl'
-            >
-              <div className='flex flex-col items-center justify-between h-full p-6'>
-                <div className='relative w-60 h-60'>
-                  <Image
-                    src={
-                      member.profile_link
-                        ? member.profile_link
-                        : getProfileImage(member.member_role) || ''
-                    }
-                    alt={''}
-                    fill
-                    className='rounded-full object-cover border border-appColor bg-secondary/20 p-5'
-                  />
+      {selectedFamily ? (
+        <div className='w-[300px] h-[400px]'>
+          <Swiper
+            effect={'cards'}
+            grabCursor={true}
+            modules={[EffectCards]}
+            className='w-full h-full'
+            cardsEffect={{
+              rotate: true,
+              perSlideOffset: 8,
+              perSlideRotate: 2,
+              slideShadows: false,
+            }}
+          >
+            {familyMembers.map((member) => (
+              <SwiperSlide
+                key={member.member_id}
+                className='bg-white/60 rounded-[15px] border-2 border-white backdrop-blur-xl'
+              >
+                <div className='flex flex-col items-center justify-between h-full p-6'>
+                  <div className='relative w-60 h-60'>
+                    <Image
+                      src={
+                        member.profile_link
+                          ? member.profile_link
+                          : getProfileImage(member.member_role) || ''
+                      }
+                      alt={''}
+                      fill
+                      className='rounded-full object-cover border border-appColor bg-secondary/20 p-5'
+                    />
+                  </div>
+                  <h3 className='text-xl font-bold mt-4'>
+                    {member.member_name}
+                  </h3>
+                  <CreateMeeting calleeId={member.user_id.toString()} />
                 </div>
-                <h3 className='text-xl font-bold mt-4'>{member.member_name}</h3>
-                <CreateMeeting calleeId={member.user_id.toString()} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      ) : (
+        <EmptyState
+          title='아직 소속된 가족이 없어요'
+          subtitle={`가족을 생성하고
+소식을 주고 받아보세요!`}
+        />
+      )}
     </div>
   );
 }
