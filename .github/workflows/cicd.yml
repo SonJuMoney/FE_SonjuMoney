@@ -1,7 +1,7 @@
-name: NEXT CI/CD 
+name: NEXT CI/CD
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
   build:
@@ -19,15 +19,15 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-            node-version: 21
-  
+          node-version: 21
+
       - name: Install dependencies
         run: pnpm install
-  
+
       - name: set .env
         run: |
-            echo "${{ secrets.ENV }}" > .env
-            
+          echo "${{ secrets.ENV }}" > .env
+
       - name: setup ssh
         run: |
           mkdir -p ~/.ssh
@@ -40,7 +40,7 @@ jobs:
         run: pnpm next build
 
       - name: zip next = .next아래에 next.zip 이름의 zip 파일 생성
-        run: zip -rq next.zip .next
+        run: zip -rq next.zip .next .env
 
       - name: scp next to was = was에 전송, next.zip을 workspace내에 저장
         run: |
@@ -51,6 +51,6 @@ jobs:
           ssh ec2-user@${{ secrets.WAS }} '
             cd /home/ec2-user/workspace
             rm -rf .next
-            unzip next.zip
+            unzip -q next.zip
             pm2 reload sonju-next
           '
