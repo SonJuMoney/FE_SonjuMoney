@@ -40,7 +40,7 @@ jobs:
         run: pnpm next build
 
       - name: zip next = .next아래에 next.zip 이름의 zip 파일 생성
-        run: zip -rq next.zip .next .env
+        run: zip -rq next.zip .next .env package.json
 
       - name: scp next to was = was에 전송, next.zip을 workspace내에 저장
         run: |
@@ -50,7 +50,7 @@ jobs:
         run: |
           ssh ec2-user@${{ secrets.WAS }} '
             cd /home/ec2-user/workspace
-            rm -rf .next
+            rm -rf .next .env package.json
             unzip -q next.zip
             pm2 reload sonju-next
           '
