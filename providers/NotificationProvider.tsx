@@ -54,10 +54,11 @@ export function NotificationProvider({
     };
 
     ws.onmessage = (event) => {
-      const data = JSON.stringify(event.data);
-
-      const parsedData: TAlarm = JSON.parse(data);
-      if (parsedData.alarm_id) addNotification(parsedData);
+      try {
+        const data = JSON.parse(event.data);
+        if (data.alarm_id) addNotification(data);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {}
     };
 
     ws.onclose = () => {
@@ -71,7 +72,7 @@ export function NotificationProvider({
     return () => {
       ws.close();
     };
-  }, [session?.user?.accessToken]);
+  }, [session?.user?.userId, session?.user?.accessToken]);
 
   // useEffect(() => {
   //   // 임의의 알림 추가
