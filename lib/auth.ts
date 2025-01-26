@@ -66,6 +66,7 @@ export const {
           }
 
           const data = await response.json();
+          console.log('data', data);
 
           if (data?.access_token && data?.refresh_token) {
             return {
@@ -81,6 +82,7 @@ export const {
 
           throw new Error('로그인 토큰 오류');
         } catch (error) {
+          console.log(error);
           throw new Error('로그인 실패');
         }
       },
