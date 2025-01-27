@@ -52,6 +52,11 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
       },
     });
   };
+
+  const videoLoaderUrl = (path: string) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/videos/stream?video=${path}`;
+  };
+
   return (
     <div className='flex flex-col w-full gap-[10px] py-[16px] bg-white'>
       <div className='flex justify-between w-full px-[16px]'>
@@ -105,7 +110,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
               ) : (
                 <div className='relative w-full aspect-square'>
                   <ReactPlayer
-                    url={image.url}
+                    url={videoLoaderUrl(image.url)}
                     width='100%'
                     height='100%'
                     controls={true}
