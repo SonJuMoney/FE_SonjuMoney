@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { Drawer, DrawerContent } from '@/components/ui/drawer';
+import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useUserApi } from '@/hooks/useUserApi/useUserApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
@@ -146,7 +146,7 @@ export default function ProfileButton() {
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className='w-2/3 rounded-lg'>
-          <DialogTitle className='sr-only'>내 프로필</DialogTitle>
+          <DialogTitle></DialogTitle>
           <div className='flex flex-col gap-5 justify-between items-center'>
             <div className='relative w-[150px] h-[150px] rounded-full border flex justify-center items-center'>
               <Image
@@ -181,6 +181,7 @@ export default function ProfileButton() {
       </Dialog>
 
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerTitle></DrawerTitle>
         <DrawerContent>
           <div className='py-4 px-6 flex flex-col gap-4 w-full'>
             <h2 className='text-center'>계정 변경</h2>

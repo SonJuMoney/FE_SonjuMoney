@@ -48,12 +48,7 @@ export const useAuthApi = () => {
       }),
     };
 
-    const response = await fetchApi(
-      `${baseUrl}/switch-account`,
-      options,
-      undefined,
-      true
-    );
+    const response = await fetchApi(`${baseUrl}/switch-account`, options);
 
     return response;
   };
