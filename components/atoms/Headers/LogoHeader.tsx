@@ -11,6 +11,7 @@ import AlarmOn from '@/public/Icons/alarmOn_20.svg';
 import ArrowDown from '@/public/Icons/arrowDown_20.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TFamily } from '@/types/Family';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import ProfileButton from '../Buttons/ProfileButton';
@@ -65,8 +66,14 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
   return (
     <div className='flex flex-row justify-between items-center bg-transparent  px-[20px] py-[12px] h-[48px] relative  w-full'>
       {/* 왼쪽: 로고 */}
-      <div className='flex h-full text-left font-bold text-appColor text-md'>
-        손주머니
+      <div className='flex h-full text-left font-bold text-appColor text-md gap-1 items-center'>
+        <Image
+          height={24}
+          width={24}
+          src={'/Logo/Logo_Header.svg'}
+          alt='logo'
+        />
+        <div>손주머니</div>
       </div>
 
       {/* 중앙: 타이틀 with Popover */}
