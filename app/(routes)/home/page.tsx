@@ -1,8 +1,4 @@
-import { getMyAccount } from '@/app/actions/accounts';
-import { getFamilies } from '@/app/actions/family';
-import { getSavingsAccounts } from '@/app/actions/savings';
 import LogoHeader from '@/components/atoms/Headers/LogoHeader';
-import { Suspense } from 'react';
 import AccountSection from './sections/AccountSection';
 import FamilySection from './sections/FamilySection';
 import NotificationSection from './sections/NotificationSection';

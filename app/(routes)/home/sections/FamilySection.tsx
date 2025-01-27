@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import type { TFamily } from '@/types/Family';
+import { useSession } from 'next-auth/react';
 import { LuPlus } from 'react-icons/lu';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -13,6 +14,8 @@ import { useEffect, useState } from 'react';
 
 export default function FamilySection() {
   const router = useRouter();
+  const { data: session } = useSession();
+
   const { setSelectedFamily } = useSelectedFamilyStore();
   const { getFamilies } = useFamilyApi();
   const [families, setFamilies] = useState<TFamily[]>([]);

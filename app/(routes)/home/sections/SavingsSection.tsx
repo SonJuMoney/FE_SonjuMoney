@@ -9,11 +9,13 @@ import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import useSendSavingStore from '@/store/useSendSavingStore';
 import type { SavingsResponse } from '@/types/Account';
 import { TFamily } from '@/types/Family';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function SavingsSection() {
   const router = useRouter();
+  const { data: session } = useSession();
   const { getFamilies } = useFamilyApi();
   const { getSavingsAccounts } = useSavingApi();
   const [families, setFamilies] = useState<TFamily[]>([]);
@@ -30,7 +32,7 @@ export default function SavingsSection() {
         setIsLoading(false);
       }
     );
-  }, []);
+  }, [session?.user?.accessToken]);
 
   const handleSelectAccount = (accountId: number) => {
     setSelectedSaving(

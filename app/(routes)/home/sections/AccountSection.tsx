@@ -5,11 +5,13 @@ import AccountCard from '@/components/molecules/Cards/AccountCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import type { TAccount } from '@/types/Account';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function AccountSection() {
+  const { data: session } = useSession();
   const router = useRouter();
   const { getMyAccount } = useAccountApi();
   const [account, setAccount] = useState<TAccount | null>(null);
@@ -20,7 +22,7 @@ export default function AccountSection() {
       setAccount(data);
       setIsLoading(false);
     });
-  }, []);
+  }, [session?.user?.accessToken]);
 
   if (isLoading) {
     return (
