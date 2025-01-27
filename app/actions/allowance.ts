@@ -37,11 +37,11 @@ export async function sendResponse(formData: FormData) {
   );
   console.log('response', response);
 
-  // if (!response.ok) {
-  //   throw new Error('Failed to submit response');
-  // }
+  if (response.code !== 200) {
+    throw new Error('Failed to submit response');
+  }
 
-  return response.json();
+  return response.code === 200;
 }
 
 // 서버 액션 생성
