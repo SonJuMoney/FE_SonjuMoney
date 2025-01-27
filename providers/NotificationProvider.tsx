@@ -1,10 +1,13 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
-import { CustomToast } from '@/components/ui/customToast';
-import { useToast } from '@/hooks/use-toast';
 import { TAlarm } from '@/types/Alarm';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { createContext, useContext, useState, useEffect } from 'react';
+import { queryKeys } from '@/lib/queryKeys';
+
+/* eslint-disable no-unused-vars */
 
 type NotificationContextType = {
   notifications: TAlarm[];
@@ -31,6 +34,7 @@ export function NotificationProvider({
 }) {
   const [notifications, setNotifications] = useState<TAlarm[]>([]);
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
 
   const addNotification = (notification: TAlarm) => {
     setNotifications((prev) => [...prev, { ...notification }]);
@@ -56,7 +60,10 @@ export function NotificationProvider({
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        if (data.alarm_id) addNotification(data);
+        if (data.alarm_id) {
+          addNotification(data);
+          queryClient.invalidateQueries({ queryKey: queryKeys.alarmStatus });
+        }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {}
     };

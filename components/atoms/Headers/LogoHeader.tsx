@@ -5,6 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import useAlarmQuery from '@/hooks/useAlarmApi/useAlarmQuery';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import AlarmOff from '@/public/Icons/alarmOff_20.svg';
 import AlarmOn from '@/public/Icons/alarmOn_20.svg';
@@ -24,6 +25,8 @@ type HeaderProps = {
 export default function LogoHeader({ showFamily }: HeaderProps) {
   const router = useRouter();
   const { getFamilies } = useFamilyApi();
+  const { GetAlarmStatus } = useAlarmQuery();
+  const { data } = GetAlarmStatus();
   const [families, setFamilies] = useState<TFamily[]>([]);
   const {
     selectedFamily,
@@ -32,7 +35,6 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
     setHydrated,
     setfamilyList,
   } = useSelectedFamilyStore();
-  const [isAlarm, setIsAlarm] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
 
   const selectedFamilyName =
@@ -58,6 +60,7 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
     if (hydrated) {
       fetchFamilies();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated]);
 
   const handleSelect = (family: TFamily) => {
@@ -116,7 +119,7 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
       {/* 오른쪽: 알람 버튼 */}
       <div className='text-right flex space-x-2 justify-center items-center'>
         <ProfileButton />
-        <a href='/alarm'>{isAlarm ? <AlarmOn /> : <AlarmOff />}</a>
+        <a href='/alarm'>{data?.is_exist ? <AlarmOn /> : <AlarmOff />}</a>
       </div>
     </div>
   );

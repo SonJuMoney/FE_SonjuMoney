@@ -1,13 +1,19 @@
 import { ResponseType, GetPaginationResult, useApi } from '@/hooks/useApi';
-import { TAlarm } from '@/types/Alarm';
-import { TAddCommentReq, TCreateFeedReq, TFeed } from '@/types/Feed';
+import { TAlarm, TAlarmStatusResponse } from '@/types/Alarm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/lib/queryKeys';
 
 export const useAlarmApi = () => {
   const { fetchApi } = useApi();
   const queryClient = useQueryClient();
 
   const baseUrl = '/alarms';
+
+  const getAlarmStatus = async (): Promise<TAlarmStatusResponse> => {
+    const response = await fetchApi(`${baseUrl}/status/RECEIVED`);
+
+    return response;
+  };
 
   const getAlarmList = async (pageParam: number) => {
     const data: ResponseType<GetPaginationResult<TAlarm>> = await fetchApi(
@@ -23,12 +29,14 @@ export const useAlarmApi = () => {
     mutationFn: (alarm_id: number) =>
       fetchApi(`${baseUrl}/${alarm_id}`, { method: 'PATCH' }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['alarms'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.alarms });
+      queryClient.invalidateQueries({ queryKey: queryKeys.alarmStatus });
     },
   });
 
   return {
     getAlarmList,
     readAlarm: readAlarmMutation.mutate,
+    getAlarmStatus,
   };
 };
