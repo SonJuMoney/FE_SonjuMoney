@@ -1,12 +1,22 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { queryKeys } from '@/lib/queryKeys';
 import { useAlarmApi } from './useAlarmApi';
 
 const useAlarmQuery = () => {
-  const { getAlarmList } = useAlarmApi();
+  const { getAlarmStatus, getAlarmList } = useAlarmApi();
+
+  const GetAlarmStatus = () => {
+    return useQuery({
+      queryKey: queryKeys.alarmStatus,
+      queryFn: () => getAlarmStatus(),
+      gcTime: 15000,
+      refetchInterval: 15000,
+    });
+  };
 
   const GetAlarmList = (options?: { enabled?: boolean }) => {
     return useInfiniteQuery({
-      queryKey: ['alarms'],
+      queryKey: queryKeys.alarms,
       queryFn: ({ pageParam }) => getAlarmList(pageParam),
       initialPageParam: 0,
       enabled: options?.enabled,
@@ -16,7 +26,7 @@ const useAlarmQuery = () => {
       },
     });
   };
-  return { GetAlarmList };
+  return { GetAlarmList, GetAlarmStatus };
 };
 
 export default useAlarmQuery;

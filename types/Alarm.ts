@@ -17,3 +17,7 @@ export type TAlarm = {
   created_at: string;
   family_id: number;
 };
+
+export type TAlarmStatusResponse = {
+  is_exist: boolean;
+};
