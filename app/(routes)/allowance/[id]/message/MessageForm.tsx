@@ -59,7 +59,7 @@ export default function MessageForm({
     });
     try {
       await sendResponse(formData);
-      router.push(`/allowance/${allowanceId}/complete`);
+      router.push(`/allowance/${allowanceId}/message/complete`);
     } catch (error) {
       console.error('Failed to submit:', error);
     }
