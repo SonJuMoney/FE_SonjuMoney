@@ -12,6 +12,7 @@ import ArrowDown from '@/public/Icons/arrowDown_20.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TFamily } from '@/types/Family';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import ProfileButton from '../Buttons/ProfileButton';
@@ -21,6 +22,7 @@ type HeaderProps = {
 };
 
 export default function LogoHeader({ showFamily }: HeaderProps) {
+  const router = useRouter();
   const { getFamilies } = useFamilyApi();
   const [families, setFamilies] = useState<TFamily[]>([]);
   const {
@@ -66,7 +68,10 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
   return (
     <div className='flex flex-row justify-between items-center bg-transparent  px-[20px] py-[12px] h-[48px] relative  w-full'>
       {/* 왼쪽: 로고 */}
-      <div className='flex h-full text-left font-bold text-appColor text-md gap-1 items-center'>
+      <div
+        className='flex h-full text-left font-bold text-appColor text-md gap-1 items-center'
+        onClick={() => router.push('/home')}
+      >
         <Image
           height={24}
           width={24}

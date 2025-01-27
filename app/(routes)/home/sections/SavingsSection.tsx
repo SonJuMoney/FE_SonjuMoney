@@ -5,26 +5,34 @@ import AccountListCard from '@/components/molecules/Cards/AccountListCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import useSendSavingStore from '@/store/useSendSavingStore';
 import type { SavingsResponse } from '@/types/Account';
 import { TFamily } from '@/types/Family';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-type SavingsSectionProps = {
-  savings: SavingsResponse | null;
-  isLoading: boolean;
-};
-
-export default function SavingsSection({
-  savings,
-  isLoading,
-}: SavingsSectionProps) {
+export default function SavingsSection() {
   const router = useRouter();
-  const [families, setFamilies] = useState<TFamily[]>([]);
+  const { data: session } = useSession();
   const { getFamilies } = useFamilyApi();
+  const { getSavingsAccounts } = useSavingApi();
+  const [families, setFamilies] = useState<TFamily[]>([]);
+  const [savings, setSavings] = useState<SavingsResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { setSelectedSaving } = useSendSavingStore();
   const { toast } = useToast();
+
+  useEffect(() => {
+    Promise.all([getFamilies(), getSavingsAccounts()]).then(
+      ([familiesData, savingsData]) => {
+        setFamilies(familiesData);
+        setSavings(savingsData);
+        setIsLoading(false);
+      }
+    );
+  }, [session?.user?.accessToken]);
 
   const handleSelectAccount = (accountId: number) => {
     setSelectedSaving(
@@ -47,12 +55,6 @@ export default function SavingsSection({
     } else router.push('/savings/create');
   };
 
-  useEffect(() => {
-    getFamilies().then((data) => {
-      setFamilies(data);
-    });
-  }, []);
-
   if (isLoading) {
     return (
       <div className='flex flex-col gap-2.5 font-semibold'>
@@ -61,6 +63,8 @@ export default function SavingsSection({
       </div>
     );
   }
+
+  if (savings?.is_child) return null;
 
   return (
     <div className='flex flex-col gap-2.5 font-semibold'>
