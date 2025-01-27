@@ -3,25 +3,29 @@
 import FamilyCardLarge from '@/components/atoms/Cards/FamilyCardLarge';
 import RegisterCard from '@/components/atoms/Cards/RegisterCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import type { TFamily } from '@/types/Family';
 import { LuPlus } from 'react-icons/lu';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-type FamilySectionProps = {
-  families: TFamily[] | null;
-  isLoading: boolean;
-};
-
-export default function FamilySection({
-  families,
-  isLoading,
-}: FamilySectionProps) {
+export default function FamilySection() {
   const router = useRouter();
   const { setSelectedFamily } = useSelectedFamilyStore();
+  const { getFamilies } = useFamilyApi();
+  const [families, setFamilies] = useState<TFamily[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
+
+  useEffect(() => {
+    getFamilies().then((data) => {
+      setFamilies(data);
+      setIsLoading(false);
+    });
+  }, []);
 
   const handleFamilyClick = (family: TFamily) => {
     setSelectedFamily(family);

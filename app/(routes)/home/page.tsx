@@ -8,7 +8,7 @@ import FamilySection from './sections/FamilySection';
 import NotificationSection from './sections/NotificationSection';
 import SavingsSection from './sections/SavingsSection';
 
-export default async function Home() {
+export default function HomePage() {
   return (
     <div className='pageLayout bg-[#FAE4D4]'>
       <LogoHeader showFamily={false} />
@@ -16,44 +16,15 @@ export default async function Home() {
         <NotificationSection />
 
         <div className='p-5'>
-          <Suspense
-            fallback={<AccountSection account={null} isLoading={true} />}
-          >
-            <AccountSectionWrapper />
-          </Suspense>
+          <AccountSection />
         </div>
         <div>
-          <Suspense
-            fallback={<FamilySection families={null} isLoading={true} />}
-          >
-            <FamilySectionWrapper />
-          </Suspense>
+          <FamilySection />
         </div>
         <div className='p-5'>
-          <Suspense
-            fallback={<SavingsSection savings={null} isLoading={true} />}
-          >
-            <SavingsSectionWrapper />
-          </Suspense>
+          <SavingsSection />
         </div>
       </div>
     </div>
-  );
-}
-
-async function AccountSectionWrapper() {
-  const account = await getMyAccount();
-  return <AccountSection account={account} isLoading={false} />;
-}
-
-async function FamilySectionWrapper() {
-  const families = await getFamilies();
-  return <FamilySection families={families} isLoading={false} />;
-}
-
-async function SavingsSectionWrapper() {
-  const savings = await getSavingsAccounts();
-  return savings?.is_child ? null : (
-    <SavingsSection savings={savings} isLoading={false} />
   );
 }

@@ -3,20 +3,24 @@
 import RegisterCard from '@/components/atoms/Cards/RegisterCard';
 import AccountCard from '@/components/molecules/Cards/AccountCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import type { TAccount } from '@/types/Account';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-type AccountSectionProps = {
-  account: TAccount | null;
-  isLoading: boolean;
-};
-
-export default function AccountSection({
-  account,
-  isLoading,
-}: AccountSectionProps) {
+export default function AccountSection() {
   const router = useRouter();
+  const { getMyAccount } = useAccountApi();
+  const [account, setAccount] = useState<TAccount | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getMyAccount().then((data) => {
+      setAccount(data);
+      setIsLoading(false);
+    });
+  }, []);
 
   if (isLoading) {
     return (
