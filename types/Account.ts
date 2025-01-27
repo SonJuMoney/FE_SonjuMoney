@@ -32,3 +32,24 @@ export type SavingsResponse = {
   is_child: boolean;
   savings: TSavings[];
 };
+
+export type TransactionList = {
+  date: string;
+  transactions: Transaction[];
+};
+
+export type Transaction = {
+  message: string;
+  transaction_type: string;
+  amount: number;
+  after_balance: number;
+  created_at: string;
+};
+
+export type MyAccount = {
+  account_id: number;
+  bank: string;
+  balance: number;
+  account_name: string;
+  account_num: string;
+};

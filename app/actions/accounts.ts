@@ -1,9 +1,9 @@
 'use server';
 
-import type { TAccount } from '@/types/Account';
+import type { MyAccount } from '@/types/Account';
 import { fetchData } from './fetchData';
 
-export async function getMyAccount(): Promise<TAccount> {
+export async function getMyAccount(): Promise<MyAccount> {
   const baseUrl = '/accounts';
   return fetchData(baseUrl)
     .then((data) => {

@@ -7,14 +7,14 @@ import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import useSendSavingStore from '@/store/useSendSavingStore';
-import { TAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const SendPage = () => {
   const { selectedSaving, setAmount } = useSendSavingStore();
   const [localAmount, setLocalAmount] = useState('');
-  const [account, setAccount] = useState<TAccount | null>(null);
+  const [account, setAccount] = useState<MyAccount | null>(null);
   const [limitAmount, setLimitAmount] = useState<number>();
   const router = useRouter();
 
@@ -74,21 +74,23 @@ const SendPage = () => {
             {'하나'} {selectedSaving?.account_num}
           </div>
         </div>
-        <PriceInput
-          value={localAmount}
-          onChange={setLocalAmount}
-          balance={account.balance}
-          limitAmount={limitAmount}
-        />
-        {!localAmount && (
-          <div className='text-sm'>
-            납입 한도 금액은{' '}
-            <span className='text-appColor'>
-              {limitAmount?.toLocaleString()}
-            </span>
-            원 입니다.
-          </div>
-        )}
+        <div className='flex flex-col gap-1'>
+          <PriceInput
+            value={localAmount}
+            onChange={setLocalAmount}
+            balance={account.balance}
+            limitAmount={limitAmount}
+          />
+          {!localAmount && (
+            <div className='text-sm'>
+              납입 한도 금액은{' '}
+              <span className='text-appColor'>
+                {limitAmount?.toLocaleString()}
+              </span>
+              원입니다.
+            </div>
+          )}
+        </div>
       </div>
 
       <div className='fixed bottom-0 left-0 w-full p-5'>

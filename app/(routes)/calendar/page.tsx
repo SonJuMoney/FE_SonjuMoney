@@ -117,10 +117,10 @@ const PlanList = () => {
                   isToday={date.current_date === today}
                 />
               ))}
-              <div className='fixed bottom-[85px] right-[24px]'>
+              <div className='fixed bottom-[90px] right-5'>
                 <Link
                   href='/calendar/add'
-                  className='w-[105px] h-[40px] flex justify-center space-x-1 items-center rounded-full bg-appColor text-white'
+                  className='w-[105px] h-[48px] flex justify-center space-x-1 items-center rounded-full bg-appColor text-white'
                 >
                   <FaPlus className='text-white text-lg text-center' />
                   <div>일정 추가</div>
