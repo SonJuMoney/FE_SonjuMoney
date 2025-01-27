@@ -4,7 +4,7 @@ import RegisterCard from '@/components/atoms/Cards/RegisterCard';
 import AccountCard from '@/components/molecules/Cards/AccountCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
-import type { TAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,7 @@ export default function AccountSection() {
   const { data: session } = useSession();
   const router = useRouter();
   const { getMyAccount } = useAccountApi();
-  const [account, setAccount] = useState<TAccount | null>(null);
+  const [account, setAccount] = useState<MyAccount | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -40,7 +40,10 @@ export default function AccountSection() {
         <AccountCard
           accountName={account.account_name}
           accountBalance={account.balance}
-          onClick={() => router.push('/allowance/send')}
+          onButtonClick={() => router.push('/allowance/send')}
+          onClick={() =>
+            router.push(`/account/transaction?id=${account.account_id}`)
+          }
         />
       ) : (
         <>

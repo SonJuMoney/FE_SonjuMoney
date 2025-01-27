@@ -44,7 +44,7 @@ const AlarmList = () => {
         <EmptyState
           title='도착한 알림이 없어요'
           href='/home'
-          buttonText='홈으로 돌아가기기'
+          buttonText='홈으로 돌아가기'
         />
       </div>
     );

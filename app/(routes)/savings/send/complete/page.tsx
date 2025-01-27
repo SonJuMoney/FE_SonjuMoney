@@ -18,8 +18,8 @@ export default function CompletePage() {
 
   return (
     <div className='pageLayout'>
+      <Header title='적금 보내기' />
       <div className='defaultLayout'>
-        <Header title='적금 보내기' showBackButton={false} />
         <CompleteMessage
           title={
             <>

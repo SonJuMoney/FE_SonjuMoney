@@ -1,6 +1,7 @@
-import { useApi } from '@/hooks/useApi';
+import { ResponseType, GetPaginationResult, useApi } from '@/hooks/useApi';
 import {
-  TAccount,
+  MyAccount,
+  Transaction,
   TSetAccountReq,
   TSetSavingsAccountReq,
 } from '@/types/Account';
@@ -21,7 +22,7 @@ export const useAccountApi = () => {
   };
 
   // 내 계좌 조회
-  const getMyAccount = async (): Promise<TAccount> => {
+  const getMyAccount = async (): Promise<MyAccount> => {
     const response = await fetchApi(baseUrl);
 
     return response;
@@ -41,5 +42,15 @@ export const useAccountApi = () => {
     return response.code === 200;
   };
 
-  return { setAccount, getMyAccount, setSavingsAccount };
+  const getTransactions = async (accountId: number, pageParam: number) => {
+    const data: ResponseType<GetPaginationResult<Transaction>> = await fetchApi(
+      `${baseUrl}/${accountId}/transactions`,
+      { method: 'GET' },
+      { page: pageParam }
+    );
+
+    return data.result;
+  };
+
+  return { setAccount, getMyAccount, setSavingsAccount, getTransactions };
 };

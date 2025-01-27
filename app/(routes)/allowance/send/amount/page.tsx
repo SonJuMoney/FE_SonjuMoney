@@ -6,14 +6,14 @@ import PriceInput from '@/components/atoms/Inputs/PriceInput';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import useSendAllowanceStore from '@/store/useSendAllowanceStore';
-import { TAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const EnterAmount = () => {
   const { selectedMember, setAmount } = useSendAllowanceStore();
   const [localAmount, setLocalAmount] = useState('');
-  const [account, setAccount] = useState<TAccount | null>(null);
+  const [account, setAccount] = useState<MyAccount | null>(null);
   const router = useRouter();
 
   const { getMyAccount } = useAccountApi();
