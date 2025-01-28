@@ -30,13 +30,21 @@ const MeetingRoom = () => {
     (p) => p.userId !== session?.user?.userId?.toString()
   );
   const handleLeave = async () => {
-    if (call) {
-      // 마이크와 카메라 끄기
-      await call.camera.disable();
-      await call.microphone.disable();
+    if (!call) return;
 
-      // 통화 종료 후 페이지 이동
-      await call.leave();
+    try {
+      // 마이크와 카메라를 먼저 비활성화
+      await Promise.all([call.camera.disable(), call.microphone.disable()]);
+
+      // 통화 상태 확인
+      if (call.state.callingState !== CallingState.LEFT) {
+        await call.leave();
+      }
+
+      router.push('/call');
+    } catch (error) {
+      console.error('Error leaving call:', error);
+      // 에러가 발생해도 페이지 이동은 수행
       router.push('/call');
     }
   };
