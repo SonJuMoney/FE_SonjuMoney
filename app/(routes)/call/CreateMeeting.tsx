@@ -21,10 +21,8 @@ const CreateMeeting = ({ calleeId }: CreateMeetingProps) => {
     description: '',
     link: '',
   });
-  const { toast } = useToast();
 
   const createMeeting = async () => {
-    alert('clicked');
     if (!client && !session?.user) return;
     try {
       const meetingId = crypto.randomUUID();
@@ -51,7 +49,7 @@ const CreateMeeting = ({ calleeId }: CreateMeetingProps) => {
             },
           },
         });
-        toast({ title: '화상통화가 연결되었어요' });
+        // toast({ title: '화상통화가 연결되었어요' });
         if (!values.description) {
           router.push(`/call/${call.id}`);
         }

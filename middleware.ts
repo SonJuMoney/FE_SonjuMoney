@@ -3,30 +3,26 @@ import { auth } from './lib/auth';
 
 export async function middleware(req: NextRequest) {
   const session = await auth();
-  console.log('middleware call auth');
-  const didLogin = !!session?.user;
-  console.log('🚀 ~ middleware ~ didLogin:', didLogin);
+  const pathname = req.nextUrl.pathname;
 
-  const signinPath = '/login';
+  // Prevent redirect loops by checking current path
+  if (pathname === '/login' || pathname === '/signup') {
+    if (session?.user) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
+    return NextResponse.next();
+  }
 
-  if (didLogin && req.nextUrl.pathname === signinPath) {
-    return NextResponse.redirect(new URL('/', req.url));
+  // Check authentication for protected routes
+  if (!session?.user) {
+    return NextResponse.redirect(new URL('/login', req.url));
   }
-  if (
-    !didLogin &&
-    req.nextUrl.pathname !== signinPath &&
-    req.nextUrl.pathname !== '/signup'
-  ) {
-    // const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
-    return NextResponse.redirect(new URL(`/login`, req.url));
-  }
+
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|robots.txt|images|api/auth|login|regist|$).*)',
-    '/login',
-    '/',
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|images|api/auth).*)',
   ],
 };

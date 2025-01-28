@@ -11,6 +11,7 @@ import {
 import '@stream-io/video-react-sdk/dist/css/styles.css';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import TopicTicker from './TopicTicker';
 
 const MeetingRoom = () => {
   const router = useRouter();
@@ -30,18 +31,27 @@ const MeetingRoom = () => {
     (p) => p.userId !== session?.user?.userId?.toString()
   );
   const handleLeave = async () => {
-    if (call) {
-      // 마이크와 카메라 끄기
-      await call.camera.disable();
-      await call.microphone.disable();
+    if (!call) return;
 
-      // 통화 종료 후 페이지 이동
-      await call.leave();
+    try {
+      // 마이크와 카메라를 먼저 비활성화
+      await Promise.all([call.camera.disable(), call.microphone.disable()]);
+
+      // 통화 상태 확인
+      if (call.state.callingState !== CallingState.LEFT) {
+        await call.leave();
+      }
+
+      router.push('/call');
+    } catch (error) {
+      console.log('Error leaving call:', error);
+      // 에러가 발생해도 페이지 이동은 수행
       router.push('/call');
     }
   };
   return (
-    <section className='relative h-screen w-full overflow-hidden pt-4 text-white'>
+    <section className='relative h-screen w-full overflow-hidden text-white'>
+      <TopicTicker />
       {otherUser && (
         <div className='h-full w-full'>
           <ParticipantView
@@ -51,7 +61,7 @@ const MeetingRoom = () => {
         </div>
       )}
       {currentUser && (
-        <div className='absolute top-14 right-4 x-50 h-[180px] w-[120px] overflow-hidden border-2 border-white shadow-lg'>
+        <div className='absolute top-20 right-0 x-50 h-[180px] w-[120px] overflow-hidden border-2 border-white shadow-lg'>
           <ParticipantView
             participant={currentUser}
             className='h-full w-full object-cover'
