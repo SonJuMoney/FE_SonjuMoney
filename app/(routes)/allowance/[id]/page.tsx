@@ -1,18 +1,27 @@
 'use client';
 
 import Header from '@/components/atoms/Headers/Header';
+import { useToast } from '@/hooks/use-toast';
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import type { AllowanceResponse } from '@/types/Allowance';
+import { useStreamVideoClient } from '@stream-io/video-react-sdk';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { createMeeting } from '@/lib/call';
 
 export default function AllowancePage({ params }: { params: { id: string } }) {
   const { getAllowanceData } = useAllowanceApi();
   const [allowanceData, setAllowanceData] = useState<AllowanceResponse | null>(
     null
   );
+  const { data: session } = useSession();
+  const client = useStreamVideoClient();
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (params.id) {
@@ -24,7 +33,26 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
 
       fetchAllowanceData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
+
+  const handleCreateMeeting = async () => {
+    if (!client || !session?.user?.userId || !allowanceData) return;
+
+    try {
+      const callId = await createMeeting({
+        client,
+        userId: session.user.userId.toString(),
+        calleeId: allowanceData.sender_id.toString(),
+        description: '용돈 감사 통화',
+      });
+
+      router.push(`/call/${callId}`);
+    } catch (error) {
+      console.error(error);
+      toast({ title: '화상통화 연결에 실패했습니다.' });
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -72,14 +100,27 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
             className='block p-4 bg-white rounded-lg border border-gray-200 shadow-sm'
           >
             <div className='flex items-center justify-center space-x-2'>
-              <span className='text-2xl'>🎂</span>
+              <Image
+                src={'/AnimatedIcons/Camera.png'}
+                width={40}
+                height={40}
+                alt='Alarm Icon'
+              />
               <span className='font-semibold text-xl'>사진/영상 보내기</span>
             </div>
           </Link>
 
-          <button className='w-full p-4 bg-white rounded-lg border border-gray-200 shadow-sm'>
+          <button
+            className='w-full p-4 bg-white rounded-lg border border-gray-200 shadow-sm'
+            onClick={handleCreateMeeting}
+          >
             <div className='flex items-center justify-center space-x-2'>
-              <span className='text-2xl'>🎂</span>
+              <Image
+                src={'/AnimatedIcons/Call.png'}
+                width={40}
+                height={40}
+                alt='Alarm Icon'
+              />
               <span className='font-semibold text-xl'>화상통화하기</span>
             </div>
           </button>
