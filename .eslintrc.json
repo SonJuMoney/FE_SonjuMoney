@@ -5,7 +5,8 @@
     "prettier",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:storybook/recommended"
   ],
   "plugins": ["@typescript-eslint/eslint-plugin"],
   "rules": {
