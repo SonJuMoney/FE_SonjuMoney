@@ -1,20 +1,19 @@
+import { Recommendation } from '@/types/Calls';
 import { useApi } from '../useApi';
 
 export const useCallApi = () => {
   const { fetchApi } = useApi();
-  const baseUrl = '/videocalls';
+  const baseUrl = '/calls';
 
-  // const sendAllowance = async (
-  //   allowanceData: TSendAllowanceReq
-  // ): Promise<boolean> => {
-  //   const options: RequestInit = {
-  //     method: 'POST',
-  //     body: JSON.stringify(allowanceData),
-  //   };
-  //   const response = await fetchApi(`${baseUrl}`, options);
+  const getRecommendations = async (
+    target_id: number
+  ): Promise<Recommendation[]> => {
+    const response = await fetchApi(
+      `${baseUrl}/recommendations?target_id=${target_id}`
+    );
 
-  //   return response.code === 200;
-  // };
+    return response;
+  };
 
-  // return { getUser, getChildren };
+  return { getRecommendations };
 };
