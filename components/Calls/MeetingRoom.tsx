@@ -43,7 +43,7 @@ const MeetingRoom = () => {
 
       router.push('/call');
     } catch (error) {
-      console.error('Error leaving call:', error);
+      console.log('Error leaving call:', error);
       // 에러가 발생해도 페이지 이동은 수행
       router.push('/call');
     }

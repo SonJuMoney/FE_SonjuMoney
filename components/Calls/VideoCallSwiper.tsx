@@ -1,6 +1,5 @@
 'use client';
 
-// Import Swiper styles
 import CreateMeeting from '@/app/(routes)/call/CreateMeeting';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
@@ -10,16 +9,9 @@ import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getProfileImage } from '@/lib/utils';
 import EmptyState from '../molecules/EmptyState/EmptyState';
-
-interface User {
-  id: string;
-  name: string;
-  avatar: string;
-  status: 'online' | 'offline';
-}
 
 export default function VideoCallSwiper() {
   const { selectedFamily } = useSelectedFamilyStore();

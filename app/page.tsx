@@ -6,7 +6,7 @@ export default async function Home() {
   const session = await auth();
 
   return (
-    <div className='h-screen flex flex-col justify-center items-center space-y-8 text-white bg-appColor'>
+    <div className='h-screen w-full flex flex-col justify-center items-center space-y-8 text-white bg-appColor'>
       <DelayedNavigation session={session} time={3000} />
 
       <div className='flex items-center gap-1'>
