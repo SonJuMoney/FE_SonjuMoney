@@ -20,6 +20,7 @@ import { formatUpdatedAt } from '@/lib/utils';
 interface CommentDrawerProps {
   open: boolean;
   feedId: number;
+  // eslint-disable-next-line no-unused-vars
   onOpenChange: (open: boolean) => void;
   comments: TComment[];
 }
