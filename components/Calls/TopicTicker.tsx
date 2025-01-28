@@ -1,31 +1,55 @@
 'use client';
 
+import { useCallApi } from '@/hooks/useCallApi/useCallApi';
+import { Recommendation } from '@/types/Calls';
+import { useCallStateHooks } from '@stream-io/video-react-sdk';
 import { Sparkles } from 'lucide-react';
-import { useEffect, useState } from 'react';
-
-const topics = [
-  { topic: '고양이가 좋아? 강아지가 좋아?' },
-  { topic: '엄마가 좋아? 아빠가 좋아?' },
-  { topic: '어른이 되면 뭘 하고 싶어?' },
-  { topic: '초능력자가 된다면 어떤 초능력을 갖고 싶어?' },
-  { topic: 'DeepSeek의 출현에 따른 AI 산업의 미래를 어떻게 전망하니?' },
-];
+import { useSession } from 'next-auth/react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { Skeleton } from '../ui/skeleton';
 
 const TopicTicker = () => {
+  const { data: session } = useSession();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [topics, setTopics] = useState<Recommendation[]>([]);
+  const { getRecommendations } = useCallApi();
+  const hasCalledApi = useRef(false);
+
+  const { useParticipants } = useCallStateHooks();
+  const participants = useParticipants();
+  const otherUser = participants.find(
+    (p) => p.userId !== session?.user?.userId?.toString()
+  );
+
+  const fetchRecommendations = useCallback(async () => {
+    if (!otherUser?.userId || hasCalledApi.current) return;
+    hasCalledApi.current = true;
+    const response = await getRecommendations(Number(otherUser.userId));
+    setTopics(response);
+  }, [otherUser?.userId, getRecommendations]);
 
   useEffect(() => {
+    if (otherUser?.userId) {
+      fetchRecommendations();
+    }
+  }, [otherUser, fetchRecommendations]);
+
+  useEffect(() => {
+    if (topics.length === 0) return;
+
     const interval = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % topics.length);
         setIsTransitioning(false);
       }, 500);
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [topics.length]);
+
+  if (!topics.length) return <Skeleton className='w-4/5 h-[30px]' />;
 
   return (
     <div className='w-full bg-gradient-to-r from-purple-500 to-pink-500 p-2'>
