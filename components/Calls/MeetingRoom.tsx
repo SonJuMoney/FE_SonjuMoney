@@ -11,6 +11,7 @@ import {
 import '@stream-io/video-react-sdk/dist/css/styles.css';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import TopicTicker from './TopicTicker';
 
 const MeetingRoom = () => {
   const router = useRouter();
@@ -49,7 +50,8 @@ const MeetingRoom = () => {
     }
   };
   return (
-    <section className='relative h-screen w-full overflow-hidden pt-4 text-white'>
+    <section className='relative h-screen w-full overflow-hidden text-white'>
+      <TopicTicker />
       {otherUser && (
         <div className='h-full w-full'>
           <ParticipantView
@@ -59,7 +61,7 @@ const MeetingRoom = () => {
         </div>
       )}
       {currentUser && (
-        <div className='absolute top-14 right-4 x-50 h-[180px] w-[120px] overflow-hidden border-2 border-white shadow-lg'>
+        <div className='absolute top-20 right-0 x-50 h-[180px] w-[120px] overflow-hidden border-2 border-white shadow-lg'>
           <ParticipantView
             participant={currentUser}
             className='h-full w-full object-cover'
