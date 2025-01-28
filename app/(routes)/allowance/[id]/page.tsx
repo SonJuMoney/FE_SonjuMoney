@@ -74,11 +74,15 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
         <div className='flex flex-col w-full items-center'>
           <div className='flex justify-center items-center w-32 h-32 rounded-full bg-secondary bg-opacity-20 mb-4 '>
             <Image
-              src='/Role1.png'
-              alt='Profile'
               width={96}
               height={96}
-              className='rounded-full '
+              src={
+                allowanceData.sender_profile
+                  ? `${allowanceData.sender_profile}`
+                  : '/Default_Profile.svg'
+              }
+              alt='userImage'
+              className='rounded-full object-cover w-full h-full'
             />
           </div>
           <h2 className='text-xl font-medium text-center mb-8'>
