@@ -228,6 +228,8 @@ const AddPlan = () => {
                           member.profile_link ??
                           getProfileImage(member.member_role)
                         }
+                        width={56}
+                        height={56}
                         alt={member.member_name}
                         className='w-full h-full object-cover'
                       />
