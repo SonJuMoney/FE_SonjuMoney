@@ -18,10 +18,15 @@ export default function AccountSection() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getMyAccount().then((data) => {
-      setAccount(data);
-      setIsLoading(false);
-    });
+    getMyAccount()
+      .then((data) => {
+        setAccount(data);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+        setAccount(null);
+      });
   }, [session?.user?.accessToken]);
 
   if (isLoading) {
