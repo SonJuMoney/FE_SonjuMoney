@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import Logo from '@/public/Logo/Logo_Header.svg';
 import { ArrowLeft } from 'lucide-react';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 type Props = {
@@ -45,12 +45,7 @@ const PasswordInput = ({ password, setPassword }: Props) => {
               key={index}
               className='w-full h-full flex items-center justify-center'
             >
-              <Image
-                height={30}
-                width={30}
-                src={'/Logo/Logo_Header.svg'}
-                alt='logo'
-              />
+              <Logo />
             </div>
           ) : (
             <Button

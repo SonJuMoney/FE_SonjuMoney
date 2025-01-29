@@ -128,6 +128,8 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
                           participant.profile_link ??
                           getProfileImage(participant.member_role)
                         }
+                        width={56}
+                        height={56}
                         alt={participant.user_name}
                         className='w-full h-full object-cover'
                       />

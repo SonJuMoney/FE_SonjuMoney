@@ -1,6 +1,6 @@
 export type AllowanceResponse = {
   allowance_id: number;
-  sender_id: number;
+  sender_user_id: number;
   sender_name: string;
   sender_profile: string;
   amount: number;

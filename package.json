@@ -7,7 +7,7 @@
     "d": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint --dir hooks --dir components --dir store --dir stories --dir lib",
     "check": "npm run lint && npm run type-check",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
@@ -52,6 +52,7 @@
     "swiper": "^11.2.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "use-debounce": "^10.0.4",
     "vaul": "^1.1.2",
     "zustand": "^5.0.3"
   },
@@ -85,7 +86,7 @@
     "typescript-eslint": "^8.19.1"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "(hooks|components|store|stories|lib)/**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
       "eslint --fix"
     ],

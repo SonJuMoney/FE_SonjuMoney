@@ -1,10 +1,4 @@
-import { TFeed } from '@/types/Feed';
-import {
-  InfiniteData,
-  useInfiniteQuery,
-  UseInfiniteQueryResult,
-} from '@tanstack/react-query';
-import { GetPaginationResult } from '../useApi';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useFeedApi } from './useFeedApi';
 
 const useFeedQuery = () => {
