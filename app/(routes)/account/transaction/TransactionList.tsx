@@ -1,5 +1,6 @@
 'use client';
 
+import CircleImg from '@/components/atoms/CircleImages/CircleImg';
 import PageTitle from '@/components/atoms/PageTitles/PageTitle';
 import EmptyState from '@/components/molecules/EmptyState/EmptyState';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -87,7 +88,7 @@ export default function TransactionList({ accountId }: { accountId: number }) {
         title={`내 계좌
 거래 내역이에요`}
       />
-      <div ref={scrollContainerRef} className='w-full h-full overflow-y-scroll'>
+      <div ref={scrollContainerRef} className='w-full h-full overflow-y-auto'>
         <div className='flex flex-col gap-[0.5px] pb-32'>
           {data.pages.map((page) =>
             page.contents.map((content) => (
@@ -99,14 +100,21 @@ export default function TransactionList({ accountId }: { accountId: number }) {
                 {content.transactions.map((transaction) => (
                   <div key={transaction.after_balance}>
                     <div className='w-full flex justify-between mt-2 font=medium p-2'>
-                      <div className='flex flex-col justify-center space-y-1'>
-                        <div
-                          className={`text-[15px] ${transaction.transaction_type === '출금' ? 'text-black' : 'text-appColor'}`}
-                        >
-                          {transaction.transaction_type}
-                        </div>
-                        <div className='text-darkGray text-[11px]'>
-                          {transaction.created_at.split('T')[1].slice(0, 5)}
+                      <div className='flex items-center gap-4'>
+                        <CircleImg
+                          imgUrl={'/BankImage/Hana.jpg'}
+                          size={40}
+                          border={true}
+                        />
+                        <div className='flex flex-col justify-center space-y-1'>
+                          <div
+                            className={`text-[15px] ${transaction.transaction_type === '출금' ? 'text-black' : 'text-appColor'}`}
+                          >
+                            {transaction.transaction_type}
+                          </div>
+                          <div className='text-darkGray text-[11px]'>
+                            {transaction.created_at.split('T')[1].slice(0, 5)}
+                          </div>
                         </div>
                       </div>
                       <div className='flex flex-col justify-center text-right space-y-1'>
