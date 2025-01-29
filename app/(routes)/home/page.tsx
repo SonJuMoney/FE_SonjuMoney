@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div className='pageLayout bg-[#FAE4D4]'>
       <LogoHeader showFamily={false} />
-      <div className='flex flex-col  overflow-y-scroll mb-20'>
+      <div className='flex flex-col  overflow-y-scroll mb-20 scrollbar-hide'>
         <NotificationSection />
 
         <div className='p-5'>

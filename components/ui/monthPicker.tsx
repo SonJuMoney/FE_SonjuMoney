@@ -51,7 +51,7 @@ export default function MonthPicker({
 
   return (
     <div className='px-5 flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0'>
-      <div>
+      <div className='relative'>
         <div className='relative flex items-center justify-center py-5'>
           <div
             className='text-lg font-semibold'
@@ -91,7 +91,7 @@ export default function MonthPicker({
           </div>
         </div>
         <div
-          className='grid w-full grid-cols-3 gap-2'
+          className='absolute top-[68px] grid w-full grid-cols-3 gap-2 py-2 bg-white border-2 rounded-lg'
           role='grid'
           aria-labelledby='month-picker'
         >
