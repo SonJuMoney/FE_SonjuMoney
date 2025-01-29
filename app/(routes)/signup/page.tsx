@@ -3,6 +3,7 @@
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import SignUpInput from '@/components/atoms/Inputs/SignupIput';
+import { useToast } from '@/hooks/use-toast';
 import useSignUpStore, { SignUpData } from '@/store/useSignupStore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -22,6 +23,7 @@ type ValidationResult = { isValid: boolean; error: string };
 const SignUp = () => {
   const router = useRouter();
   const setSignUpData = useSignUpStore((state) => state.setSignUpData);
+  const { toast } = useToast();
 
   const [userData, setUserData] = useState<SignUpData>({
     id: '',
@@ -87,6 +89,95 @@ const SignUp = () => {
     }
   };
 
+  const checkPhoneValidation = async (phone: string) => {
+    if (!/^010\d{8}$/.test(phone)) {
+      return {
+        isValid: false,
+        error: '올바른 형식이 아닙니다',
+      };
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/phone-duplication?phone=${phone}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        return {
+          isValid: false,
+          error: '휴대폰 번호 조회 중 오류가 발생했습니다',
+        };
+      }
+
+      const data = await response.json();
+
+      return {
+        isValid: !data.duplication,
+        error: data.duplication ? '이미 가입 된 휴대폰 번호입니다' : '',
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        isValid: false,
+        error: '서버 오류가 발생했습니다',
+      };
+    }
+  };
+
+  const checkResidentValidation = async (resident: string) => {
+    if (resident.length < 13) {
+      return {
+        isValid: false,
+        error: '주민등록번호 13자리를 모두 입력해주세요',
+      };
+    }
+
+    const cleanResident = resident.replace(/-/g, '');
+    if (cleanResident.length !== 13) {
+      return {
+        isValid: false,
+        error: '13자리를 입력해주세요',
+      };
+    }
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/resident-duplication?resident=${resident}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        return {
+          isValid: false,
+          error: '주민등록번호 조회 중 오류가 발생했습니다',
+        };
+      }
+
+      const data = await response.json();
+
+      return {
+        isValid: !data.duplication,
+        error: data.duplication ? '이미 가입된 주민등록 번호입니다' : '',
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        isValid: false,
+        error: '서버 오류가 발생했습니다',
+      };
+    }
+  };
+
   const questions: Input[] = [
     {
       type: 'id',
@@ -132,7 +223,7 @@ const SignUp = () => {
       inputType: 'text',
       question: '전화번호를 입력해주세요',
       placeholder: '010-1234-5678',
-      validate: (value: string) => /^010\d{8}$/.test(value),
+      validate: checkPhoneValidation,
       errorMessage: '올바른 형식이 아닙니다',
       width: 16,
     },
@@ -141,7 +232,7 @@ const SignUp = () => {
       inputType: 'text',
       question: '주민등록번호를 입력해주세요',
       placeholder: '900101 - 2******',
-      validate: (value: string) => value.replace(/\D/g, '').length === 13,
+      validate: checkResidentValidation,
       errorMessage: '올바른 형식이 아닙니다',
       width: 17,
     },
@@ -187,17 +278,19 @@ const SignUp = () => {
 
   const handleOnClick = () => {
     if (!isFormComplete) {
-      alert('모든 정보를 알맞게 입력해주세요');
+      toast({ title: '모든 정보를 알맞게 입력해주세요' });
       return;
     }
-
+    console.log(userData);
     setSignUpData(userData);
     router.push('/signup/setPin');
   };
 
-  const isFormComplete =
-    currentIndex === questions.length - 1 &&
-    Object.values(validations).every((isValid) => isValid);
+  // const isFormComplete =
+  //   currentIndex === questions.length - 1 &&
+  //   Object.values(validations).every((isValid) => isValid);
+
+  const isFormComplete = Object.values(validations).every((isValid) => isValid);
 
   return (
     <div className='h-screen flex flex-col justify-between'>

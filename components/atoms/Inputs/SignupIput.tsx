@@ -1,6 +1,7 @@
 'use client';
 
 import { SignUpData } from '@/store/useSignupStore';
+import { useDebouncedCallback } from 'use-debounce';
 import { ChangeEvent, useState } from 'react';
 
 export type ChildData = {
@@ -47,7 +48,6 @@ const SignUpInput = <T extends SignUpData | ChildData>({
   };
 
   const formatResidentumber = (value: string) => {
-    console.log(residentValue, value);
     const newValue =
       residentValue.length - 1 === value.replace('-', '').length
         ? residentValue.slice(0, -1)
@@ -65,14 +65,47 @@ const SignUpInput = <T extends SignUpData | ChildData>({
     return `${firstPart}-${visibleDigit}${maskedPart}`;
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (id === 'phone') {
-      setDisplayValue(formatPhoneNumber(e.target.value));
-    } else if (id === 'residentNum') {
-      setDisplayValue(formatResidentumber(e.target.value));
-    } else {
-      setDisplayValue(e.target.value);
+  const debouncedValidate = useDebouncedCallback(async (value: string) => {
+    try {
+      const result = await validate(value);
+      if (typeof result === 'boolean') {
+        if (result) {
+          setError('');
+          onValidation(id, true);
+        } else {
+          setError(errorMessage);
+          onValidation(id, false);
+        }
+      } else {
+        setError(result.error);
+        onValidation(id, result.isValid);
+      }
+      onChange(value);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      setError('오류가 발생했습니다');
+      onValidation(id, false);
     }
+  }, 1000);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let currentValue = e.target.value;
+
+    if (id === 'phone') {
+      setDisplayValue(formatPhoneNumber(currentValue));
+      currentValue = currentValue.replace(/\D/g, '');
+    } else if (id === 'residentNum') {
+      setDisplayValue(formatResidentumber(currentValue));
+      currentValue =
+        residentValue.length - 1 === currentValue.replace('-', '').length
+          ? residentValue.slice(0, -1)
+          : (residentValue + currentValue.slice(-1)).slice(0, 13);
+    } else {
+      setDisplayValue(currentValue);
+    }
+    onValidation(id, false);
+    // 입력값이 변경될 때마다 debounced validation 실행
+    debouncedValidate(currentValue);
   };
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -85,6 +118,7 @@ const SignUpInput = <T extends SignUpData | ChildData>({
         currentValue = residentValue;
       }
 
+      // Enter 키 입력 시에는 즉시 validation 실행
       try {
         const result = await validate(currentValue);
         onChange(currentValue);
