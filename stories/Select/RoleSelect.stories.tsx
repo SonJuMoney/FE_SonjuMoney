@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof RoleSelect> = {
   title: 'Components/Select/RoleSelect',
   component: RoleSelect,
+  tags: ['autodocs'],
   argTypes: {
     value: {
       control: 'select',

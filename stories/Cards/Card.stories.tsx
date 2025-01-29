@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof Card> = {
   title: 'Components/Cards/Card',
   component: Card,
+  tags: ['autodocs'],
   argTypes: {
     padding: { control: 'text' },
     className: { control: 'text' },

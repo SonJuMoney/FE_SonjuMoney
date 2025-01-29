@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof ButtonMedium> = {
   title: 'Components/Button/ButtonMedium',
   component: ButtonMedium,
+  tags: ['autodocs'],
   argTypes: {
     selected: { control: 'boolean' },
     onClick: { action: 'clicked' },

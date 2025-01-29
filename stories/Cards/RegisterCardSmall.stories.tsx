@@ -1,10 +1,10 @@
-// RegisterCard.stories.tsx
 import RegisterCard from '@/components/atoms/Cards/RegisterCardSmall';
 import { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Cards/RegisterCardSmall',
   component: RegisterCard,
+  tags: ['autodocs'],
   argTypes: {
     text: { control: 'text' },
     onClick: { action: 'clicked' },
