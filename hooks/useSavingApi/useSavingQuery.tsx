@@ -1,4 +1,3 @@
-import { TFeed } from '@/types/Feed';
 import { TSavingList } from '@/types/Saving';
 import {
   InfiniteData,
