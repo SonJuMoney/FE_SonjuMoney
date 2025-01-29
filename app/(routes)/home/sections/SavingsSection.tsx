@@ -55,7 +55,7 @@ export default function SavingsSection() {
     if (families.length === 0) {
       toast({ title: '가족을 먼저 등록해주세요' });
       return;
-    } else router.push('/savings/create');
+    } else router.push('/savings');
   };
 
   if (isLoading) {
