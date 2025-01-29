@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Components/CheckBoxes/UserCheckBox',
   component: UserCheckBox,
+  tags: ['autodocs'],
   argTypes: {
     checked: {
       control: 'boolean',

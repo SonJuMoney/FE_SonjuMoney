@@ -5,6 +5,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Components/Cards/RoleCard',
   component: RoleCard,
+  tags: ['autodocs'],
   argTypes: {
     image: { control: 'text' },
     name: { control: 'text' },
