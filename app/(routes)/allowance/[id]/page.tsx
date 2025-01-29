@@ -43,7 +43,7 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
       const callId = await createMeeting({
         client,
         userId: session.user.userId.toString(),
-        calleeId: allowanceData.sender_id.toString(),
+        calleeId: allowanceData.sender_user_id.toString(),
         description: '용돈 감사 통화',
       });
 
