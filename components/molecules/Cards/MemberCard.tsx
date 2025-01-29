@@ -30,6 +30,7 @@ const MemberCard = ({ childs, selectedChilds = [], onSelected }: Props) => {
               ? 'text-appColor border-appColor'
               : 'text-black border-placeHolder'
           }`}
+          onClick={() => handleSelectChild(child)}
         >
           <UserCheckBox
             checked={selectedChilds.some(
