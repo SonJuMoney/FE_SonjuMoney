@@ -7,7 +7,7 @@
     "d": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint --dir hooks --dir components --dir store --dir stories --dir lib",
     "check": "npm run lint && npm run type-check",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
@@ -85,7 +85,7 @@
     "typescript-eslint": "^8.19.1"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "(hooks|components|store|stories|lib)/**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
       "eslint --fix"
     ],
