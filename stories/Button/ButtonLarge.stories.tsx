@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof ButtonLarge> = {
   title: 'Components/Button/ButtonLarge',
   component: ButtonLarge,
+  tags: ['autodocs'],
   argTypes: {
     disabled: { control: 'boolean' },
     onClick: { action: 'clicked' },

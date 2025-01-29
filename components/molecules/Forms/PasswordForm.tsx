@@ -2,6 +2,7 @@
 
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
+import { useToast } from '@/hooks/use-toast';
 import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useMockAccountApi } from '@/hooks/useMockAccountApi/useMockAccountApi';
 import { TPswdReq } from '@/types/Account';
@@ -27,6 +28,8 @@ const PasswordForm = ({
   onComplete,
 }: Props) => {
   const router = useRouter();
+  const { toast } = useToast();
+
   const { checkPswd } = useMockAccountApi();
   const { checkPassCode } = useAuthApi();
 
@@ -47,7 +50,7 @@ const PasswordForm = ({
     if (password.length === num) {
       validatePassword(password)
         .then(() => {
-          alert('인증에 성공하였습니다');
+          toast({ title: '인증에 성공하였습니다' });
           onComplete()
             .then(() => {
               console.log('성공');
@@ -61,7 +64,10 @@ const PasswordForm = ({
           const newAttempts = attempts + 1;
           setAttempts(newAttempts);
           if (newAttempts >= 5) {
-            alert('입력횟수 초과입니다. 가까운 영업점을 방문해주세요.');
+            toast({
+              title: '입력횟수 초과입니다. 가까운 영업점을 방문해주세요.',
+            });
+
             setError(false);
           } else {
             setError(true);
