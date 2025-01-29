@@ -33,14 +33,9 @@ export default function FeedList() {
     if (!scrollContainer) return;
 
     let timeoutId: NodeJS.Timeout;
-    let lastScrollTop = scrollContainer.scrollTop;
 
     const handleScroll = () => {
-      const currentScrollTop = scrollContainer.scrollTop;
-
       setIsScrolling(true);
-
-      lastScrollTop = currentScrollTop;
 
       // 스크롤이 멈추면 버튼 표시
       clearTimeout(timeoutId);

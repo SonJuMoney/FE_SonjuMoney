@@ -3,12 +3,8 @@
 import Header from '@/components/atoms/Headers/Header';
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
-import PasswordForm from '@/components/molecules/Forms/PasswordForm';
-import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import useSendSavingStore from '@/store/useSendSavingStore';
-import { TSavings } from '@/types/Account';
-import { TSavingList } from '@/types/Saving';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 

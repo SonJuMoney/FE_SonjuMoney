@@ -25,13 +25,16 @@ export default function SavingsSection() {
   const { toast } = useToast();
 
   useEffect(() => {
-    Promise.all([getFamilies(), getSavingsAccounts()]).then(
-      ([familiesData, savingsData]) => {
+    Promise.all([getFamilies(), getSavingsAccounts()])
+      .then(([familiesData, savingsData]) => {
         setFamilies(familiesData);
         setSavings(savingsData);
         setIsLoading(false);
-      }
-    );
+      })
+      .catch(() => {
+        setSavings(null);
+        setIsLoading(false);
+      });
   }, [session?.user?.accessToken]);
 
   const handleSelectAccount = (accountId: number) => {

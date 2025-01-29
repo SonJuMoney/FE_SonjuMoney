@@ -9,8 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useStreamVideoClient } from '@stream-io/video-react-sdk';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type IncomingCallModalProps = {
   callerId: string;
@@ -21,12 +20,10 @@ type IncomingCallModalProps = {
 
 const IncomingCallModal = ({
   callerId,
-  callId,
   onAccept,
   onReject,
 }: IncomingCallModalProps) => {
   const [open, setOpen] = useState(true);
-  const client = useStreamVideoClient();
 
   const handleAccept = async () => {
     setOpen(false);

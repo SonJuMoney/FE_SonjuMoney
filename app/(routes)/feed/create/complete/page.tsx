@@ -1,15 +1,9 @@
-import { fetchData } from '@/app/actions/fetchData';
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import CompleteMessage from '@/components/molecules/CompleteMessages/CompleteMessage';
-import { AllowanceResponse } from '@/types/Allowance';
 import Link from 'next/link';
 
-export default async function CompletePage({
-  params,
-}: {
-  params: { id: number };
-}) {
+export default async function CompletePage() {
   return (
     <div className='pageLayout'>
       <Header title='소식 작성하기' showBackButton={false} />

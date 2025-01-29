@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
-import SocketManager from '@/lib/websocket';
 
 declare module 'next-auth' {
   interface User {

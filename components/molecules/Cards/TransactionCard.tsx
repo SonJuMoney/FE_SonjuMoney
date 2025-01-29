@@ -5,7 +5,6 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { TTransaction } from '@/types/Saving';
-import Image from 'next/image';
 
 const TransactionCard = ({
   transactions,

@@ -101,6 +101,7 @@ const SignUpInput = <T extends SignUpData | ChildData>({
           setError(result.error);
           onValidation(id, result.isValid);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         setError('오류가 발생했습니다');
         onValidation(id, false);
