@@ -72,7 +72,7 @@ export default function SavingsSection() {
   return (
     <div className='flex flex-col gap-2.5 font-semibold'>
       <div className='text-[#272727] text-lg'>납입 중인 적금</div>
-      {savings && savings.savings.length > 0 ? (
+      {savings && savings.savings && savings.savings.length > 0 ? (
         <AccountListCard
           accounts={savings.savings}
           onSelectAccount={handleSelectAccount}
