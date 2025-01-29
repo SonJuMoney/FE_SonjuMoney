@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
 import CircleImg from '@/components/atoms/CircleImages/CircleImg';
@@ -6,6 +7,8 @@ import { format, isSameDay, parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { getProfileImage } from '@/lib/utils';
+
+/* eslint-disable no-unused-vars */
 
 enum EventType {
   여행 = 'bg-lavendar',

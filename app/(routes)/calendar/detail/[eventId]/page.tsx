@@ -6,6 +6,7 @@ import { useEventApi } from '@/hooks/useEventApi/useEventApi';
 import { TEvent } from '@/types/Events';
 import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getProfileImage } from '@/lib/utils';
@@ -122,7 +123,7 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
                     className='flex flex-col items-center gap-4'
                   >
                     <div className='w-14 h-14 border rounded-full overflow-hidden'>
-                      <img
+                      <Image
                         src={
                           participant.profile_link ??
                           getProfileImage(participant.member_role)

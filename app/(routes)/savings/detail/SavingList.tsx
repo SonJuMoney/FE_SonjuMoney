@@ -38,13 +38,8 @@ export default function SavingList({ savingId }: { savingId: number }) {
     if (!scrollContainer) return;
 
     let timeoutId: NodeJS.Timeout;
-    let lastScrollTop = scrollContainer.scrollTop;
 
     const handleScroll = () => {
-      const currentScrollTop = scrollContainer.scrollTop;
-
-      lastScrollTop = currentScrollTop;
-
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {}, 100);
     };

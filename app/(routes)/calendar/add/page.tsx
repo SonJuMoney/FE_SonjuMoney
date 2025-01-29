@@ -18,6 +18,7 @@ import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TMember } from '@/types/Family';
 import { setHours, setMinutes } from 'date-fns';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getProfileImage } from '@/lib/utils';
@@ -222,7 +223,7 @@ const AddPlan = () => {
                     className='flex flex-col items-center gap-4'
                   >
                     <div className='w-14 h-14 border rounded-full overflow-hidden'>
-                      <img
+                      <Image
                         src={
                           member.profile_link ??
                           getProfileImage(member.member_role)

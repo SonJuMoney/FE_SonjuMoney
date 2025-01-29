@@ -10,7 +10,6 @@ import {
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 interface DatePickerDemoProps {
