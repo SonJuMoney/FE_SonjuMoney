@@ -10,6 +10,10 @@ import { getProfileImage } from '@/lib/utils';
 
 /* eslint-disable no-unused-vars */
 
+/* eslint-disable no-unused-vars */
+
+/* eslint-disable no-unused-vars */
+
 enum EventType {
   여행 = 'bg-lavendar',
   생일 = 'bg-lemon',
@@ -70,7 +74,7 @@ const PlanCard = ({ date, day, events, isToday }: PlanCardProps) => {
 
       <div
         className={`border p-5 bg-white rounded-[16px] shadow-md  ${
-          isToday ? 'border-appColor' : 'border-[#c3c2c2]'
+          isToday ? 'border-appColor border-2' : 'border-[#c3c2c2]'
         } mb-4
       `}
       >

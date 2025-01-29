@@ -1,7 +1,7 @@
 'use client';
 
+import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
-import { Button } from '@/components/ui/button';
 import { useEventApi } from '@/hooks/useEventApi/useEventApi';
 import { TEvent } from '@/types/Events';
 import { format, parseISO } from 'date-fns';
@@ -81,20 +81,12 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
     <>
       <div className='pageLayout'>
         <Header title='일정 조회' />
-        <div className='h-full p-5 flex flex-col justify-start space-y-4'>
-          <div className='flex justify-end space-x-4'>
-            <Button variant={'outline'} onClick={goToUpdate}>
-              수정
-            </Button>
-            <Button variant={'outline'} onClick={onDelete}>
-              삭제
-            </Button>
-          </div>
-          <div className='flex flex-col space-y-12'>
+        <div className='h-full p-5 flex flex-col justify-between space-y-4'>
+          <div className='flex flex-col pt-5 space-y-8'>
             <div className='flex justify-between items-center'>
               {TitleComponent('분류')}
               {category && (
-                <div className='flex items-center gap-4'>
+                <div className='flex items-center gap-4 border py-2 px-4 rounded-lg shadow-sm'>
                   <div
                     className={`w-4 h-4 rounded-full bg-${category.color}`}
                   ></div>
@@ -104,17 +96,27 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
             </div>
             <div className='flex justify-between items-center'>
               {TitleComponent('제목')}
-              <div>{event?.event_name}</div>
+              <div className='border py-2 px-4 rounded-lg shadow-sm'>
+                {event?.event_name}
+              </div>
             </div>
             <div className='flex justify-between items-center'>
               {TitleComponent('시작일')}
-              {event && <div>{formatDate(event.start_date_time)}</div>}
+              {event && (
+                <div className='border py-2 px-4 rounded-lg shadow-sm'>
+                  {formatDate(event.start_date_time)}
+                </div>
+              )}
             </div>
             <div className='flex justify-between items-center'>
               {TitleComponent('종료일')}
-              {event && <div>{formatDate(event.end_date_time)}</div>}
+              {event && (
+                <div className='border py-2 px-4 rounded-lg shadow-sm'>
+                  {formatDate(event.end_date_time)}
+                </div>
+              )}
             </div>
-            <div className='flex flex-col space-y-6'>
+            <div className='flex flex-col space-y-6 mt-2'>
               {TitleComponent('참여자')}
               <div className='grid grid-cols-4 gap-4'>
                 {event?.event_participants.map((participant) => (
@@ -128,6 +130,8 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
                           participant.profile_link ??
                           getProfileImage(participant.member_role)
                         }
+                        width={30}
+                        height={30}
                         alt={participant.user_name}
                         className='w-full h-full object-cover'
                       />
@@ -139,6 +143,16 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
                 ))}
               </div>
             </div>
+          </div>
+          <div className='flex space-x-4'>
+            <ButtonLarge text='수정' onClick={goToUpdate}></ButtonLarge>
+            <ButtonLarge
+              text='삭제'
+              onClick={onDelete}
+              className='bg-secondary'
+            >
+              삭제
+            </ButtonLarge>
           </div>
         </div>
       </div>

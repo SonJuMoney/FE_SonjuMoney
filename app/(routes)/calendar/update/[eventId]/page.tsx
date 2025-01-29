@@ -250,6 +250,8 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
                           member.profile_link ??
                           getProfileImage(member.member_role)
                         }
+                        width={30}
+                        height={30}
                         alt={member.member_name}
                         className='w-full h-full object-cover'
                       />

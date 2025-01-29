@@ -9,9 +9,9 @@ import { useEventApi } from '@/hooks/useEventApi/useEventApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TEvent } from '@/types/Events';
 import { add, format, sub } from 'date-fns';
-import { FaPlus } from 'react-icons/fa6';
+import { LuPlus } from 'react-icons/lu';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Events = {
   current_date: string;
@@ -28,6 +28,9 @@ const PlanList = () => {
   const [showMonthPicker, setShowMonthPicker] = useState<boolean>(false);
   const [events, setEvents] = useState<Events[]>([]);
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+
   useEffect(() => {
     const fetchEvents = async () => {
       const year = currentMonth.getFullYear();
@@ -43,8 +46,28 @@ const PlanList = () => {
   }, [currentMonth, selectedFamily]);
 
   useEffect(() => {
-    console.log(events);
-  }, [events]);
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    let timeoutId: NodeJS.Timeout;
+
+    const handleScroll = () => {
+      setIsScrolling(true);
+
+      // 스크롤이 멈추면 버튼 표시
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsScrolling(false);
+      }, 100);
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll);
+      clearTimeout(timeoutId);
+    };
+  });
 
   const groupEventsByDate = (events: TEvent[]) => {
     const grouped = events.reduce((acc: { [key: string]: Events }, event) => {
@@ -83,8 +106,8 @@ const PlanList = () => {
   };
 
   return (
-    <div className='h-full overflow-y-auto scrollbar-hide'>
-      <div className='w-full fixed top-0 bg-white z-10'>
+    <div ref={scrollContainerRef} className='h-full bg-[#FAE4D4]'>
+      <div className='w-full'>
         <LogoHeader showFamily={true} />
 
         {!showMonthPicker && (
@@ -107,7 +130,7 @@ const PlanList = () => {
       {selectedFamily ? (
         <>
           {events.length > 0 ? (
-            <div className='px-5 mt-[120px] pb-[120px]'>
+            <div className='w-full h-[calc(100%-116px)] px-5 pb-[78px] overflow-y-auto scrollbar-hide'>
               {events?.map((date) => (
                 <PlanCard
                   key={date.current_date}
@@ -117,18 +140,26 @@ const PlanList = () => {
                   isToday={date.current_date === today}
                 />
               ))}
-              <div className='fixed bottom-[90px] right-5'>
-                <Link
-                  href='/calendar/add'
-                  className='w-[105px] h-[48px] flex justify-center space-x-1 items-center rounded-full bg-appColor text-white'
+              <Link
+                href='/calendar/add'
+                className={`fixed bottom-[90px] right-5 z-50 flex items-center rounded-full bg-appColor text-white transition-all duration-300 ease-in-out p-3 ${
+                  isScrolling ? 'w-[48px]' : 'w-[120px]'
+                } h-[48px]`}
+              >
+                <LuPlus
+                  className={`w-[24px] h-[24px] ${isScrolling ? '' : 'mr-2'}`}
+                />
+                <span
+                  className={`transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden ${
+                    isScrolling ? 'w-0 opacity-0' : 'w-auto opacity-100'
+                  }`}
                 >
-                  <FaPlus className='text-white text-lg text-center' />
-                  <div>일정 추가</div>
-                </Link>
-              </div>
+                  일정 추가
+                </span>
+              </Link>
             </div>
           ) : (
-            <div className='h-full flex flex-col justify-center items-center px-5 '>
+            <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 '>
               <EmptyState
                 title='아직 등록된 일정이 없어요'
                 subtitle={`가족 일정을 등록하고
@@ -140,7 +171,7 @@ const PlanList = () => {
           )}
         </>
       ) : (
-        <div className='h-full flex flex-col justify-center items-center px-5 '>
+        <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 '>
           <EmptyState
             title='아직 소속된 가족이 없어요'
             subtitle={`가족을 생성하고

@@ -103,7 +103,10 @@ export default function FeedList() {
   }
 
   return (
-    <div ref={scrollContainerRef} className='pageLayout overflow-y-scroll'>
+    <div
+      ref={scrollContainerRef}
+      className='pageLayout overflow-y-scroll scrollbar-hide'
+    >
       <div className='flex flex-col gap-[0.5px] pb-32 relative'>
         {data?.pages?.length > 0 && (
           <>
