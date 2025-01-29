@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof ButtonAccountCard> = {
   title: 'Components/Button/ButtonAccountCard',
   component: ButtonAccountCard,
+  tags: ['autodocs'],
   argTypes: {
     onClick: { action: 'clicked' },
   },
