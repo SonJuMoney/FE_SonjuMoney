@@ -1,5 +1,6 @@
 'use client';
 
+import Header from '@/components/atoms/Headers/Header';
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
 import useSignUpStore, { SignUpData } from '@/store/useSignupStore';
@@ -94,6 +95,7 @@ const SetPinPage = () => {
 
   return (
     <div className='h-full flex flex-col'>
+      <Header title='간편 비밀번호 설정' />
       <div className='h-1/3 flex items-center justify-center'>
         <CenterTitle
           title={`간편 비밀번호를 
