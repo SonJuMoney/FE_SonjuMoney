@@ -1,8 +1,8 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { cn } from '@/lib/utils';
 
 export type ImageProps = {
-  imgUrl: string;
+  imgUrl: string | StaticImageData;
   size: number;
   border?: boolean;
 };
