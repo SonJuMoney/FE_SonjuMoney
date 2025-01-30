@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import useAccountQuery from '@/hooks/useAccountApi/useAccountQuery';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useEffect, useRef } from 'react';
+import { getBankImage } from '@/lib/utils';
 
 export default function TransactionList({ accountId }: { accountId: number }) {
   const { GetTransactions } = useAccountQuery();
@@ -105,7 +106,7 @@ export default function TransactionList({ accountId }: { accountId: number }) {
                     <div className='w-full flex justify-between mt-2 font=medium p-2'>
                       <div className='flex items-center gap-4'>
                         <CircleImg
-                          imgUrl={'/BankImage/Hana.jpg'}
+                          imgUrl={getBankImage()}
                           size={40}
                           border={true}
                         />

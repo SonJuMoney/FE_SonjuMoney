@@ -13,9 +13,9 @@ import {
 } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
 import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
-import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import ShowMore from '@/public/Icons/showMore_24.svg';
 import { TComment } from '@/types/Feed';
+import { FaUser } from 'react-icons/fa';
 import { formatUpdatedAt } from '@/lib/utils';
 
 interface CommentDrawerProps {
@@ -64,10 +64,20 @@ const CommentDrawer = ({
                 {comments.map((comment, index) => (
                   <div key={index} className='flex w-full justify-between'>
                     <div className='flex items-start gap-2'>
-                      <CircleImg
-                        imgUrl={comment.writer_image || DefaultProfile}
-                        size={45}
-                      />
+                      {comment.writer_image ? (
+                        <CircleImg
+                          imgUrl={comment.writer_image}
+                          size={45}
+                          border
+                        />
+                      ) : (
+                        <div
+                          className={`h-[45px] w-[45px] flex items-center justify-center border rounded-full bg-white text-appColor text-xl`}
+                        >
+                          <FaUser />
+                        </div>
+                      )}
+
                       <div>
                         <div className='flex gap-2 items-center'>
                           <span className='font-bold text-md'>
