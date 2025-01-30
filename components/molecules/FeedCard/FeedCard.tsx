@@ -14,6 +14,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
 import LoveLetter from '@/public/AnimatedIcons/LoveLetter.png';
+import DefaultProfile from '@/public/Default_Profile.svg';
 import CommentOff from '@/public/Icons/commentOff_20.svg';
 import CommentOn from '@/public/Icons/commentOn_20.svg';
 import LikeOff from '@/public/Icons/likeOff_20.svg';
@@ -69,7 +70,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
           </div>
         ) : (
           <div className='flex user gap-[10px] items-center'>
-            <CircleImg imgUrl={feed.writer_image || '/Role1.png'} size={30} />
+            <CircleImg imgUrl={feed.writer_image || DefaultProfile} size={30} />
             <span className='font-bold text-[14px]'>{feed.writer_name}</span>
           </div>
         )}

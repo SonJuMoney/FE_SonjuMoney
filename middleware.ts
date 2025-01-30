@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith('/signup/')
   ) {
     if (session?.user) {
-      return NextResponse.redirect(new URL('/', req.url));
+      return NextResponse.redirect(new URL('/home', req.url));
     }
     return NextResponse.next();
   }
@@ -28,5 +28,8 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|robots.txt|AnimatedIcons|Avatar|BankImage|Icons|Logo|Default_Profile.svg|api/auth).*)',
+    '/login',
+    '/',
+    '/signup/*',
   ],
 };

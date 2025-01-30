@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useUserApi } from '@/hooks/useUserApi/useUserApi';
+import DefaultProfile from '@/public/Default_Profile.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TAuth } from '@/types/user';
 import { signOut, useSession } from 'next-auth/react';
@@ -136,7 +137,7 @@ export default function ProfileButton() {
         onTouchEnd={handleMouseUp}
       >
         <Image
-          src={session?.user?.userProfile ?? '/Default_Profile.svg'}
+          src={session?.user?.userProfile ?? DefaultProfile}
           alt='profile'
           width={24}
           height={24}
@@ -155,7 +156,7 @@ export default function ProfileButton() {
                 src={
                   session?.user?.userProfile
                     ? `${session.user.userProfile}?v=${imageKey}`
-                    : '/Default_Profile.svg'
+                    : DefaultProfile
                 }
                 alt='userImage'
                 className='rounded-full object-cover w-full h-full'

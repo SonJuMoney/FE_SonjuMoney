@@ -3,6 +3,9 @@
 import Header from '@/components/atoms/Headers/Header';
 import { useToast } from '@/hooks/use-toast';
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
+import Call from '@/public/AnimatedIcons/Call.png';
+import Camera from '@/public/AnimatedIcons/Camera.png';
+import DefaultProfile from '@/public/Default_Profile.svg';
 import type { AllowanceResponse } from '@/types/Allowance';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { useSession } from 'next-auth/react';
@@ -79,7 +82,7 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
               src={
                 allowanceData.sender_profile
                   ? `${allowanceData.sender_profile}`
-                  : '/Default_Profile.svg'
+                  : DefaultProfile
               }
               alt='userImage'
               className='rounded-full object-cover w-full h-full'
@@ -104,12 +107,7 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
             className='block p-4 bg-white rounded-lg border border-gray-200 shadow-sm'
           >
             <div className='flex items-center justify-center space-x-2'>
-              <Image
-                src={'/AnimatedIcons/Camera.png'}
-                width={40}
-                height={40}
-                alt='Alarm Icon'
-              />
+              <Image src={Camera} width={40} height={40} alt='Alarm Icon' />
               <span className='font-semibold text-xl'>사진/영상 보내기</span>
             </div>
           </Link>
@@ -119,12 +117,7 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
             onClick={handleCreateMeeting}
           >
             <div className='flex items-center justify-center space-x-2'>
-              <Image
-                src={'/AnimatedIcons/Call.png'}
-                width={40}
-                height={40}
-                alt='Alarm Icon'
-              />
+              <Image src={Call} width={40} height={40} alt='Alarm Icon' />
               <span className='font-semibold text-xl'>화상통화하기</span>
             </div>
           </button>

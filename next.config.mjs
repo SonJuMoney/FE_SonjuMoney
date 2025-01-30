@@ -16,6 +16,14 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    domains: [
+      'localhost',
+      'https://sonjumoney.topician.com/',
+      'https://d35670s5pea8wg.cloudfront.net/',
+    ],
+    unoptimized: true,
   },
   experimental: {
     turbo: {
