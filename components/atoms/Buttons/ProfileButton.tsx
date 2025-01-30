@@ -5,10 +5,10 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useUserApi } from '@/hooks/useUserApi/useUserApi';
-import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TAuth } from '@/types/user';
 import { signOut, useSession } from 'next-auth/react';
+import { FaUser } from 'react-icons/fa';
 import { MdCameraAlt } from 'react-icons/md';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -145,7 +145,11 @@ export default function ProfileButton() {
             className='rounded-full border border-appColor bg-appColor overflow-hidden'
           />
         ) : (
-          <DefaultProfile />
+          <div
+            className={`h-[30px] w-[30px] flex items-center justify-center border-1 rounded-full bg-appColor text-white text-xl`}
+          >
+            <FaUser />
+          </div>
         )}
       </Button>
 
@@ -154,17 +158,22 @@ export default function ProfileButton() {
           <DialogTitle></DialogTitle>
           <div className='flex flex-col gap-5 justify-between items-center'>
             <div className='relative w-[150px] h-[150px] rounded-full border flex justify-center items-center'>
-              <Image
-                width={150}
-                height={150}
-                src={
-                  session?.user?.userProfile
-                    ? `${session.user.userProfile}?v=${imageKey}`
-                    : DefaultProfile
-                }
-                alt='userImage'
-                className='rounded-full object-cover w-full h-full'
-              />
+              {session?.user?.userProfile ? (
+                <Image
+                  width={150}
+                  height={150}
+                  src={`${session.user.userProfile}?v=${imageKey}`}
+                  alt='userImage'
+                  className='rounded-full object-cover w-full h-full'
+                />
+              ) : (
+                <div
+                  className={`h-[150px] w-[150px] flex items-center justify-center border-1 rounded-full bg-appColor text-white text-[90px]`}
+                >
+                  <FaUser width={150} height={150} />
+                </div>
+              )}
+
               <div
                 onClick={changeProfile}
                 className='absolute bottom-0 right-0 w-10 h-10 border rounded-full bg-white flex justify-center items-center'

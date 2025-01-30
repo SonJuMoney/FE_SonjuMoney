@@ -8,13 +8,13 @@ import DINING from '@/public/AnimatedIcons/Food.png';
 import ALLOWANCE from '@/public/AnimatedIcons/HeartRibbon.png';
 import THANKS from '@/public/AnimatedIcons/LoveLetter.png';
 import SAVINGS from '@/public/AnimatedIcons/Memo.png';
-import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import Boy from '@/public/Avatar/boy.png';
 import Dad from '@/public/Avatar/dad.png';
 import Girl from '@/public/Avatar/girl.png';
 import Grandma from '@/public/Avatar/grandma.png';
 import Grandpa from '@/public/Avatar/grandpa.png';
 import Mom from '@/public/Avatar/mom.png';
+import DefaultProfile from '@/public/Default_Profile.svg';
 import { TAlarm } from '@/types/Alarm';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -101,4 +101,8 @@ export const getChildProfileImage = (gender: 'FEMALE' | 'MALE') => {
     case 'MALE':
       return '/Avatar/boy.png';
   }
+};
+
+export const getBankImage = () => {
+  return '/BankImage/Hana.jpg';
 };

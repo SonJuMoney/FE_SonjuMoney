@@ -14,13 +14,13 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
 import LoveLetter from '@/public/AnimatedIcons/LoveLetter.png';
-import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import CommentOff from '@/public/Icons/commentOff_20.svg';
 import CommentOn from '@/public/Icons/commentOn_20.svg';
 import LikeOff from '@/public/Icons/likeOff_20.svg';
 import LikeOn from '@/public/Icons/likeOn_20.svg';
 import ShowMore from '@/public/Icons/showMore_24.svg';
 import { TFeed } from '@/types/Feed';
+import { FaUser } from 'react-icons/fa';
 import ReactPlayer from 'react-player/lazy';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -70,7 +70,15 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
           </div>
         ) : (
           <div className='flex user gap-[10px] items-center'>
-            <CircleImg imgUrl={feed.writer_image || DefaultProfile} size={30} />
+            {feed.writer_image ? (
+              <CircleImg imgUrl={feed.writer_image} size={30} border />
+            ) : (
+              <div
+                className={`h-[30px] w-[30px] flex items-center justify-center border rounded-full bg-white text-appColor text-lg`}
+              >
+                <FaUser />
+              </div>
+            )}
             <span className='font-bold text-[14px]'>{feed.writer_name}</span>
           </div>
         )}

@@ -5,10 +5,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import Call from '@/public/AnimatedIcons/Call.png';
 import Camera from '@/public/AnimatedIcons/Camera.png';
-import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import type { AllowanceResponse } from '@/types/Allowance';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { useSession } from 'next-auth/react';
+import { FaUser } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -76,17 +76,21 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
       <div className='defaultLayout items-center justify-center gap-10'>
         <div className='flex flex-col w-full items-center'>
           <div className='flex justify-center items-center w-32 h-32 rounded-full bg-secondary bg-opacity-20 mb-4 '>
-            <Image
-              width={96}
-              height={96}
-              src={
-                allowanceData.sender_profile
-                  ? `${allowanceData.sender_profile}`
-                  : DefaultProfile
-              }
-              alt='userImage'
-              className='rounded-full object-cover w-full h-full'
-            />
+            {allowanceData.sender_profile ? (
+              <Image
+                src={allowanceData.sender_profile}
+                alt='profile'
+                width={96}
+                height={96}
+                className='rounded-full border border-appColor bg-appColor overflow-hidden'
+              />
+            ) : (
+              <div
+                className={`h-[96px] w-[96px] flex items-center justify-center border-1 rounded-full  text-appColor text-[70px]`}
+              >
+                <FaUser />
+              </div>
+            )}
           </div>
           <h2 className='text-xl font-medium text-center mb-8'>
             <span className='text-orange-500 font-semibold'>
