@@ -19,9 +19,6 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: '손주머니',
   description: '가족 소통의 시작, 손주머니',
-  icons: {
-    icon: '/Logo/Logo_Header.svg',
-  },
 };
 
 export default async function RootLayout({

@@ -10,10 +10,9 @@ import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import AlarmOff from '@/public/Icons/alarmOff_20.svg';
 import AlarmOn from '@/public/Icons/alarmOn_20.svg';
 import ArrowDown from '@/public/Icons/arrowDown_20.svg';
-// import Logo from '@/public/Logo/Logo_Header.svg';
+import Logo from '@/public/Logo/Logo_Header.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TFamily } from '@/types/Family';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -73,11 +72,11 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
     <div className='flex flex-row justify-between items-center bg-transparent  px-[20px] py-[12px] h-[48px] relative  w-full'>
       {/* 왼쪽: 로고 */}
       <div
-        className='flex h-full text-left font-bold text-appColor text-md gap-1 items-center'
+        className='flex  text-left font-bold text-appColor text-lg gap-1 items-center justify-center'
         onClick={() => router.push('/home')}
       >
-        <Image height={24} width={24} src='/Logo/Logo_Header.svg' alt='logo' />
-        <div>손주머니</div>
+        <Logo />
+        <span>손주머니</span>
       </div>
 
       {/* 중앙: 타이틀 with Popover */}
@@ -113,7 +112,7 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
       )}
 
       {/* 오른쪽: 알람 버튼 */}
-      <div className='text-right flex space-x-2 justify-center items-center'>
+      <div className='text-right flex gap-2 justify-center items-center'>
         <ProfileButton />
         <a href='/alarm'>{data?.is_exist ? <AlarmOn /> : <AlarmOff />}</a>
       </div>

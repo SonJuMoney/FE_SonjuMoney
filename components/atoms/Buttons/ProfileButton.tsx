@@ -136,13 +136,17 @@ export default function ProfileButton() {
         onTouchStart={handleMouseDown}
         onTouchEnd={handleMouseUp}
       >
-        <Image
-          src={session?.user?.userProfile ?? DefaultProfile}
-          alt='profile'
-          width={24}
-          height={24}
-          className='rounded-full border bg-white overflow-hidden'
-        />
+        {session?.user?.userProfile ? (
+          <Image
+            src={session?.user?.userProfile}
+            alt='profile'
+            width={30}
+            height={30}
+            className='rounded-full border border-appColor bg-appColor overflow-hidden'
+          />
+        ) : (
+          <DefaultProfile />
+        )}
       </Button>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

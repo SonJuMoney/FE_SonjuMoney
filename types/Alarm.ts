@@ -10,6 +10,7 @@ export type TAlarm = {
     | 'TRAVEL'
     | 'BIRTHDAY'
     | 'DINING'
+    | 'EVENT'
     | 'MEMORIAL'
     | 'OTHERS';
   message: string;

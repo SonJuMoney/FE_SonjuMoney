@@ -32,6 +32,7 @@ export const getAlarmImage = (type: TAlarm['alarm_type']) => {
     INVITE: INVITE,
     TRAVEL: TRAVEL,
     BIRTHDAY: BIRTHDAY,
+    EVENT: OTHERS,
     DINING: DINING,
     MEMORIAL: MEMORIAL,
     OTHERS: OTHERS,
