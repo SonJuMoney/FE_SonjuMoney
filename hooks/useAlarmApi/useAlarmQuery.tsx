@@ -1,16 +1,18 @@
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { queryKeys } from '@/lib/queryKeys';
 import { useAlarmApi } from './useAlarmApi';
 
 const useAlarmQuery = () => {
   const { getAlarmStatus, getAlarmList } = useAlarmApi();
+  const { data: session } = useSession();
 
   const GetAlarmStatus = () => {
     return useQuery({
-      queryKey: queryKeys.alarmStatus,
+      queryKey: [queryKeys.alarmStatus, session?.user?.userId],
       queryFn: () => getAlarmStatus(),
-      gcTime: 15000,
       refetchInterval: 15000,
+      staleTime: 0,
     });
   };
 
