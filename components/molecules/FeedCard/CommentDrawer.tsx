@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
 import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
-import DefaultProfile from '@/public/Default_Profile.svg';
+import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import ShowMore from '@/public/Icons/showMore_24.svg';
 import { TComment } from '@/types/Feed';
 import { formatUpdatedAt } from '@/lib/utils';

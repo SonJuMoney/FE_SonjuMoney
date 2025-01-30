@@ -10,6 +10,7 @@ import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import AlarmOff from '@/public/Icons/alarmOff_20.svg';
 import AlarmOn from '@/public/Icons/alarmOn_20.svg';
 import ArrowDown from '@/public/Icons/arrowDown_20.svg';
+import Logo from '@/public/Logo/Logo_Header.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TFamily } from '@/types/Family';
 import Image from 'next/image';
@@ -75,12 +76,7 @@ export default function LogoHeader({ showFamily }: HeaderProps) {
         className='flex h-full text-left font-bold text-appColor text-md gap-1 items-center'
         onClick={() => router.push('/home')}
       >
-        <Image
-          height={24}
-          width={24}
-          src={'/Logo/Logo_Header.svg'}
-          alt='logo'
-        />
+        <Image height={24} width={24} src={Logo} alt='logo' />
         <div>손주머니</div>
       </div>
 

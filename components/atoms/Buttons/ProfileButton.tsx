@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useUserApi } from '@/hooks/useUserApi/useUserApi';
-import DefaultProfile from '@/public/Default_Profile.svg';
+import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TAuth } from '@/types/user';
 import { signOut, useSession } from 'next-auth/react';

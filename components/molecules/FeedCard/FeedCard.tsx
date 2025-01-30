@@ -14,7 +14,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useFeedApi } from '@/hooks/useFeedApi/useFeedApi';
 import LoveLetter from '@/public/AnimatedIcons/LoveLetter.png';
-import DefaultProfile from '@/public/Default_Profile.svg';
+import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import CommentOff from '@/public/Icons/commentOff_20.svg';
 import CommentOn from '@/public/Icons/commentOn_20.svg';
 import LikeOff from '@/public/Icons/likeOff_20.svg';

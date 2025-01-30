@@ -8,6 +8,13 @@ import DINING from '@/public/AnimatedIcons/Food.png';
 import ALLOWANCE from '@/public/AnimatedIcons/HeartRibbon.png';
 import THANKS from '@/public/AnimatedIcons/LoveLetter.png';
 import SAVINGS from '@/public/AnimatedIcons/Memo.png';
+import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
+import Boy from '@/public/Avatar/boy.png';
+import Dad from '@/public/Avatar/dad.png';
+import Girl from '@/public/Avatar/girl.png';
+import Grandma from '@/public/Avatar/grandma.png';
+import Grandpa from '@/public/Avatar/grandpa.png';
+import Mom from '@/public/Avatar/mom.png';
 import { TAlarm } from '@/types/Alarm';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -61,19 +68,19 @@ export const formatUpdatedAt = (updatedAt: string): string => {
 export const getProfileImage = (role: string) => {
   switch (role) {
     case '할아버지':
-      return '/Avatar/grandpa.png';
+      return Grandpa;
     case '할머니':
-      return '/Avatar/grandma.png';
+      return Grandma;
     case '아빠':
-      return '/Avatar/dad.png';
+      return Dad;
     case '엄마':
-      return '/Avatar/mom.png';
+      return Mom;
     case '아들':
-      return '/Avatar/boy.png';
+      return Boy;
     case '딸':
-      return '/Avatar/girl.png';
+      return Girl;
     default:
-      return '';
+      return DefaultProfile;
   }
 };
 
