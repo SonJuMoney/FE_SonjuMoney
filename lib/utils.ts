@@ -14,6 +14,7 @@ import Girl from '@/public/Avatar/girl.png';
 import Grandma from '@/public/Avatar/grandma.png';
 import Grandpa from '@/public/Avatar/grandpa.png';
 import Mom from '@/public/Avatar/mom.png';
+import Bank from '@/public/BankImage/Hana.jpg';
 import DefaultProfile from '@/public/Default_Profile.svg';
 import { TAlarm } from '@/types/Alarm';
 import { clsx, type ClassValue } from 'clsx';
@@ -88,21 +89,21 @@ export const getProfileImage = (role: string) => {
 export const getParentProfileImage = (gender: 'FEMALE' | 'MALE') => {
   switch (gender) {
     case 'FEMALE':
-      return '/Avatar/mom.png';
+      return Mom;
     case 'MALE':
-      return '/Avatar/dad.png';
+      return Dad;
   }
 };
 
 export const getChildProfileImage = (gender: 'FEMALE' | 'MALE') => {
   switch (gender) {
     case 'FEMALE':
-      return '/Avatar/girl.png';
+      return Girl;
     case 'MALE':
-      return '/Avatar/boy.png';
+      return Boy;
   }
 };
 
 export const getBankImage = () => {
-  return '/BankImage/Hana.jpg';
+  return Bank;
 };
