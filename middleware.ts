@@ -30,6 +30,6 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|robots.txt|AnimatedIcons|Avatar|BankImage|Icons|Logo|Default_Profile.svg|api/auth).*)',
     '/login',
     '/',
-    '/signup/*',
+    '/signup',
   ],
 };
