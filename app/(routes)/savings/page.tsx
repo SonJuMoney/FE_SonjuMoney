@@ -43,7 +43,7 @@ const FamilySelect = () => {
       <div className='defaultLayout'>
         <PageTitle title='가족을 선택해주세요' />
 
-        <div className='mt-[34px] space-y-4'>
+        <div className='mt-[34px] pb-5 space-y-4'>
           {families.map((family, index) => (
             <div key={family.family_id}>
               <FamilyCardLarge
