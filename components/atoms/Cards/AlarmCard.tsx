@@ -83,6 +83,7 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
               width={45}
               height={45}
               alt='Alarm Image'
+              unoptimized={true}
             />
             <span className='font-semibold text-[17px]'>
               {getAlarmMessage(data.alarm_type)}
