@@ -10,6 +10,7 @@ export const getAlarmRoute = (type: TAlarm['alarm_type'], linkId: number) => {
     TRAVEL: `/calendar/detail/${linkId}`,
     BIRTHDAY: `/calendar/detail/${linkId}`,
     DINING: `/calendar/detail/${linkId}`,
+    EVENT: `/calendar`,
     MEMORIAL: `/calendar/detail/${linkId}`,
     OTHERS: `/calendar/detail/${linkId}`,
   };
@@ -27,6 +28,7 @@ export const getAlarmMessage = (type: TAlarm['alarm_type']) => {
     TRAVEL: '여행 일정이 다가오고 있어요!',
     BIRTHDAY: '내일은 우리 가족의 생일이에요!',
     DINING: '내일은 가족 외식이 있어요!',
+    EVENT: '새로운 일정이 등록되었어요!',
     MEMORIAL: '내일은 가족 기념일이 있어요!',
     OTHERS: '새로운 일정이 등록되었어요!',
   };
