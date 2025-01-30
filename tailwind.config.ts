@@ -14,7 +14,7 @@ const config: Config = {
         pretendard: ['var(--font-pretendard)'],
       },
       colors: {
-        pageBg: '#F3F4F6',
+        pageBg: '#FFEEDB',
         appColor: '#FF9100',
         secondary: '#F8B62D',
         black: '#212529',

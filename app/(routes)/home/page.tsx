@@ -6,7 +6,7 @@ import SavingsSection from './sections/SavingsSection';
 
 export default function HomePage() {
   return (
-    <div className='pageLayout bg-[#FAE4D4]'>
+    <div className='pageLayout bg-pageBg'>
       <LogoHeader showFamily={false} />
       <div className='flex flex-col  overflow-y-scroll mb-20 scrollbar-hide'>
         <NotificationSection />
