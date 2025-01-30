@@ -97,7 +97,7 @@ export default function SavingList({ savingId }: { savingId: number }) {
   }
 
   return (
-    <div>
+    <div className='flex flex-col w-full h-[calc(100%-44px)]'>
       <div className='flex flex-col space-y-4 px-5 pt-10 pb-5'>
         <PageTitle
           title={
@@ -112,23 +112,27 @@ export default function SavingList({ savingId }: { savingId: number }) {
         <div className='flex flex-col gap-1'>
           <div className='flex justify-between text-[18px] font-semibold mt-2'>
             <div>총 납입 내역</div>
-            <div className='text-appColor'>{savingInfo?.total_payment}</div>
+            <div className='text-appColor'>
+              {savingInfo?.total_payment.toLocaleString()}원
+            </div>
           </div>
           <div className='flex justify-between text-[18px] font-semibold'>
             <div>이번달 납입 내역</div>
-            <div className='text-appColor'>{savingInfo?.month_payment}</div>
+            <div className='text-appColor'>
+              {savingInfo?.month_payment.toLocaleString()}원
+            </div>
           </div>
           <div className='flex justify-between text-[14px] font-semibold'>
             <div>이번달 납입 가능 금액</div>
-            <div>{savingInfo?.month_available_amount}</div>
+            <div>{savingInfo?.month_available_amount.toLocaleString()}원</div>
           </div>
         </div>
       </div>
       <div
         ref={scrollContainerRef}
-        className='w-full h-full px-5 pt-5 overflow-y-scroll'
+        className='w-full h-full px-5 pt-5 overflow-y-scroll scrollbar-hide'
       >
-        <div className='flex flex-col gap-[0.5px] pb-32'>
+        <div className='flex flex-col gap-[0.5px]'>
           {data.pages.map((page) =>
             page.contents.map((content) => (
               <div key={content.date}>

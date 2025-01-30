@@ -83,13 +83,16 @@ export default function TransactionList({ accountId }: { accountId: number }) {
   }
 
   return (
-    <div className='defaultLayout gap-5'>
+    <div className='flex flex-col w-full h-[calc(100%-44px)] p-5 gap-5'>
       <PageTitle
         title={`내 계좌
 거래 내역이에요`}
       />
-      <div ref={scrollContainerRef} className='w-full h-full overflow-y-auto'>
-        <div className='flex flex-col gap-[0.5px] pb-32'>
+      <div
+        ref={scrollContainerRef}
+        className='w-full h-full overflow-y-auto scrollbar-hide'
+      >
+        <div className='flex flex-col gap-[0.5px]'>
           {data.pages.map((page) =>
             page.contents.map((content) => (
               <div key={content.date}>
