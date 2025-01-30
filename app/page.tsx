@@ -1,5 +1,5 @@
 import { DelayedNavigation } from '@/components/molecules/DelayedNavigation';
-import Logo from '@/public/Logo/Logo_appLoad.svg';
+// import Logo from '@/public/Logo/Logo_appLoad.svg';
 import Image from 'next/image';
 import { auth } from '@/lib/auth';
 
@@ -11,7 +11,12 @@ export default async function Home() {
       <DelayedNavigation session={session} time={3000} />
 
       <div className='flex items-center gap-1'>
-        <Image src={Logo} alt={'Logo'} width={50} height={50} />
+        <Image
+          src='/Logo/Logo_appLoad.svg'
+          alt={'Logo'}
+          width={50}
+          height={50}
+        />
         <div className='text-[40px] font-bold'>손주머니</div>
       </div>
 

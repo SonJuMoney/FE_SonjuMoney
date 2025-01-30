@@ -24,6 +24,7 @@ const nextConfig = {
       'https://d35670s5pea8wg.cloudfront.net/',
     ],
     unoptimized: true,
+    disableStaticImages: false,
   },
   experimental: {
     turbo: {
