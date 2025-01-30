@@ -10,7 +10,7 @@ const page = () => {
       <div className='defaultLayout'>
         <CompleteMessage
           title='계좌가 등록되었어요'
-          subTitle='손주에게 용돈을 보내보세요!'
+          subTitle='손주머니에서 소식을 나눠보아요!'
         />
       </div>
       <Link href='/home' className='fixed bottom-0 left-0 w-full p-5'>
