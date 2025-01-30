@@ -5,7 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAllowanceApi } from '@/hooks/useAllowanceApi/useAllowanceApi';
 import Call from '@/public/AnimatedIcons/Call.png';
 import Camera from '@/public/AnimatedIcons/Camera.png';
-import DefaultProfile from '@/public/Default_Profile.svg';
+import DefaultProfile from '@/public/Avatar/Default_Profile.svg';
 import type { AllowanceResponse } from '@/types/Allowance';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { useSession } from 'next-auth/react';
