@@ -9,6 +9,10 @@ import { queryKeys } from '@/lib/queryKeys';
 
 /* eslint-disable no-unused-vars */
 
+/* eslint-disable no-unused-vars */
+
+/* eslint-disable no-unused-vars */
+
 type NotificationContextType = {
   notifications: TAlarm[];
   addNotification: (notification: TAlarm) => void;
@@ -50,7 +54,7 @@ export function NotificationProvider({
     if (!session?.user?.accessToken) return;
 
     const ws = new WebSocket(
-      `ws://dev.sonjumoney.topician.com/ws/alarms?userId=${session.user.userId}`
+      `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}?userId=${session.user.userId}`
     );
 
     ws.onopen = () => {
