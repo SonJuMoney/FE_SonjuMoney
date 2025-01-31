@@ -58,7 +58,7 @@ export default function AllowancePage({ params }: { params: { id: string } }) {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (!allowanceData) {

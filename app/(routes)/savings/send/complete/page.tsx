@@ -24,8 +24,8 @@ export default function CompletePage() {
           title={
             <>
               <span className='text-appColor'>{selectedSaving?.user_name}</span>
-              님께 <br />
-              적금이 송금되었어요
+              님 <br />
+              적금이 납입되었어요
             </>
           }
         />

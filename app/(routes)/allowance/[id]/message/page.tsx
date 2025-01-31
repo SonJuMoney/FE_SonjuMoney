@@ -28,7 +28,7 @@ export default function MessagePage({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (!allowanceData) {

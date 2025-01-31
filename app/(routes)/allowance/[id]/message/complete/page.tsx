@@ -28,7 +28,7 @@ export default function CompletePage({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (!allowanceData) {

@@ -47,7 +47,7 @@ const SendPage = () => {
     router.push(`/savings/send/message`);
   };
 
-  if (!account) return <div>Loading...</div>;
+  if (!account) return <div></div>;
 
   return (
     <div>
