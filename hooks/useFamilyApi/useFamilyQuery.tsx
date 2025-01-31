@@ -1,11 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { queryKeys } from '@/lib/queryKeys';
 import { useFamilyApi } from './useFamilyApi';
 
 const useFamilyQuery = () => {
-  const { getFamilies } = useFamilyApi();
+  const { getFamilies, acceptInvite } = useFamilyApi();
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
 
   const GetFamilyList = () => {
     return useQuery({
@@ -15,7 +16,15 @@ const useFamilyQuery = () => {
     });
   };
 
-  return { GetFamilyList };
+  const AcceptInvite = useMutation({
+    mutationFn: (familyId: number) => acceptInvite(familyId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.familyList });
+      queryClient.refetchQueries({ queryKey: queryKeys.familyList });
+    },
+  });
+
+  return { GetFamilyList, acceptInvitation: AcceptInvite.mutate };
 };
 
 export default useFamilyQuery;
