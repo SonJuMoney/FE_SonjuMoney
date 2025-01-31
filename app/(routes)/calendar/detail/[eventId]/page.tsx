@@ -2,6 +2,7 @@
 
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
+import { useToast } from '@/hooks/use-toast';
 import { useEventApi } from '@/hooks/useEventApi/useEventApi';
 import { TEvent } from '@/types/Events';
 import { format, parseISO } from 'date-fns';
@@ -32,7 +33,7 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
   const { eventId } = params;
   const { getEventDetail, deleteEvent } = useEventApi();
   const router = useRouter();
-
+  const { toast } = useToast();
   const [event, setEvent] = useState<TEvent>();
 
   const category = event
@@ -68,8 +69,7 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
       console.log('삭제 실패');
       return;
     }
-
-    alert('삭제되었습니다');
+    toast({ title: '삭제되었습니다' });
     router.push('/calendar');
   };
 

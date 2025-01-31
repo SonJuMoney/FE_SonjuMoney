@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
+import { useToast } from '@/hooks/use-toast';
 import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useUserApi } from '@/hooks/useUserApi/useUserApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
@@ -18,6 +19,7 @@ import { getChildProfileImage, getParentProfileImage } from '@/lib/utils';
 export default function ProfileButton() {
   const router = useRouter();
   const { data: session, update } = useSession();
+  const { toast } = useToast();
   const { setSelectedFamily } = useSelectedFamilyStore();
   const { getAuthList, switchAccount } = useAuthApi();
   const { patchProfile } = useUserApi();
@@ -92,7 +94,7 @@ export default function ProfileButton() {
       // File size validation (optional)
       const MAX_FILE_SIZE = 1 * 1024 * 1024; // 5MB
       if (file.size > MAX_FILE_SIZE) {
-        alert('파일 크기는 1MB를 넘을 수 없습니다');
+        toast({ title: '파일 크기는 1MB를 넘을 수 없습니다' });
         return;
       }
 

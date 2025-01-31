@@ -3,6 +3,7 @@
 import Header from '@/components/atoms/Headers/Header';
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
+import { useToast } from '@/hooks/use-toast';
 import { useSavingApi } from '@/hooks/useSavingApi/useSavingApi';
 import useSendSavingStore from '@/store/useSendSavingStore';
 import { useRouter } from 'next/navigation';
@@ -13,6 +14,7 @@ const CheckPinPage = () => {
   const { selectedSaving, amount, message } = useSendSavingStore();
   const { sendSaving } = useSavingApi();
   const [password, setPassword] = useState<string>('');
+  const { toast } = useToast();
 
   useEffect(() => {
     if (password.length !== 6) return;
@@ -30,7 +32,7 @@ const CheckPinPage = () => {
 
         if (result) router.push('/savings/send/complete');
       } catch (err) {
-        if (err == 401) alert('비밀번호 오류');
+        if (err == 401) toast({ title: '비밀번호 오류' });
       } finally {
         setPassword('');
       }

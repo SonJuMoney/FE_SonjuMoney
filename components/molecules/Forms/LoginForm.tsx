@@ -5,11 +5,13 @@ import {
   LabelInput,
   LabelInputRef,
 } from '@/components/atoms/Inputs/LabelInput';
+import { useToast } from '@/hooks/use-toast';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState, FormEvent, useRef, useCallback } from 'react';
 
 export function LoginForm() {
+  const { toast } = useToast();
   const userIdRef = useRef<LabelInputRef>(null);
   const passwordRef = useRef<LabelInputRef>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +40,7 @@ export function LoginForm() {
 
         if (result?.error) {
           console.log(result.error);
-          alert('로그인 실패: 아이디와 비밀번호를 확인해주세요');
+          toast({ title: '로그인 실패: 아이디와 비밀번호를 확인해주세요' });
           return;
         }
 

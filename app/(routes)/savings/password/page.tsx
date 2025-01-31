@@ -3,6 +3,7 @@
 import Header from '@/components/atoms/Headers/Header';
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
+import { useToast } from '@/hooks/use-toast';
 import { useAccountApi } from '@/hooks/useAccountApi/useAccountApi';
 import useSavingsAccountStore from '@/store/useSavingsAccountStore';
 import { TSetSavingsAccountReq } from '@/types/Account';
@@ -21,6 +22,7 @@ const SavingsPassword = () => {
     customAmount,
   } = useSavingsAccountStore();
   const [pwd, setPwd] = useState<string>('');
+  const { toast } = useToast();
 
   useEffect(() => {
     const createSavingsAccount = async () => {
@@ -44,7 +46,7 @@ const SavingsPassword = () => {
           if (success) {
             router.push('/savings/complete');
           } else {
-            alert('적금 계좌 생성에 실패했습니다.');
+            toast({ title: '적금 계좌 생성에 실패했습니다' });
           }
         } catch (error) {
           console.error('API Error:', error);
