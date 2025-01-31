@@ -107,10 +107,6 @@ const PlanList = () => {
     setCurrentMonth(newMonth);
   };
 
-  if (loading) {
-    return <div></div>;
-  }
-
   return (
     <div ref={scrollContainerRef} className='h-full bg-[#FAE4D4]'>
       <div className='w-full'>
@@ -133,49 +129,49 @@ const PlanList = () => {
           />
         )}
       </div>
-      {selectedFamily ? (
-        <>
-          {events.length > 0 ? (
-            <div className='w-full h-[calc(100%-116px)] px-5 pb-[78px] overflow-y-auto scrollbar-hide'>
-              {events?.map((date) => (
-                <PlanCard
-                  key={date.current_date}
-                  date={date.current_date}
-                  day={date.current_day}
-                  events={date.events}
-                  isToday={date.current_date === today}
-                />
-              ))}
-              <Link
-                href='/calendar/add'
-                className={`fixed bottom-[90px] right-5 z-50 flex items-center rounded-full bg-appColor text-white transition-all duration-300 ease-in-out p-3 ${
-                  isScrolling ? 'w-[48px]' : 'w-[120px]'
-                } h-[48px]`}
-              >
-                <LuPlus
-                  className={`w-[24px] h-[24px] ${isScrolling ? '' : 'mr-2'}`}
-                />
-                <span
-                  className={`transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden ${
-                    isScrolling ? 'w-0 opacity-0' : 'w-auto opacity-100'
-                  }`}
-                >
-                  일정 추가
-                </span>
-              </Link>
-            </div>
-          ) : (
-            <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 pb-[78px]'>
-              <EmptyState
-                title='아직 등록된 일정이 없어요'
-                subtitle={`가족 일정을 등록하고
-서로 공유해보세요`}
-                href='/calendar/add'
-                buttonText='일정 등록하러가기'
+      {loading ? (
+        <div></div>
+      ) : selectedFamily ? (
+        events.length > 0 ? (
+          <div className='w-full h-[calc(100%-116px)] px-5 pb-[78px] overflow-y-auto scrollbar-hide'>
+            {events?.map((date) => (
+              <PlanCard
+                key={date.current_date}
+                date={date.current_date}
+                day={date.current_day}
+                events={date.events}
+                isToday={date.current_date === today}
               />
-            </div>
-          )}
-        </>
+            ))}
+            <Link
+              href='/calendar/add'
+              className={`fixed bottom-[90px] right-5 z-50 flex items-center rounded-full bg-appColor text-white transition-all duration-300 ease-in-out p-3 ${
+                isScrolling ? 'w-[48px]' : 'w-[120px]'
+              } h-[48px]`}
+            >
+              <LuPlus
+                className={`w-[24px] h-[24px] ${isScrolling ? '' : 'mr-2'}`}
+              />
+              <span
+                className={`transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden ${
+                  isScrolling ? 'w-0 opacity-0' : 'w-auto opacity-100'
+                }`}
+              >
+                일정 추가
+              </span>
+            </Link>
+          </div>
+        ) : (
+          <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 pb-[78px]'>
+            <EmptyState
+              title='아직 등록된 일정이 없어요'
+              subtitle={`가족 일정을 등록하고
+서로 공유해보세요`}
+              href='/calendar/add'
+              buttonText='일정 등록하러가기'
+            />
+          </div>
+        )
       ) : (
         <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 pb-[78px] '>
           <EmptyState
