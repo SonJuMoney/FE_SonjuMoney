@@ -46,7 +46,7 @@ export const useFamilyApi = () => {
       method: 'POST',
     };
     const response = await fetchApi(`${invitationUrl}/${familyId}`, options);
-    queryclient.invalidateQueries({ queryKey: queryKeys.familyList });
+    queryclient.refetchQueries({ queryKey: queryKeys.familyList });
     return response;
   };
 
