@@ -25,11 +25,13 @@ const SendAllowanceComplete = () => {
           title={
             <>
               <span className='text-appColor'>
-                {selectedMember?.member_name}님
+                {selectedMember?.member_name}
               </span>
-              에게
+              님에게
               <br />
-              <span className='text-appColor'>{amount}원</span>
+              <span className='text-appColor'>
+                {Number(amount).toLocaleString()}원
+              </span>
               {message ? <>과 메시지를 보냈습니다.</> : <>을 보냈습니다.</>}
             </>
           }

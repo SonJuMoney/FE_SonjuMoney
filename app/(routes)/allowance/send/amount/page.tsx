@@ -32,7 +32,7 @@ const EnterAmount = () => {
     router.push(`/allowance/send/response`);
   };
 
-  if (!account) return <div>Loading...</div>;
+  if (!account) return <div></div>;
 
   return (
     <div>
