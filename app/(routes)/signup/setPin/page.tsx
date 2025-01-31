@@ -3,6 +3,7 @@
 import Header from '@/components/atoms/Headers/Header';
 import PasswordInput from '@/components/atoms/Inputs/PasswordInput';
 import CenterTitle from '@/components/atoms/PageTitles/CenterTitle';
+import { useToast } from '@/hooks/use-toast';
 import useSignUpStore, { SignUpData } from '@/store/useSignupStore';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -14,6 +15,7 @@ const SetPinPage = () => {
     (state) => state.signUpData
   );
   const [password, setPassword] = useState<string>('');
+  const { toast } = useToast();
 
   const handleAutoLogin = async (userId: string, password: string) => {
     try {
@@ -66,7 +68,6 @@ const SetPinPage = () => {
         const data = await response.json();
 
         if (data.code === 201) {
-          alert('회원가입 성공');
           await handleAutoLogin(signUpData.id!, signUpData.password!);
         } else {
           console.log(data);
@@ -74,7 +75,7 @@ const SetPinPage = () => {
         }
       } catch (error) {
         console.error('회원가입 오류:', error);
-        alert('회원가입 중 오류가 발생했습니다.');
+        toast({ title: '회원가입 중 오류가 발생했습니다' });
         router.push('/signup');
       }
     },
@@ -83,7 +84,7 @@ const SetPinPage = () => {
 
   useEffect(() => {
     if (!signUpData) {
-      alert('회원가입 정보가 없습니다');
+      toast({ title: '회원가입 정보가 없습니다' });
       router.push('/signup');
       return;
     }

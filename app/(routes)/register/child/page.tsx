@@ -3,6 +3,7 @@
 import { ButtonLarge } from '@/components/atoms/Buttons/ButtonLarge';
 import Header from '@/components/atoms/Headers/Header';
 import SignUpInput from '@/components/atoms/Inputs/SignupIput';
+import { useToast } from '@/hooks/use-toast';
 import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -42,7 +43,7 @@ const SignUp = () => {
     name: false,
     residentNum: false,
   });
-
+  const { toast } = useToast();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
@@ -157,7 +158,8 @@ const SignUp = () => {
 
   const handleOnClick = async () => {
     if (!isFormComplete) {
-      alert('모든 정보를 알맞게 입력해주세요');
+      toast({ title: '모든 정보를 알맞게 입력해주세요' });
+
       return;
     }
 

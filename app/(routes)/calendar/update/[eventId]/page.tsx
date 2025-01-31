@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { useToast } from '@/hooks/use-toast';
 import { useEventApi } from '@/hooks/useEventApi/useEventApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
@@ -63,7 +64,7 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
   const [eventMembers, setEventMembers] = useState<number[]>([]);
-
+  const { toast } = useToast();
   const [inputError, setInputError] = useState<string>('');
 
   useEffect(() => {
@@ -154,7 +155,7 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
 
   const handleOnClick = async () => {
     if (!validateInputs()) {
-      alert(inputError);
+      toast({ title: inputError });
       return;
     }
 
@@ -179,8 +180,7 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
       console.log('수정 실패');
       return;
     }
-
-    alert('수정되었습니다');
+    toast({ title: '수정되었습니다' });
     router.push('/calendar');
   };
 
