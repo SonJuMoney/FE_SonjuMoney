@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useAlarmApi } from '@/hooks/useAlarmApi/useAlarmApi';
-import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+import useFamilyQuery from '@/hooks/useFamilyApi/useFamilyQuery';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TAlarm } from '@/types/Alarm';
 import Image from 'next/image';
@@ -27,7 +27,7 @@ const Alarm = ({ data }: AlarmProps) => {
   const { readAlarm } = useAlarmApi();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { setSelectedFamily, familyList } = useSelectedFamilyStore();
-  const { acceptInvite } = useFamilyApi();
+  const { acceptInvitation } = useFamilyQuery();
 
   const router = useRouter();
   const { toast } = useToast();
@@ -50,7 +50,7 @@ const Alarm = ({ data }: AlarmProps) => {
   };
 
   const handleAccept = () => {
-    acceptInvite(data.link_id);
+    acceptInvitation(data.link_id);
     onReadAlarm(data.alarm_id, data.link_id);
   };
 
