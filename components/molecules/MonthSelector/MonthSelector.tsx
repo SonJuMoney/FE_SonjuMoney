@@ -21,7 +21,7 @@ const MonthSelector = ({
 }: MonthSelectorProps) => {
   return (
     <div className='px-5'>
-      <div className='w-full relative flex items-center justify-center py-5'>
+      <div className='w-full relative flex items-center justify-center py-3'>
         <div
           className='text-lg font-semibold cursor-pointer'
           aria-live='polite'

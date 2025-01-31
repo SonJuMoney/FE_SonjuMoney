@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { useToast } from '@/hooks/use-toast';
 import { useEventApi } from '@/hooks/useEventApi/useEventApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
@@ -52,6 +53,7 @@ const SelectTypeComponent = (type: string, color: string) => {
 const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
   const router = useRouter();
   const { eventId } = params;
+  const { toast } = useToast();
   const { getEventDetail, updateEvent } = useEventApi();
   const { getFamilyMembers } = useFamilyApi();
   const { selectedFamily } = useSelectedFamilyStore();
@@ -63,8 +65,6 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
   const [eventMembers, setEventMembers] = useState<number[]>([]);
-
-  const [inputError, setInputError] = useState<string>('');
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -96,6 +96,12 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
     fetchMembers();
   }, []);
 
+  const handleStartDateChange = (date: Date | undefined) => {
+    setStartDate(date);
+    // 시작일이 변경되면 종료일도 같은 날짜로 설정
+    setEndDate(date);
+  };
+
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
   };
@@ -116,22 +122,22 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
 
   const validateInputs = () => {
     if (!selectedType) {
-      setInputError('분류를 선택해주세요.');
+      toast({ title: '분류를 선택해주세요' });
       return false;
     }
 
     if (!title.trim()) {
-      setInputError('제목을 입력해주세요.');
+      toast({ title: '제목을 입력해주세요' });
       return false;
     }
 
     if (!startDate || !endDate) {
-      setInputError('시작일과 종료일을 모두 선택해주세요.');
+      toast({ title: '시작일과 종료일을 모두 선택해주세요' });
       return false;
     }
 
     if (!eventMembers || eventMembers.length === 0) {
-      setInputError('최소 한 명 이상의 구성원을 선택해주세요.');
+      toast({ title: '최소 한 명 이상의 구성원을 선택해주세요' });
       return false;
     }
 
@@ -144,17 +150,15 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
     }
 
     if (start > end) {
-      setInputError('종료일이 시작일보다 앞설 수 없습니다.');
+      toast({ title: '종료일이 시작일보다 앞설 수 없습니다' });
       return false;
     }
 
-    setInputError('');
     return true;
   };
 
   const handleOnClick = async () => {
     if (!validateInputs()) {
-      alert(inputError);
       return;
     }
 
@@ -180,7 +184,7 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
       return;
     }
 
-    alert('수정되었습니다');
+    toast({ title: '일정이 수정되었습니다' });
     router.push('/calendar');
   };
 
@@ -223,9 +227,15 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
             <div className='flex justify-between items-center'>
               {TitleComponent('시작일')}
               {isAllday ? (
-                <DatePickerDemo date={startDate} setDate={setStartDate} />
+                <DatePickerDemo
+                  date={startDate}
+                  setDate={handleStartDateChange}
+                />
               ) : (
-                <DateTimePicker date={startDate} setDate={setStartDate} />
+                <DateTimePicker
+                  date={startDate}
+                  setDate={handleStartDateChange}
+                />
               )}
             </div>
             <div className='flex justify-between items-center'>
@@ -243,8 +253,15 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
                   <div
                     key={member.member_id}
                     className='flex flex-col items-center gap-4'
+                    onClick={() => handleEventMembers(member.member_id)}
                   >
-                    <div className='w-14 h-14 border rounded-full overflow-hidden'>
+                    <div
+                      className={`w-14 h-14 border rounded-full overflow-hidden ${
+                        isMemberSelected(member.member_id)
+                          ? 'border-appColor'
+                          : ''
+                      }`}
+                    >
                       <Image
                         src={
                           member.profile_link ??
@@ -257,15 +274,25 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
                       />
                     </div>
                     <div className='flex justify-between items-center space-x-2'>
-                      <button
-                        className={`w-4 h-4 border rounded-full cursor-pointer ${
+                      <div
+                        className={`relative w-4 h-4 border rounded-full cursor-pointer ${
                           isMemberSelected(member.member_id)
                             ? 'bg-appColor'
                             : ''
                         }`}
-                        onClick={() => handleEventMembers(member.member_id)}
-                      ></button>
-                      <span className='text-sm font-medium'>
+                      >
+                        <div
+                          className={`absolute w-[6px] h-[6px] z-10 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2  rounded-full bg-white`}
+                        ></div>
+                      </div>
+
+                      <span
+                        className={`text-sm font-medium ${
+                          isMemberSelected(member.member_id)
+                            ? 'text-appColor'
+                            : ''
+                        }`}
+                      >
                         {member.member_name}
                       </span>
                     </div>
