@@ -108,7 +108,7 @@ const PlanList = () => {
   };
 
   return (
-    <div ref={scrollContainerRef} className='h-full bg-[#FAE4D4]'>
+    <div className='h-full bg-[#FAE4D4]'>
       <div className='w-full'>
         <LogoHeader showFamily={true} />
 
@@ -133,7 +133,10 @@ const PlanList = () => {
         <div></div>
       ) : selectedFamily ? (
         events.length > 0 ? (
-          <div className='w-full h-[calc(100%-116px)] px-5 pb-[78px] overflow-y-auto scrollbar-hide'>
+          <div
+            ref={scrollContainerRef}
+            className='w-full h-[calc(100%-116px)] px-5 pb-[78px] overflow-y-auto scrollbar-hide'
+          >
             {events?.map((date) => (
               <PlanCard
                 key={date.current_date}
