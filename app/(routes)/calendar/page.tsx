@@ -30,6 +30,7 @@ const PlanList = () => {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -43,6 +44,7 @@ const PlanList = () => {
     };
 
     fetchEvents();
+    setLoading(false);
   }, [currentMonth, selectedFamily]);
 
   useEffect(() => {
@@ -105,6 +107,10 @@ const PlanList = () => {
     setCurrentMonth(newMonth);
   };
 
+  if (loading) {
+    return <div></div>;
+  }
+
   return (
     <div ref={scrollContainerRef} className='h-full bg-[#FAE4D4]'>
       <div className='w-full'>
@@ -159,7 +165,7 @@ const PlanList = () => {
               </Link>
             </div>
           ) : (
-            <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 '>
+            <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 pb-[78px]'>
               <EmptyState
                 title='아직 등록된 일정이 없어요'
                 subtitle={`가족 일정을 등록하고
@@ -171,7 +177,7 @@ const PlanList = () => {
           )}
         </>
       ) : (
-        <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 '>
+        <div className='w-full h-[calc(100%-116px)] flex flex-col justify-center items-center px-5 pb-[78px] '>
           <EmptyState
             title='아직 소속된 가족이 없어요'
             subtitle={`가족을 생성하고
