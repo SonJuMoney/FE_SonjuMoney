@@ -1,8 +1,11 @@
 import { useApi } from '@/hooks/useApi';
 import { TFamily, TInvitationResponse, TSetFamilyReq } from '@/types/Family';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/lib/queryKeys';
 
 export const useFamilyApi = () => {
   const { fetchApi } = useApi();
+  const queryclient = useQueryClient();
   const baseUrl = '/families';
   const invitationUrl = '/invitation';
 
@@ -43,7 +46,7 @@ export const useFamilyApi = () => {
       method: 'POST',
     };
     const response = await fetchApi(`${invitationUrl}/${familyId}`, options);
-
+    queryclient.invalidateQueries({ queryKey: queryKeys.familyList });
     return response;
   };
 

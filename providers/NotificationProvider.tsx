@@ -13,6 +13,10 @@ import { queryKeys } from '@/lib/queryKeys';
 
 /* eslint-disable no-unused-vars */
 
+/* eslint-disable no-unused-vars */
+
+/* eslint-disable no-unused-vars */
+
 type NotificationContextType = {
   notifications: TAlarm[];
   addNotification: (notification: TAlarm) => void;
@@ -66,6 +70,7 @@ export function NotificationProvider({
         const data = JSON.parse(event.data);
         if (data.alarm_id) {
           addNotification(data);
+          console.log('알림 데이터', data);
           queryClient.invalidateQueries({ queryKey: queryKeys.alarmStatus });
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

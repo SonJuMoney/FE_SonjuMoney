@@ -3,38 +3,41 @@
 import FamilyCardLarge from '@/components/atoms/Cards/FamilyCardLarge';
 import RegisterCard from '@/components/atoms/Cards/RegisterCard';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+// import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
+import useFamilyQuery from '@/hooks/useFamilyApi/useFamilyQuery';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import type { TFamily } from '@/types/Family';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import { LuPlus } from 'react-icons/lu';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+
+// import { useState } from 'react';
 
 export default function FamilySection() {
   const router = useRouter();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const { setSelectedFamily } = useSelectedFamilyStore();
-  const { getFamilies } = useFamilyApi();
-  const [families, setFamilies] = useState<TFamily[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { GetFamilyList } = useFamilyQuery();
+  const { data: families, isFetching } = GetFamilyList();
+  // const [families, setFamilies] = useState<TFamily[]>([]);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const colors = ['bg-appColor', 'bg-secondary', 'bg-pink'];
 
-  useEffect(() => {
-    getFamilies().then((data) => {
-      setFamilies(data);
-      setIsLoading(false);
-    });
-  }, [session?.user?.accessToken]);
+  // useEffect(() => {
+  //   getFamilies().then((data) => {
+  //     setFamilies(data);
+  //     setIsLoading(false);
+  //   });
+  // }, [session?.user?.accessToken]);
 
   const handleFamilyClick = (family: TFamily) => {
     setSelectedFamily(family);
     router.push('/feed');
   };
 
-  if (isLoading) {
+  if (isFetching) {
     return (
       <div className='flex flex-col gap-2.5 font-semibold px-5 '>
         <Skeleton className='h-7 w-24' />

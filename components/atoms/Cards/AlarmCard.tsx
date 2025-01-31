@@ -58,6 +58,7 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
   const handleAccept = () => {
     acceptInvite(data.link_id);
     onReadAlarm(data.alarm_id, data.link_id);
+    router.refresh();
   };
 
   const handleReject = () => {
