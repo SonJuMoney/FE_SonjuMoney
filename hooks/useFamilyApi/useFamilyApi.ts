@@ -1,10 +1,15 @@
 import { useApi } from '@/hooks/useApi';
-import { TFamily, TInvitationResponse, TSetFamilyReq } from '@/types/Family';
+import { TFamily, TSetFamilyReq } from '@/types/Family';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { queryKeys } from '@/lib/queryKeys';
 
 export const useFamilyApi = () => {
   const { fetchApi } = useApi();
   const baseUrl = '/families';
   const invitationUrl = '/invitation';
+  const queryClient = useQueryClient();
+  const { data: session } = useSession();
 
   // 가족 목록 조회
   const getFamilies = async (): Promise<TFamily[]> => {
@@ -36,15 +41,25 @@ export const useFamilyApi = () => {
     return response.code === 200;
   };
 
-  const acceptInvite = async (
-    familyId: number
-  ): Promise<TInvitationResponse> => {
-    const options: RequestInit = {
-      method: 'POST',
-    };
-    const response = await fetchApi(`${invitationUrl}/${familyId}`, options);
-    return response;
-  };
+  const acceptInvite = useMutation({
+    mutationFn: (familyId: number) =>
+      fetchApi(`${invitationUrl}/${familyId}`, {
+        method: 'POST',
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.familyList, session?.user?.accessToken],
+      });
+    },
+    onError: (error) => {
+      console.log('error', error);
+    },
+  });
 
-  return { getFamilies, getFamilyMembers, setFamily, acceptInvite };
+  return {
+    getFamilies,
+    getFamilyMembers,
+    setFamily,
+    acceptInvitation: acceptInvite.mutate,
+  };
 };

@@ -19,7 +19,7 @@ export default function FamilySection() {
   // const { data: session } = useSession();
   const { setSelectedFamily } = useSelectedFamilyStore();
   const { GetFamilyList } = useFamilyQuery();
-  const { data: families, isFetching } = GetFamilyList();
+  const { data: families, isFetching, isRefetching } = GetFamilyList();
   // const [families, setFamilies] = useState<TFamily[]>([]);
   // const [isLoading, setIsLoading] = useState(true);
 
@@ -37,7 +37,7 @@ export default function FamilySection() {
     router.push('/feed');
   };
 
-  if (isFetching) {
+  if (isFetching || isRefetching) {
     return (
       <div className='flex flex-col gap-2.5 font-semibold px-5 '>
         <Skeleton className='h-7 w-24' />

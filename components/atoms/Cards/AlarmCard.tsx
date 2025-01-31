@@ -26,7 +26,7 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
   const { readAlarm } = useAlarmApi();
   const { removeNotification } = useNotification();
   const { setSelectedFamily, familyList } = useSelectedFamilyStore();
-  const { getFamilies, acceptInvite } = useFamilyApi();
+  const { getFamilies, acceptInvitation } = useFamilyApi();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -56,9 +56,10 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
   };
 
   const handleAccept = () => {
-    acceptInvite(data.link_id);
+    acceptInvitation(data.link_id);
     onReadAlarm(data.alarm_id, data.link_id);
-    router.refresh();
+    // router.refresh();
+    // console.log(refresh);
   };
 
   const handleReject = () => {
