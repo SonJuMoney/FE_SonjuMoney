@@ -88,6 +88,54 @@ const SignUp = () => {
     }
   };
 
+  const checkResidentValidation = async (resident: string) => {
+    if (resident.length < 13) {
+      return {
+        isValid: false,
+        error: '주민등록번호 13자리를 모두 입력해주세요',
+      };
+    }
+
+    const cleanResident = resident.replace(/-/g, '');
+    if (cleanResident.length !== 13) {
+      return {
+        isValid: false,
+        error: '13자리를 입력해주세요',
+      };
+    }
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/resident-duplication?resident=${resident}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        return {
+          isValid: false,
+          error: '주민등록번호 조회 중 오류가 발생했습니다',
+        };
+      }
+
+      const data = await response.json();
+
+      return {
+        isValid: !data.duplication,
+        error: data.duplication ? '이미 가입된 주민등록 번호입니다' : '',
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        isValid: false,
+        error: '서버 오류가 발생했습니다',
+      };
+    }
+  };
+
   const questions: Input[] = [
     {
       type: 'id',
@@ -112,7 +160,7 @@ const SignUp = () => {
       inputType: 'text',
       question: '주민등록번호를 입력해주세요',
       placeholder: '900101 - 2******',
-      validate: (value: string) => value.replace(/\D/g, '').length === 13,
+      validate: checkResidentValidation,
       errorMessage: '올바른 형식이 아닙니다',
       width: 17,
     },
