@@ -36,7 +36,7 @@ const TitleComponent = (title: string) => {
   return (
     <div className='flex space-x-4 items-center'>
       <div className='w-[10px] h-[10px] bg-appColor rounded-full'></div>
-      <div className='text-lg font-medium'>{title}</div>
+      <div className='text-md font-semibold'>{title}</div>
     </div>
   );
 };
@@ -176,8 +176,8 @@ const AddPlan = () => {
     <>
       <div className='pageLayout'>
         <Header title='일정 추가' />
-        <div className='h-full px-5 pt-10 pb-5 flex flex-col justify-between'>
-          <div className='flex flex-col space-y-12'>
+        <div className='h-full px-5 pt-6 pb-5 flex flex-col justify-between'>
+          <div className='flex flex-col gap-5'>
             <div className='flex justify-between items-center'>
               {TitleComponent('분류')}
               <Select onValueChange={handleTypeChange} value={selectedType}>
