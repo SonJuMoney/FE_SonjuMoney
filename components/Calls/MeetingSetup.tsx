@@ -15,11 +15,8 @@ const MeetingSetup = ({
 }: {
   setIsSetupComplete: (value: boolean) => void;
 }) => {
-  const { useCallEndedAt, useCallStartsAt } = useCallStateHooks();
-  const callStartsAt = useCallStartsAt();
+  const { useCallEndedAt } = useCallStateHooks();
   const callEndedAt = useCallEndedAt();
-  const callTimeNotArrived =
-    callStartsAt && new Date(callStartsAt) > new Date();
   const callHasEnded = !!callEndedAt;
 
   const call = useCall();
@@ -42,13 +39,6 @@ const MeetingSetup = ({
       call.microphone.enable();
     }
   }, [isMicCamToggled, call.camera, call.microphone]);
-
-  if (callTimeNotArrived)
-    return (
-      <Alert
-        title={`Your Meeting has not started yet. It is scheduled for ${callStartsAt.toLocaleString()}`}
-      />
-    );
 
   if (callHasEnded)
     return (
