@@ -108,7 +108,7 @@ const PlanList = () => {
   };
 
   return (
-    <div className='h-full bg-[#FAE4D4]'>
+    <div className='h-full bg-pageBg'>
       <div className='w-full'>
         <LogoHeader showFamily={true} />
 
