@@ -3,7 +3,7 @@ import FeedList from './FeedList';
 
 export default async function FeedPage() {
   return (
-    <div className='pageLayout bg-[#FAE4D4]'>
+    <div className='pageLayout bg-pageBg'>
       <LogoHeader showFamily />
       <FeedList />
     </div>
