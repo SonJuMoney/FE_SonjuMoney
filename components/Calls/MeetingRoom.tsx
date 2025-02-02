@@ -11,6 +11,7 @@ import {
 import '@stream-io/video-react-sdk/dist/css/styles.css';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useCallback, useEffect } from 'react';
 import TopicTicker from './TopicTicker';
 
 const MeetingRoom = () => {
@@ -22,33 +23,76 @@ const MeetingRoom = () => {
   const participants = useParticipants();
   const callingState = useCallCallingState();
 
+  // 1. 장치 강제 종료 로직
+  const forceDisableDevices = useCallback(async () => {
+    if (!call) return;
+    try {
+      const mediaDevices = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      mediaDevices.getTracks().forEach((track) => track.stop());
+      await Promise.allSettled([
+        call.camera.disable(),
+        call.microphone.disable(),
+      ]);
+    } catch (error) {
+      console.error('Device disable error:', error);
+    }
+  }, [call]);
+
+  // 2. 페이지 언로드 시 처리
+  useEffect(() => {
+    window.addEventListener('beforeunload', forceDisableDevices);
+    return () => {
+      window.removeEventListener('beforeunload', forceDisableDevices);
+    };
+  }, [forceDisableDevices]);
+
+  // 3. 통화 종료 이벤트 핸들러
+  useEffect(() => {
+    if (!call) return;
+
+    const handleCallEnded = async () => {
+      await forceDisableDevices();
+      router.push('/call');
+    };
+
+    call.on('call.ended', handleCallEnded);
+    return () => call.off('call.ended', handleCallEnded);
+  }, [call, router, forceDisableDevices]);
+
+  // 4. 통화 수동 종료 핸들러
+  const handleLeave = useCallback(async () => {
+    if (!call) return;
+
+    try {
+      // 장치 비활성화 먼저 수행
+      await forceDisableDevices();
+
+      // 통화 완전 종료
+      await call.endCall();
+
+      // 상태 갱신을 위한 딜레이 추가
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    } catch (error) {
+      console.error('Call end error:', error);
+    } finally {
+      router.push('/call');
+    }
+  }, [call, router, forceDisableDevices]);
+
   if (callingState !== CallingState.JOINED) return <LoadingIndicator />;
-  if (!session?.user?.userId) return <LoadingIndicator />;
+  else if (!session?.user?.userId) return <LoadingIndicator />;
+  else {
+  }
   const currentUser = participants.find(
     (p) => p.userId === session?.user?.userId?.toString()
   );
   const otherUser = participants.find(
     (p) => p.userId !== session?.user?.userId?.toString()
   );
-  const handleLeave = async () => {
-    if (!call) return;
 
-    try {
-      // 마이크와 카메라를 먼저 비활성화
-      await Promise.all([call.camera.disable(), call.microphone.disable()]);
-
-      // 통화 상태 확인
-      if (call.state.callingState !== CallingState.LEFT) {
-        await call.leave();
-      }
-
-      router.push('/call');
-    } catch (error) {
-      console.log('Error leaving call:', error);
-      // 에러가 발생해도 페이지 이동은 수행
-      router.push('/call');
-    }
-  };
   return (
     <section className='relative h-screen w-full overflow-hidden text-white'>
       <TopicTicker />
