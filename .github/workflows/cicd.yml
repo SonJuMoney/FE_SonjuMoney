@@ -1,7 +1,7 @@
 name: NEXT CI/CD
 on:
   push:
-    branches: [develop]
+    branches: [main]
 
 jobs:
   build:
