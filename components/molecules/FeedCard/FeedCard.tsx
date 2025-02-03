@@ -117,7 +117,7 @@ const FeedCard = ({ feed }: { feed: TFeed }) => {
                   />
                 </div>
               ) : (
-                <div className='relative w-full aspect-square'>
+                <div className='relative w-full'>
                   <ReactPlayer
                     url={videoLoaderUrl(image.url)}
                     width='100%'
