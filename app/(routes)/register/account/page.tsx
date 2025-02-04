@@ -7,7 +7,6 @@ import EmptyState from '@/components/molecules/EmptyState/EmptyState';
 import AccountList from '@/components/molecules/Lists/AcountList';
 import { useMockAccountApi } from '@/hooks/useMockAccountApi/useMockAccountApi';
 import { TAccount } from '@/types/Account';
-import { Divide } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
