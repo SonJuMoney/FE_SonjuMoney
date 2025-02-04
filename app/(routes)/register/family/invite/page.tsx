@@ -63,8 +63,6 @@ const InviteFamily = () => {
       add_children: selectedChilds,
     };
 
-    console.log(familyData);
-
     setFamily(familyData);
     router.push('/register/family/complete');
   };

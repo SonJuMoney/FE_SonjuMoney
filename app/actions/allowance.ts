@@ -22,7 +22,6 @@ export async function sendResponse(formData: FormData) {
       type: 'application/json',
     })
   );
-  console.log('newFormData', newFormData);
 
   const options: RequestInit = {
     method: 'POST',
@@ -35,7 +34,6 @@ export async function sendResponse(formData: FormData) {
     undefined,
     true
   );
-  console.log('response', response);
 
   if (response.code !== 200) {
     throw new Error('Failed to submit response');

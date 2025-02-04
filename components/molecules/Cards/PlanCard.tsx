@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 'use client';
 
 import CircleImg from '@/components/atoms/CircleImages/CircleImg';
@@ -9,11 +8,6 @@ import { useEffect, useRef } from 'react';
 import { getProfileImage } from '@/lib/utils';
 
 /* eslint-disable no-unused-vars */
-
-/* eslint-disable no-unused-vars */
-
-/* eslint-disable no-unused-vars */
-
 enum EventType {
   여행 = 'bg-lavendar',
   생일 = 'bg-lemon',

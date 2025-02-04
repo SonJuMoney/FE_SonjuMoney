@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 'use client';
 
 import { TAlarm } from '@/types/Alarm';
@@ -6,16 +5,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { queryKeys } from '@/lib/queryKeys';
-
-/* eslint-disable no-unused-vars */
-
-/* eslint-disable no-unused-vars */
-
-/* eslint-disable no-unused-vars */
-
-/* eslint-disable no-unused-vars */
-
-/* eslint-disable no-unused-vars */
 
 type NotificationContextType = {
   notifications: TAlarm[];
@@ -61,29 +50,22 @@ export function NotificationProvider({
       `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}?userId=${session.user.userId}`
     );
 
-    ws.onopen = () => {
-      console.log('WebSocket connected');
-    };
+    ws.onopen = () => {};
 
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
         if (data.alarm_id) {
           addNotification(data);
-          console.log('알림 데이터', data);
           queryClient.invalidateQueries({ queryKey: queryKeys.alarmStatus });
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {}
     };
 
-    ws.onclose = () => {
-      console.log('WebSocket disconnected');
-    };
+    ws.onclose = () => {};
 
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
+    ws.onerror = () => {};
 
     return () => {
       ws.close();

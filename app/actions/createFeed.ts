@@ -24,7 +24,6 @@ export async function createFeed(formData: FormData) {
       type: 'application/json',
     })
   );
-  console.log('newFormData', newFormData);
 
   const options: RequestInit = {
     method: 'POST',
@@ -32,7 +31,6 @@ export async function createFeed(formData: FormData) {
   };
 
   const response = await fetchData('/feeds', options, undefined, true);
-  console.log(response);
   if (response.code !== 200) {
     throw new Error('Failed to submit response');
   }

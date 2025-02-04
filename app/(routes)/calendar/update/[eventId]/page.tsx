@@ -177,10 +177,8 @@ const UpdateEvent = ({ params }: { params: { eventId: string } }) => {
       all_day_status: isAllday ? 'ALL_DAY' : 'SPECIFIC_TIME',
     });
     const response = await updateEvent(eventId, eventData);
-    console.log(response);
 
     if (!response) {
-      console.log('수정 실패');
       return;
     }
     toast({ title: '수정되었습니다' });

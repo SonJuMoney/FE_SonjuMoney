@@ -9,8 +9,7 @@ export async function getSavingsAccounts(): Promise<SavingsResponse> {
     .then((data) => {
       return data;
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
       return null;
     });
 }

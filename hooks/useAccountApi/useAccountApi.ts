@@ -38,7 +38,6 @@ export const useAccountApi = () => {
     };
     const response = await fetchApi(`${baseUrl}/savings`, options);
 
-    console.log(response);
     return response.code === 200;
   };
 

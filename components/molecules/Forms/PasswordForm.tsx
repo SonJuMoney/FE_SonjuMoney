@@ -53,7 +53,6 @@ const PasswordForm = ({
           toast({ title: '인증에 성공하였습니다' });
           onComplete()
             .then(() => {
-              console.log('성공');
               router.push(`${route}`);
             })
             .catch((error) => {

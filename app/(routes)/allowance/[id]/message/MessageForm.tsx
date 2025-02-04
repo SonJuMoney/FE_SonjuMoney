@@ -48,15 +48,6 @@ export default function MessageForm({
     files.forEach((file) => {
       formData.append('file', file);
     });
-    formData.forEach((value, key) => {
-      if (value instanceof File) {
-        console.log(
-          `${key}: File name=${value.name}, size=${value.size}, type=${value.type}`
-        );
-      } else {
-        console.log(`${key}: ${value}`);
-      }
-    });
     try {
       await sendResponse(formData);
       router.push(`/allowance/${allowanceId}/message/complete`);

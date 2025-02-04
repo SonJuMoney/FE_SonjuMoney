@@ -10,7 +10,6 @@ export async function getFamilies(): Promise<TFamily[]> {
       return data;
     })
     .catch((error) => {
-      console.log(error);
       return null;
     });
 }

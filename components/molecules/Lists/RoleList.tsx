@@ -18,7 +18,6 @@ const RoleList = ({ roles, selectedRole, setSelectedRole }: RoleListProps) => {
           selected={selectedRole === role}
           onClick={() => {
             setSelectedRole(selectedRole === role ? '' : role);
-            console.log('selectedRole: ' + (selectedRole === role ? '' : role));
           }}
         />
       ))}
