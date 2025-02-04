@@ -1,5 +1,6 @@
 import { ButtonSmall } from '@/components/atoms/Buttons/ButtonSmall';
 import Bear from '@/public/AnimatedIcons/Bear.png';
+import { TbExternalLink } from 'react-icons/tb';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -22,12 +23,21 @@ const EmptyState = ({ title, subtitle, href, buttonText }: EmptyStateProps) => {
           {subtitle}
         </span>
       </div>
-      <Link href={href ? href : '/register/family'}>
-        <ButtonSmall
-          text={buttonText ? buttonText : '가족 등록하러가기'}
-          active
-        />
-      </Link>
+      {href === 'hanaLink' ? (
+        <div className='py-2 px-4 border border-appColor text-appColor rounded-lg flex items-center space-x-1'>
+          <a href='https://m.kebhana.com/bdm/bdmIdx.vw?nftfChnlKindCd=MW01901A01&endClose=https://m.hanabank.com'>
+            계좌 만들러가기
+          </a>
+          <TbExternalLink size={20} />
+        </div>
+      ) : (
+        <Link href={href ? href : '/register/family'}>
+          <ButtonSmall
+            text={buttonText ? buttonText : '가족 등록하러가기'}
+            active
+          />
+        </Link>
+      )}
     </div>
   );
 };
