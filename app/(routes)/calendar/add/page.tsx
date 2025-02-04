@@ -163,7 +163,6 @@ const AddPlan = () => {
       const response = await setEvent(selectedFamily?.family_id, eventData);
 
       if (!response) {
-        console.log('일정 추가 실패');
         return;
       }
 

@@ -23,7 +23,6 @@ export const tokenProvider = async () => {
     validity_in_seconds: validity,
     iat: currentTime - 60,
   });
-  console.log(token);
 
   return token;
 };

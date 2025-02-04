@@ -18,7 +18,6 @@ const EnterPasscode = () => {
   }
 
   const onComplete = (data: TSendAllowanceReq) => {
-    console.log(data);
     return sendAllowance(data).then(() => {
       router.push('/allowance/send/complete');
     });

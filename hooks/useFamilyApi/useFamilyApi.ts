@@ -3,6 +3,7 @@ import { TFamily, TSetFamilyReq } from '@/types/Family';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { queryKeys } from '@/lib/queryKeys';
+import { useToast } from '../use-toast';
 
 export const useFamilyApi = () => {
   const { fetchApi } = useApi();
@@ -10,6 +11,7 @@ export const useFamilyApi = () => {
   const invitationUrl = '/invitation';
   const queryClient = useQueryClient();
   const { data: session } = useSession();
+  const { toast } = useToast();
 
   // 가족 목록 조회
   const getFamilies = async (): Promise<TFamily[]> => {
@@ -51,8 +53,8 @@ export const useFamilyApi = () => {
         queryKey: [queryKeys.familyList, session?.user?.accessToken],
       });
     },
-    onError: (error) => {
-      console.log('error', error);
+    onError: () => {
+      toast({ title: '초대 받기에 실패했어요' });
     },
   });
 

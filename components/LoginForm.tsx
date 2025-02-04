@@ -27,7 +27,6 @@ export function LoginForm() {
         return;
       }
 
-      console.log('로그인 시도:', { userId, password });
       try {
         const result = await signIn('credentials', {
           userId,
@@ -35,10 +34,7 @@ export function LoginForm() {
           redirect: false,
         });
 
-        console.log('로그인 결과:', result);
-
         if (result?.error) {
-          console.log(result.error);
           toast({ title: '로그인 실패: 아이디와 비밀번호를 확인해주세요' });
           return;
         }

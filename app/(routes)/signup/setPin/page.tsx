@@ -29,11 +29,9 @@ const SetPinPage = () => {
         router.push('/signup/complete');
         router.refresh();
       } else {
-        console.log(result);
         throw new Error('로그인 실패');
       }
     } catch (error) {
-      console.error('로그인 실패:', error);
       router.push('/login');
     }
   };
@@ -70,7 +68,6 @@ const SetPinPage = () => {
         if (data.code === 201) {
           await handleAutoLogin(signUpData.id!, signUpData.password!);
         } else {
-          console.log(data);
           throw new Error('회원가입 응답 코드 오류');
         }
       } catch (error) {

@@ -38,10 +38,6 @@ const SendPage = () => {
     fetchLimit();
   }, []);
 
-  useEffect(() => {
-    console.log(limitAmount);
-  }, [limitAmount]);
-
   const handleNextStep = () => {
     setAmount(Number(localAmount));
     router.push(`/savings/send/message`);

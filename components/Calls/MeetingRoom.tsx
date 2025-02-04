@@ -66,7 +66,6 @@ const MeetingRoom = () => {
 
   useEffect(() => {
     if (!call) {
-      console.log('call 없음', call);
       return;
     }
 

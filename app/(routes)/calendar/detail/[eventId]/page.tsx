@@ -66,7 +66,6 @@ const EventDetailPage = ({ params }: { params: { eventId: string } }) => {
     const response = await deleteEvent(eventId);
 
     if (!response) {
-      console.log('삭제 실패');
       return;
     }
     toast({ title: '삭제되었습니다' });

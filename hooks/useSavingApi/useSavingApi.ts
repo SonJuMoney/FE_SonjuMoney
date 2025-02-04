@@ -42,7 +42,6 @@ export const useSavingApi = () => {
       `${baseUrl}/${selectedSaving.account_id}/transfer`,
       options
     );
-    console.log(response);
     return response.code === 201;
   };
 
