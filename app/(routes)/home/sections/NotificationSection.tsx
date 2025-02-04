@@ -6,6 +6,7 @@ import { useNotification } from '@/providers/NotificationProvider';
 const NotificationSection = () => {
   const { notifications } = useNotification();
   const latestNotification = notifications[notifications.length - 1];
+  console.log(latestNotification);
 
   if (!latestNotification || latestNotification.status === 'CHECKED') {
     return null;
