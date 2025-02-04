@@ -10,12 +10,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { toast } from '@/hooks/use-toast';
 import { useAlarmApi } from '@/hooks/useAlarmApi/useAlarmApi';
+import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useNotification } from '@/providers/NotificationProvider';
 import ArrowRight from '@/public/Icons/arrowRight_20.svg';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import type { TAlarm } from '@/types/Alarm';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -27,6 +30,9 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
   const { removeNotification } = useNotification();
   const { setSelectedFamily, familyList } = useSelectedFamilyStore();
   const { getFamilies, acceptInvitation } = useFamilyApi();
+  const { switchAccount } = useAuthApi();
+  const { update } = useSession();
+
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -40,7 +46,7 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
     fetchFamilies();
   }, []);
 
-  const onReadAlarm = (alarm_id: number, link_id: number) => {
+  const onReadAlarm = async (alarm_id: number, link_id: number) => {
     if (data.family_id) {
       setSelectedFamily(
         familyList.filter((family) => family.family_id === data.family_id)[0]
@@ -51,6 +57,13 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
     setIsDialogOpen(false);
     if (data.alarm_type !== 'INVITE' && data.alarm_type !== 'CHILD_ALLOWANCE') {
       router.push(getAlarmRoute(data.alarm_type, link_id));
+    } else if (data.alarm_type === 'CHILD_ALLOWANCE') {
+      if (data.child_id) {
+        const response = await switchAccount(data.child_id.toString());
+        toast({ title: '아이 계정으로 전환 되었어요' });
+        await update(response);
+        router.push(`/allowance/${data.link_id}`);
+      }
     }
   };
 
