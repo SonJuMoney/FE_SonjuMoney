@@ -11,7 +11,7 @@ export const getAlarmRoute = (type: TAlarm['alarm_type'], linkId: number) => {
     TRAVEL: `/calendar/detail/${linkId}`,
     BIRTHDAY: `/calendar/detail/${linkId}`,
     DINING: `/calendar/detail/${linkId}`,
-    EVENT: `/calendar`,
+    EVENT: `/calendar/detail/${linkId}`,
     MEMORIAL: `/calendar/detail/${linkId}`,
     OTHERS: `/calendar/detail/${linkId}`,
   };
