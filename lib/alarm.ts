@@ -3,6 +3,7 @@ import { TAlarm } from '@/types/Alarm';
 export const getAlarmRoute = (type: TAlarm['alarm_type'], linkId: number) => {
   const RouteMap = {
     ALLOWANCE: `/allowance/${linkId}`,
+    CHILD_ALLOWANCE: `/allowance/${linkId}`,
     THANKS: '/feed',
     SAVINGS: '/savings/send/message',
     FEED: '/feed',
@@ -18,9 +19,13 @@ export const getAlarmRoute = (type: TAlarm['alarm_type'], linkId: number) => {
   return RouteMap[type];
 };
 
-export const getAlarmMessage = (type: TAlarm['alarm_type']) => {
+export const getAlarmMessage = (
+  type: TAlarm['alarm_type'],
+  message?: string
+) => {
   const messageMap = {
     ALLOWANCE: '용돈이 도착했어요!',
+    CHILD_ALLOWANCE: message,
     THANKS: '보내신 용돈의 답장이 왔어요!',
     SAVINGS: '적금 메세지를 작성해주세요!',
     FEED: '새로운 피드가 올라왔어요!',

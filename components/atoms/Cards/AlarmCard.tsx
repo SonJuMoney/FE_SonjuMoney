@@ -23,6 +23,7 @@ import { getAlarmMessage, getAlarmRoute } from '@/lib/alarm';
 import { getAlarmImage } from '@/lib/utils';
 
 const AlarmCard = ({ data }: { data: TAlarm }) => {
+  console.log(data);
   const { readAlarm } = useAlarmApi();
   const { removeNotification } = useNotification();
   const { setSelectedFamily, familyList } = useSelectedFamilyStore();
@@ -50,7 +51,7 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
     readAlarm(alarm_id);
     setIsDialogOpen(false);
     console.log(isDialogOpen);
-    if (data.alarm_type !== 'INVITE') {
+    if (data.alarm_type !== 'INVITE' && data.alarm_type !== 'CHILD_ALLOWANCE') {
       router.push(getAlarmRoute(data.alarm_type, link_id));
     }
   };
@@ -88,7 +89,9 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
               unoptimized={true}
             />
             <span className='font-semibold text-[17px]'>
-              {getAlarmMessage(data.alarm_type)}
+              {data.alarm_type === 'CHILD_ALLOWANCE'
+                ? data.message.replace(/에게 /g, '에게\n')
+                : getAlarmMessage(data.alarm_type)}
             </span>
           </div>
           <ArrowRight />

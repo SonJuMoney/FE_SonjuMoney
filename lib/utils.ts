@@ -27,6 +27,7 @@ export function cn(...inputs: ClassValue[]) {
 export const getAlarmImage = (type: TAlarm['alarm_type']) => {
   const imageMap = {
     ALLOWANCE: ALLOWANCE,
+    CHILD_ALLOWANCE: ALLOWANCE,
     THANKS: THANKS,
     SAVINGS: SAVINGS,
     FEED: FEED,

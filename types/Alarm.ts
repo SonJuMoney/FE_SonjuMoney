@@ -3,6 +3,7 @@ export type TAlarm = {
   status: 'RECEIVED' | 'CHECKED';
   alarm_type:
     | 'ALLOWANCE'
+    | 'CHILD_ALLOWANCE'
     | 'THANKS'
     | 'SAVINGS'
     | 'FEED'
