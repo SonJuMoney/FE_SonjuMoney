@@ -134,7 +134,7 @@ export default function ProfileButton() {
             alt='profile'
             width={30}
             height={30}
-            className='rounded-full border border-appColor bg-appColor overflow-hidden'
+            className='rounded-full border border-appColor overflow-hidden object-cover w-[30px] h-[30px] aspect-square'
           />
         ) : (
           <div
@@ -149,7 +149,7 @@ export default function ProfileButton() {
         <DialogContent className='w-2/3 rounded-lg'>
           <DialogTitle></DialogTitle>
           <div className='flex flex-col gap-5 justify-between items-center'>
-            <div className='relative w-[150px] h-[150px] rounded-full border flex justify-center items-center'>
+            <div className='relative w-[150px] h-[150px] rounded-full border flex justify-center items-center flex-grow-0'>
               {session?.user?.userProfile ? (
                 <Image
                   width={150}
