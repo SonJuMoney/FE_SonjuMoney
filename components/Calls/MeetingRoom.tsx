@@ -1,5 +1,6 @@
 'use client';
 
+import { useToast } from '@/hooks/use-toast';
 import {
   CallControls,
   ParticipantView,
@@ -19,6 +20,7 @@ const MeetingRoom = () => {
   const { useCallCallingState, useParticipants } = useCallStateHooks();
   const { data: session } = useSession();
   const call = useCall();
+  const { toast } = useToast();
 
   const participants = useParticipants();
   const callingState = useCallCallingState();
@@ -50,17 +52,39 @@ const MeetingRoom = () => {
   }, [forceDisableDevices]);
 
   // 3. 통화 종료 이벤트 핸들러
+  // useEffect(() => {
+  //   if (!call) return;
+
+  //   const handleCallEnded = async () => {
+  //     await forceDisableDevices();
+  //     router.push('/call');
+  //   };
+
+  //   call.on('call.ended', handleCallEnded);
+  //   return () => call.off('call.ended', handleCallEnded);
+  // }, [call, router, forceDisableDevices]);
+
   useEffect(() => {
-    if (!call) return;
+    if (!call) {
+      console.log('call 없음', call);
+      return;
+    }
 
-    const handleCallEnded = async () => {
-      await forceDisableDevices();
+    if (call && callingState === CallingState.LEFT) {
+      toast({ title: '통화를 종료했어요' });
+      call.camera.disable();
+      call.microphone.disable();
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          stream.getTracks().forEach((track) => {
+            track.stop();
+            track.enabled = false;
+          });
+        });
       router.push('/call');
-    };
-
-    call.on('call.ended', handleCallEnded);
-    return () => call.off('call.ended', handleCallEnded);
-  }, [call, router, forceDisableDevices]);
+    }
+  }, [callingState]);
 
   // 4. 통화 수동 종료 핸들러
   const handleLeave = useCallback(async () => {
