@@ -24,7 +24,7 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
       name: session.user.userName || '',
     };
 
-    const newClient = new StreamVideoClient({
+    const newClient = StreamVideoClient.getOrCreateInstance({
       apiKey,
       user,
       tokenProvider: async () => {
