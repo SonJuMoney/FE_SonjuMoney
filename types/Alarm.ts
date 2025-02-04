@@ -18,6 +18,7 @@ export type TAlarm = {
   link_id: number;
   created_at: string;
   family_id: number;
+  child_id?: number;
 };
 
 export type TAlarmStatusResponse = {
