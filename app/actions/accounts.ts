@@ -10,7 +10,6 @@ export async function getMyAccount(): Promise<MyAccount> {
       return data;
     })
     .catch((error) => {
-      console.log(error);
       return null;
     });
 }

@@ -80,7 +80,6 @@ const SignUp = () => {
         error: data.duplication ? '중복된 아이디입니다' : '',
       };
     } catch (error) {
-      console.log(error);
       return {
         isValid: false,
         error: '서버 오류가 발생했습니다',
@@ -128,7 +127,6 @@ const SignUp = () => {
         error: data.duplication ? '이미 가입된 주민등록 번호입니다' : '',
       };
     } catch (error) {
-      console.log(error);
       return {
         isValid: false,
         error: '서버 오류가 발생했습니다',
@@ -165,10 +163,6 @@ const SignUp = () => {
       width: 17,
     },
   ];
-
-  useEffect(() => {
-    console.log(childData);
-  }, [childData]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -212,11 +206,9 @@ const SignUp = () => {
     }
 
     const response = await signupChild(childData);
-    console.log(response);
     if (response) {
       router.push(`/register/account?userId=${response}`);
     } else {
-      console.log('회원가입 오류');
       return;
     }
   };

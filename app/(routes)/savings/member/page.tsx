@@ -28,7 +28,6 @@ const SelectChild = () => {
           selectedFamily.family_id,
           'CHILDREN'
         );
-        console.log(response);
         setFamily(response);
       } catch (error) {
         console.error('Failed to fetch only children:', error);

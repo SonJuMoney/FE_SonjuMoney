@@ -41,11 +41,6 @@ const SendResponse = () => {
     setMessage(message);
     setFiles(localFiles);
 
-    console.log({
-      message,
-      files: localFiles,
-    });
-
     router.push('/allowance/send/password');
   };
 

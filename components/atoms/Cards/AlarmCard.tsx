@@ -23,7 +23,6 @@ import { getAlarmMessage, getAlarmRoute } from '@/lib/alarm';
 import { getAlarmImage } from '@/lib/utils';
 
 const AlarmCard = ({ data }: { data: TAlarm }) => {
-  console.log(data);
   const { readAlarm } = useAlarmApi();
   const { removeNotification } = useNotification();
   const { setSelectedFamily, familyList } = useSelectedFamilyStore();
@@ -50,7 +49,6 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
     removeNotification(alarm_id);
     readAlarm(alarm_id);
     setIsDialogOpen(false);
-    console.log(isDialogOpen);
     if (data.alarm_type !== 'INVITE' && data.alarm_type !== 'CHILD_ALLOWANCE') {
       router.push(getAlarmRoute(data.alarm_type, link_id));
     }
@@ -59,8 +57,6 @@ const AlarmCard = ({ data }: { data: TAlarm }) => {
   const handleAccept = () => {
     acceptInvitation(data.link_id);
     onReadAlarm(data.alarm_id, data.link_id);
-    // router.refresh();
-    // console.log(refresh);
   };
 
   const handleReject = () => {

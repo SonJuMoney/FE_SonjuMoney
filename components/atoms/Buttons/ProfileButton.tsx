@@ -75,7 +75,6 @@ export default function ProfileButton() {
   useEffect(() => {
     const fetchAuthList = async () => {
       const response = await getAuthList();
-      console.log(response);
       setAuthList(response);
     };
 
