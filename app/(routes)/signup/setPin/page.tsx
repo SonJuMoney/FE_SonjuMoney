@@ -31,6 +31,7 @@ const SetPinPage = () => {
       } else {
         throw new Error('로그인 실패');
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       router.push('/login');
     }

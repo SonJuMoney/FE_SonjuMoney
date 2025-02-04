@@ -79,6 +79,7 @@ const SignUp = () => {
         isValid: !data.duplication,
         error: data.duplication ? '중복된 아이디입니다' : '',
       };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return {
         isValid: false,
@@ -126,6 +127,7 @@ const SignUp = () => {
         isValid: !data.duplication,
         error: data.duplication ? '이미 가입된 주민등록 번호입니다' : '',
       };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return {
         isValid: false,
