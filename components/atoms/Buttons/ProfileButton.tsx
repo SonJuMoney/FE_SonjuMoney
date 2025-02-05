@@ -1,7 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useUserApi } from '@/hooks/useUserApi/useUserApi';
@@ -148,6 +153,7 @@ export default function ProfileButton() {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className='w-2/3 rounded-lg'>
           <DialogTitle></DialogTitle>
+          <DialogDescription></DialogDescription>
           <div className='flex flex-col gap-5 justify-between items-center'>
             <div className='relative w-[150px] h-[150px] rounded-full border flex justify-center items-center flex-grow-0'>
               {session?.user?.userProfile ? (

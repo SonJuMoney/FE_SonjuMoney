@@ -105,8 +105,22 @@ const MeetingRoom = () => {
     }
   }, [call, router, forceDisableDevices]);
 
-  if (callingState !== CallingState.JOINED) return <LoadingIndicator />;
-  else if (!session?.user?.userId) return <LoadingIndicator />;
+  if (callingState !== CallingState.JOINED)
+    return (
+      <div className='pageLayout bg-slate-700'>
+        <div className='defaultLayout justify-center items-center'>
+          <LoadingIndicator />
+        </div>
+      </div>
+    );
+  else if (!session?.user?.userId)
+    return (
+      <div className='pageLayout bg-slate-700'>
+        <div className='defaultLayout justify-center items-center'>
+          <LoadingIndicator />
+        </div>
+      </div>
+    );
   else {
   }
   const currentUser = participants.find(

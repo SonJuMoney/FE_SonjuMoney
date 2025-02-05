@@ -10,9 +10,11 @@ import {
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useAlarmApi } from '@/hooks/useAlarmApi/useAlarmApi';
+import { useAuthApi } from '@/hooks/useAuthApi/useAuthApi';
 import { useFamilyApi } from '@/hooks/useFamilyApi/useFamilyApi';
 import { useSelectedFamilyStore } from '@/store/useSelectedFamilyStore';
 import { TAlarm } from '@/types/Alarm';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -28,11 +30,13 @@ const Alarm = ({ data }: AlarmProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { setSelectedFamily, familyList } = useSelectedFamilyStore();
   const { acceptInvitation } = useFamilyApi();
+  const { switchAccount } = useAuthApi();
+  const { update } = useSession();
 
   const router = useRouter();
   const { toast } = useToast();
 
-  const onReadAlarm = (alarm_id: number, link_id: number) => {
+  const onReadAlarm = async (alarm_id: number, link_id: number) => {
     if (data.family_id) {
       setSelectedFamily(
         familyList.filter((family) => family.family_id === data.family_id)[0]
@@ -43,8 +47,18 @@ const Alarm = ({ data }: AlarmProps) => {
     } else {
       readAlarm(alarm_id);
       setIsDialogOpen(false);
-      if (data.alarm_type !== 'INVITE') {
+      if (
+        data.alarm_type !== 'INVITE' &&
+        data.alarm_type !== 'CHILD_ALLOWANCE'
+      ) {
         router.push(getAlarmRoute(data.alarm_type, link_id));
+      } else if (data.alarm_type === 'CHILD_ALLOWANCE') {
+        if (data.child_id) {
+          const response = await switchAccount(data.child_id.toString());
+          toast({ title: '아이 계정으로 전환 되었어요' });
+          await update(response);
+          router.push(`/allowance/${data.link_id}`);
+        }
       }
     }
   };
